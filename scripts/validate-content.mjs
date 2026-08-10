@@ -67,8 +67,9 @@ for (const file of mdFiles) {
     continue
   }
 
-  const isNote = file.includes(`${ROOT}${file.includes('notes') ? '/notes/' : '/projects/'}`)
-  const isProject = file.includes('/projects/')
+  const norm = file.split(/[\\/]/).join('/') // Windows 路径归一化（join 生成 \）
+  const isProject = norm.includes('/projects/')
+  const isNote = norm.includes('/notes/')
   const required = isProject ? PROJECT_REQUIRED : NOTE_REQUIRED
 
   // 规则 2：必填字段齐全
@@ -120,7 +121,7 @@ for (const file of mdFiles) {
   }
 
   // 规则 10：站内链接指向存在的 slug（跨 projects/notes 校验，循环后复核）
-  for (const m of body.matchAll(/\]\((\/(?:projects|notes)\/[a-z0-9-]+)\)/g)) {
+  for (const m of body.matchAll(/\]\((\/(?:projects|notes)\/[a-z0-9-]+)(?:[?#][^)\s]*)?\)/g)) {
     innerLinks.push({ link: m[1], file })
   }
 
@@ -140,12 +141,12 @@ for (const file of mdFiles) {
     }
   }
 
-  // 规则 15：非代码块内容不得出现 < 开头 HTML 标签
+  // 规则 15：非代码块内容不得出现 < 开头 HTML 标签（含结束标签 </xxx>）
   const nonCode = body
     .split(/^```/m)
     .filter((_, i) => i % 2 === 0) // 奇数索引为代码块，豁免
   for (const seg of nonCode) {
-    for (const m of seg.matchAll(/<[a-zA-Z][^>]*>/g)) {
+    for (const m of seg.matchAll(/<\/?[a-zA-Z][^>]*>/g)) {
       report(15, file, `正文出现 HTML 标签: ${m[0]}（代码块外禁止）`)
     }
   }

@@ -7,9 +7,9 @@ const md = new MarkdownIt({
   linkify: true,
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
-      return `<pre><code class="hljs language-${lang}">${hljs
-        .highlight(str, { language: lang })
-        .value}</code></pre>`
+      return `<pre><code class="hljs language-${md.utils
+        .escapeHtml(lang)
+        .replace(/\s+/g, '-')}">${hljs.highlight(str, { language: lang }).value}</code></pre>`
     }
     return `<pre><code>${md.utils.escapeHtml(str)}</code></pre>`
   },

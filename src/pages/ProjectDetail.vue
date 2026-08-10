@@ -16,8 +16,10 @@ const project = ref(getProject(route.params.slug))
 const html = ref('')
 
 // 正文异步加载 + title/description 覆盖（14 §5.7）
+// 竞态防护：slug 快速切换时丢弃过期 promise 结果（review P3）
 watchEffect(async () => {
   const slug = route.params.slug
+  let cancelled = false
   project.value = getProject(slug)
   if (!project.value) return // 404 兜底由下方 if 处理
 
@@ -27,7 +29,10 @@ watchEffect(async () => {
   const loader = projectRawFiles[slug]
   if (loader) {
     const raw = await loader()
-    html.value = renderMarkdown(raw, slug)
+    if (!cancelled) html.value = renderMarkdown(raw, slug)
+  }
+  return () => {
+    cancelled = true
   }
 })
 </script>
