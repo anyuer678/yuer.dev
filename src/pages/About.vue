@@ -7,6 +7,7 @@ import SectionTitle from '@/components/ui/SectionTitle.vue'
 import ProjectCard from '@/components/features/ProjectCard.vue'
 import { site, projects, notes, lab, techList } from '@/utils/content.js'
 import { timeline } from '@/utils/content.js'
+import { YEAR_SUMMARIES } from '@/utils/yearSummaries.js'
 
 // 数字统计（真实数据，视觉密度）
 const stats = [
@@ -159,16 +160,12 @@ const stackGroups = STACK_GROUPS.map((g) => ({
         </div>
       </section>
 
-      <!-- 成长路径 -->
+      <!-- 成长路径（简略：年份 + 一句话摘要，详情见时间线页） -->
       <section class="about__block">
         <SectionTitle index="02" title="Journey" to="/timeline" />
         <div v-for="[year, items] in journey" :key="year" class="about__year">
-          <h3 class="about__year-title">{{ year }}</h3>
-          <ul class="about__year-list">
-            <li v-for="item in items" :key="item.title" class="about__year-item">
-              {{ item.title }}
-            </li>
-          </ul>
+          <h3 class="about__year-title">{{ year }} <span class="about__year-count">· {{ items.length }} 条</span></h3>
+          <p v-if="YEAR_SUMMARIES[year]" class="about__year-summary">{{ YEAR_SUMMARIES[year] }}</p>
         </div>
       </section>
 
@@ -372,20 +369,18 @@ const stackGroups = STACK_GROUPS.map((g) => ({
 .about__year-title {
   font-family: var(--font-display);
   font-size: var(--text-h3);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
-.about__year-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-2);
-}
-.about__year-item {
+.about__year-count {
   font-size: var(--text-small);
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+}
+.about__year-summary {
+  font-size: var(--text-small);
+  line-height: var(--lh-body);
   color: var(--color-text-secondary);
-  padding-left: var(--space-3);
-  border-left: 2px solid var(--color-border-strong);
+  max-width: var(--container-narrow);
 }
 .about__links {
   margin-top: var(--space-10);

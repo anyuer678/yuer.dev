@@ -5,13 +5,9 @@ import PageHeader from '@/components/layout/PageHeader.vue'
 import TimelineItem from '@/components/features/TimelineItem.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { timeline } from '@/utils/content.js'
+import { YEAR_SUMMARIES } from '@/utils/yearSummaries.js'
 
 // 分组：年份降序、组内 date 倒序（同月保持 JSON 顺序——稳定排序，14 §5.9.5）
-const YEAR_SUMMARIES = {
-  2026: '探索 AI 工程与软件系统设计。开始构建更大型的软件项目，关注软件架构、AI 应用和开源实践。',
-  2025: '开始持续开发个人软件项目。从简单工具开始，逐渐接触桌面应用、后端系统和工程化开发。',
-  2024: '学习编程基础。探索软件开发，建立对计算机系统的理解。',
-}
 const groups = computed(() => {
   const map = new Map()
   for (const item of timeline) {
