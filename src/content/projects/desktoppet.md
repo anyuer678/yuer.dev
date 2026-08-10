@@ -1,13 +1,13 @@
 ---
 slug: desktoppet
 title: Desktoppet
-subtitle: Extensible Desktop Pet Platform
+subtitle: 可扩展桌面宠物平台
 status: completed
 featured: false
 date: 2026-08
-tech: [Electron, TypeScript]
+tech: [Electron, React, TypeScript]
 tags: [Desktop]
-summary: 想让桌面不只是工作区。Desktoppet 是个可扩展的 Electron 桌宠：角色是资源包，状态由事件驱动，会说话、有心情。
+summary: Electron 桌面宠物：角色以资源包扩展、状态事件驱动，带陪伴统计与事件推送 API，450 例单测。
 demo:
 github: https://github.com/anyuer678/desktoppet
 order: 4
@@ -15,9 +15,8 @@ order: 4
 
 ## 项目介绍
 
-想让桌面不只是工作区，于是做了 Desktoppet——一个可扩展的桌面宠物平台。
-核心思路是 **角色 = 资源包**：桌宠引擎与角色完全解耦，用户可导入自制角色，
-桌宠会根据系统状态与事件产生不同表现，会说话、有心情。
+一个可扩展的桌面宠物平台。核心思路是 **角色 = 资源包**：桌宠引擎与角色完全解耦，用户可导入自制角色，
+桌宠会根据系统状态与事件产生不同表现。
 
 ## 设计目标
 
@@ -44,6 +43,7 @@ Electron 主进程（窗口/角色/事件中心/数据源/监控/统计/日程/�
 ## 技术选择
 
 - **Electron**：桌面应用最快落地的跨平台壳，托盘/置顶/透明窗口能力成熟
+- **React 19**：渲染进程两个应用（桌宠窗口 + 控制中心）的组件层
 - **TypeScript**：严格模式贯穿主进程与渲染进程，IPC 契约可类型化
 
 ## 开发过程

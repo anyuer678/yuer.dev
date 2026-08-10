@@ -11,7 +11,14 @@ const route = useRoute()
 const router = useRouter()
 
 const STATUS_LABELS = { completed: '已完成', archived: '已归档', experiment: '实验', idea: '想法' }
-const CATEGORY_LABELS = { AI: 'AI 实验', Desktop: '桌面应用', Infrastructure: '基础设施', Design: '设计', Ideas: '想法库' }
+const CATEGORY_LABELS = { AI: 'AI 实验室', Desktop: '软件实验室', Infrastructure: '基础设施实验室', Design: '设计实验室', Ideas: '想法库' }
+const CATEGORY_DESC = {
+  AI: '探索人工智能在个人软件中的应用：大语言模型、RAG 知识库、AI Agent、本地 AI 系统。',
+  Desktop: '尝试不同的软件形态：桌面应用、效率工具、开发工具、跨平台软件。',
+  Infrastructure: '搭建自己的技术环境：Linux、Docker、服务器部署、自托管服务。',
+  Design: '探索软件功能与视觉体验之间的关系：UI 设计、交互方案、视觉实验。',
+  Ideas: '讨论过但还没动手的方向，留给未来的实验。',
+}
 
 const status = computed(() => route.query.status ?? '')
 const filtered = computed(() => (status.value ? lab.filter((i) => i.status === status.value) : lab))
@@ -56,6 +63,7 @@ function applyStatus(next) {
     <div v-if="sorted.length" class="lab-groups">
       <section v-for="[cat, items] in grouped" :key="cat" class="lab-group">
         <h2 class="lab-group__title">{{ CATEGORY_LABELS[cat] || cat }}</h2>
+        <p v-if="CATEGORY_DESC[cat]" class="lab-group__desc">{{ CATEGORY_DESC[cat] }}</p>
         <div class="lab-grid">
           <LabItem v-for="(item, i) in items" :key="`${item.title}-${i}`" :item="item" />
         </div>
@@ -93,7 +101,13 @@ function applyStatus(next) {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   line-height: var(--lh-h2);
+  margin-bottom: var(--space-2);
+}
+.lab-group__desc {
   margin-bottom: var(--space-4);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+  max-width: 56ch;
 }
 .lab-grid {
   display: grid;

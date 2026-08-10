@@ -1,13 +1,13 @@
 ---
 slug: todo-list
 title: Todo List
-subtitle: Lightweight Personal Todo App
+subtitle: 轻量个人待办应用
 status: completed
 featured: false
 date: 2026-07
 tech: [CSS, JavaScript]
 tags: [Tool]
-summary: 想要个打开即用的待办工具，又不想背框架依赖。原生实现，今日视图 + 番茄钟 + 数据本地存储，三端一套代码。
+summary: 原生实现的开箱即用待办应用：今日视图 + 收件箱 + 番茄钟，数据本地存储，Web / Windows / Android 三端一套代码。
 demo: https://anyuer678.github.io/todo-list/
 github: https://github.com/anyuer678/todo-list
 order: 6
@@ -15,9 +15,7 @@ order: 6
 
 ## 项目介绍
 
-需要简单好用的待办工具，又不想引入重依赖——Todo List 就是为这个场景做的。
-集待办管理、番茄钟、统计于一体，打开即用，数据存在本地，
-Web、Windows、Android 三端共用一套代码。
+一个打开即用的待办应用：集待办管理、番茄钟、统计于一体，数据存在本地，Web、Windows、Android 三端共用一套代码，无框架依赖。
 
 ## 设计目标
 

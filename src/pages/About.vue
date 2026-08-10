@@ -24,17 +24,17 @@ const selectedProjects = [...projects].sort((a, b) => (a.order ?? 999) - (b.orde
 const BUILD_AREAS = [
   {
     name: 'AI 应用',
-    desc: '探索大语言模型的工程化应用',
+    desc: '探索大语言模型在实际场景中的应用。构建 AI 助手、自动化工作流以及智能工具，让 AI 成为软件系统的一部分。',
     items: projects.filter((p) => ['chatez', 'evocode'].includes(p.slug)),
   },
   {
     name: '开发工具',
-    desc: '提升编程工作流的工具',
+    desc: '创造提升开发效率的软件工具。关注代码学习、软件分析以及开发流程优化。',
     items: projects.filter((p) => ['codedrill', 'polycodehub'].includes(p.slug)),
   },
   {
     name: '个人软件',
-    desc: '为日常问题做的小应用',
+    desc: '从日常需求出发，制作真正会被自己使用的软件。通过不断迭代，让小工具逐渐成长为完整产品。',
     items: projects.filter((p) => ['desktoppet', 'todo-list', 'cet6-vocabulary'].includes(p.slug)),
   },
 ].filter((area) => area.items.length)
@@ -65,7 +65,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
 
 <template>
   <div class="container">
-    <PageHeader title="关于" description="做软件的 Yuer · 开发者档案" />
+    <PageHeader title="关于" description="一个喜欢构建软件的开发者 · 软件工程学生" />
 
     <div class="about">
       <!-- 一句话定位 -->

@@ -1,13 +1,13 @@
 ---
 slug: chatez
 title: Chatez
-subtitle: Personal AI Work Platform
+subtitle: 个人 AI 工作空间
 status: archived
 featured: false
 date: 2026-05
 tech: [React, TypeScript, Tauri, LLM]
 tags: [AI, Desktop]
-summary: 天天在聊天工具里切模型、换角色太麻烦，于是做了个能配 Prompt 和 Skill 的 AI 工作台——它也是 EvoCode 的 LLM 实践前身。
+summary: 可配置 Prompt + Skill 的 AI 工作台（v1.14.1）：多角色切换、Skill 技能系统、SSE 流式输出、会话持久化，支持 Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
 order: 3
@@ -34,7 +34,7 @@ order: 3
 - SSE 流式输出、Markdown 渲染与代码高亮
 - 多会话管理：自动标题生成、localStorage 持久化
 - GenerationPanel：生成参数独立调节
-- API 配置：OpenAI / 自定义兼容接口，密钥 AES-GCM 加密存储
+- API 配置：OpenAI / 自定义兼容接口（多模型），密钥管理与导出脱敏
 - 浅色/深色主题，快捷键（`Ctrl+,` 设置、`Enter` / `Ctrl+Enter` 发送）
 
 ## 架构
@@ -57,7 +57,7 @@ Tauri 桌面壳 → Capacitor Android 壳 → 安全加固（密钥加密）→ 
 ## 挑战与解决
 
 1. 多模型管理与上下文窗口 → GenerationPanel 独立参数 + 会话级上下文管理
-2. 密钥安全 → AES-GCM 本地加密，演示版禁用 API 配置
+2. 密钥安全 → 密钥本地管理、导出脱敏；演示版禁用 API 配置，密钥不落静态页面
 3. 三端差异 → 平台能力抽象成壳层，UI 逻辑全部共享
 
 ## 未来计划

@@ -1,13 +1,13 @@
 ---
 slug: codedrill
 title: CodeDrill
-subtitle: Java Coding Practice Platform
+subtitle: 离线代码训练平台
 status: completed
 featured: true
 date: 2026-07
-tech: [Java, Spring Boot, Vue 3]
+tech: [Vue 3, Vite, Electron, JavaScript]
 tags: [Learning]
-summary: 学 Java 光看教程不够。自己搭的练习平台，用完整项目倒逼自己走通 Spring Boot + Vue 全流程。
+summary: 离线编程训练系统：代码临摹、代码填空、错误修复三种模式，支持 7 种语言与 22 套浅色主题，覆盖 Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 2
@@ -15,40 +15,39 @@ order: 2
 
 ## 项目介绍
 
-学 Java 需要练，但刷题网站体验割裂。CodeDrill 是自己搭的练习平台，
-从 0 到 1 走完 Spring Boot 后端 + Vue 前端的完整链路，题目、判题、
-提交记录都在自己手里。
+离线编程训练系统：练习不依赖在线判题服务，本地即可完成。提供代码临摹、代码填空、错误修复三种训练模式，覆盖 Java、Python、C++ 等 7 种语言。
 
 ## 设计目标
 
-- 覆盖 50 道自编 Java 练习题
-- 提交即判题，结果与耗时反馈清晰
-- 用真实项目理解 Web 开发全流程（不只看教程）
+- 不依赖网络：题目与答案都在本地，随时可练
+- 训练为主：临摹、填空、改错，而不是从零空写
+- 三端覆盖：Web、Windows、Android 共用一套代码
 
 ## 功能
 
-- 题目列表与详情（支持 Markdown 题目描述）
-- 代码提交与沙箱判题（编译、运行、用例比对）
-- 提交历史与通过率统计
+- 三种训练模式：代码临摹、代码填空、错误修复
+- 7 种语言：Java / Python / C++ / JavaScript / TypeScript / Linux Shell / SQL
+- 训练模块：循环、条件、数组、字符串、函数
+- 22 套浅色主题：纯色、渐变、纸纹、水墨
+- 成就系统、技能树、遗忘曲线复习
 
 ## 架构
 
-Spring Boot（REST API + 判题队列）←→ Vue 3 前端；
-判题任务放入内存队列异步执行，避免请求阻塞。
+Vue 3 + Pinia 单页应用，练习逻辑与状态管理集中在前端；Windows 端用 Electron 打包，Android 端用 Capacitor，三端共用同一套 Web 代码。
 
 ## 技术选择
 
-- **Spring Boot**：学习主线的第一落点，标准 Web 栈
-- **Vue 3**：与个人网站统一技术栈，维护成本低
+- **Vue 3 + Pinia**：无需后端，状态与题目数据全部在前端管理
+- **Electron / Capacitor**：同一套代码覆盖桌面与移动端，只换打包层
 
 ## 开发过程
 
-2026-06 起步 → 先做判题核心（编译与用例比对）→ 题目管理 → 前端界面 → 收尾。
+先做核心训练引擎（题目数据与三种模式）→ 主题系统 → 三端打包 → 收尾。
 
 ## 挑战与解决
 
-1. 沙箱安全 → 判题进程隔离 + 资源限制（时间/内存）
-2. 判题耗时 → 异步队列 + 状态轮询
+1. 离线可用 → 题目、答案、判分逻辑全部在本地，不依赖网络
+2. 三端复用 → 核心逻辑与 UI 完全共用，Electron 与 Capacitor 只负责打包
 
 ## 未来计划
 

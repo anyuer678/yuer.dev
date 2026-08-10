@@ -11,11 +11,12 @@ defineProps({
   <section class="hero">
     <div class="container hero__inner">
       <h1 class="hero__name">{{ site.name }}</h1>
+      <p v-if="site.slogan" class="hero__slogan">{{ site.slogan }}</p>
       <!-- 副标题：静态文本（读屏可感知），TagRotator 轮换仅视觉增强（14 §5.12） -->
-      <p class="hero__role">{{ site.role }} · {{ site.tagline.join(' / ') }}</p>
+      <p class="hero__role">{{ site.role }}</p>
       <p v-if="site.positioning" class="hero__positioning">{{ site.positioning }}</p>
       <div class="hero__actions">
-        <RouterLink to="/projects" class="btn btn--primary">View Projects</RouterLink>
+        <RouterLink to="/projects" class="btn btn--primary">查看项目</RouterLink>
         <a
           v-if="site.links.github"
           :href="site.links.github"
@@ -60,6 +61,13 @@ defineProps({
   font-family: var(--font-display);
   font-size: var(--text-display); /* 40px */
   line-height: var(--lh-display);
+}
+.hero__slogan {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+  color: var(--color-text);
 }
 .hero__role {
   margin-top: var(--space-3);

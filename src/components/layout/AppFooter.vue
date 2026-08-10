@@ -10,13 +10,13 @@ const year = new Date().getFullYear()
   <footer class="app-footer">
     <div class="container app-footer__inner">
       <p class="app-footer__copy">
-        © {{ year }} {{ site.name }} · {{ site.brand }}
+        用代码记录想法，用软件创造价值。
       </p>
       <div class="app-footer__links">
         <ExternalLink :href="site.links.github">{{ site.name }} on GitHub</ExternalLink>
-        <ExternalLink :href="`mailto:${site.links.email}`">Email</ExternalLink>
       </div>
     </div>
+    <p class="app-footer__legal">© {{ year }} {{ site.name }} · {{ site.brand }}</p>
   </footer>
 </template>
 
@@ -41,5 +41,12 @@ const year = new Date().getFullYear()
   display: flex;
   gap: var(--space-6);
   font-size: var(--text-small);
+}
+.app-footer__legal {
+  text-align: center;
+  padding-block: var(--space-4);
+  font-size: var(--text-caption);
+  color: var(--color-text-tertiary);
+  border-top: var(--border-default);
 }
 </style>

@@ -1,13 +1,13 @@
 ---
 slug: cet6-vocabulary
 title: CET-6 词汇背诵系统
-subtitle: CET-6 Vocabulary Learning System
+subtitle: CET-6 词汇学习系统
 status: completed
 featured: false
 date: 2026-07
 tech: [JavaScript, HTML, CSS]
 tags: [Learning]
-summary: 5023 个六级词，纯靠刷书很难坚持。这套工具用背诵、默写、回忆、选择题换着学，错词本盯薄弱词，三端通用。
+summary: CET-6 全词库 5023 词：背诵、默写、回忆、选择题四种模式 + 错词本，离线发音，Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/cet6-vocabulary/
 github: https://github.com/anyuer678/cet6-vocabulary
 order: 5
@@ -15,9 +15,7 @@ order: 5
 
 ## 项目介绍
 
-六级词库 5023 词，纯靠刷书很难坚持——于是做了这套背词工具：
-覆盖背诵、默写、回忆、选择题、错词本多种学习模式，带完整动画、
-发音与彩色主题，支持 Web、Windows、Android 三端。
+一套 CET-6 背词工具，覆盖考试大纲全部 5023 词：背诵、默写、回忆、选择题四种学习模式，带动画、离线发音、错词本与彩色主题，支持 Web、Windows、Android 三端。
 
 ## 设计目标
 

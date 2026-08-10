@@ -1,13 +1,13 @@
 ---
 slug: polycodehub
 title: PolyCodeHub
-subtitle: Full-stack Online Judge Platform
+subtitle: 全栈在线判题平台
 status: development
 featured: true
 date: 2026-08
 tech: [TypeScript, JavaScript, Java, Spring Boot, Python, FastAPI, Node.js, Docker, Redis]
 tags: [OJ, 全栈, 判题沙箱]
-summary: 自用的全栈在线判题平台。托管 OJ 管不了判题细节，于是自己从题库写到进程级沙箱：练习、比赛、题解、社区都在一个系统里。
+summary: 自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，进程级沙箱判题（setuid 降权 + seccomp 隔离），Docker Compose 一键启动。
 demo: https://anyuer678.github.io/polycodehub/
 github: https://github.com/anyuer678/polycodehub
 order: 7
@@ -15,12 +15,8 @@ order: 7
 
 ## 项目介绍
 
-这个项目 2025 年中期开始构思，9 月写出雏形，2026 年迁到独立仓库继续迭代。
-想做一套自用的在线判题平台：把"练习 → 提交 → 判题 → 讨论"的闭环
-放在一个系统里，既能沉淀算法练习，也能承载比赛、题解与社区互动。
-
-LeetCode 这类托管 OJ 功能完整，但判题细节、数据、扩展方向都不在自己手里，
-所以干脆自己实现了一套从题库到判题沙箱的全栈方案。
+自用的全栈在线判题平台：练习、提交、判题、比赛、题解与社区都在一个系统里。
+从题库到判题沙箱全栈自建，2025 年 9 月完成雏形，2026 年迁到独立仓库继续迭代。
 
 ## 设计目标
 

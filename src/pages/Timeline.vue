@@ -7,6 +7,11 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import { timeline } from '@/utils/content.js'
 
 // 分组：年份降序、组内 date 倒序（同月保持 JSON 顺序——稳定排序，14 §5.9.5）
+const YEAR_SUMMARIES = {
+  2026: '探索 AI 工程与软件系统设计。开始构建更大型的软件项目，关注软件架构、AI 应用和开源实践。',
+  2025: '开始持续开发个人软件项目。从简单工具开始，逐渐接触桌面应用、后端系统和工程化开发。',
+  2024: '学习编程基础。探索软件开发，建立对计算机系统的理解。',
+}
 const groups = computed(() => {
   const map = new Map()
   for (const item of timeline) {
@@ -27,7 +32,7 @@ const groups = computed(() => {
   <div class="container">
     <PageHeader
       title="时间线"
-      description="从 2025 年学习 Java 开始，到如今构建 AI 平台 —— 持续积累，而非突然会 AI"
+      description="记录学习、开发和探索的过程"
     />
 
     <EmptyState v-if="!timeline.length" message="时间线暂无内容" />
@@ -35,6 +40,7 @@ const groups = computed(() => {
     <div v-else class="timeline">
       <section v-for="[year, items] in groups" :key="year" class="timeline__group">
         <h2 class="timeline__year">{{ year }}</h2>
+        <p v-if="YEAR_SUMMARIES[year]" class="timeline__year-summary">{{ YEAR_SUMMARIES[year] }}</p>
         <!-- 竖线贯穿：左日期列与中节点列交界处 -->
         <ol class="timeline__list">
           <TimelineItem v-for="item in items" :key="`${item.date}-${item.title}`" :item="item" />
@@ -52,7 +58,13 @@ const groups = computed(() => {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   line-height: var(--lh-h2);
+  margin-bottom: var(--space-2);
+}
+.timeline__year-summary {
   margin-bottom: var(--space-4);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+  max-width: 56ch;
 }
 .timeline__list {
   list-style: none;
