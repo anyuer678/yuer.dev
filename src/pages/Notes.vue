@@ -11,7 +11,7 @@ import { notes, noteTags } from '@/utils/content.js'
 const route = useRoute()
 const router = useRouter()
 
-const tag = computed(() => route.query.tag ?? '')
+const tag = computed(() => String(route.query.tag ?? '')) // 防数组形态 ?tag=a&tag=b
 const filtered = computed(() => (tag.value ? notes.filter((n) => n.tags.includes(tag.value)) : notes))
 
 function applyTag(next) {

@@ -1,12 +1,12 @@
 <script setup>
-// Timeline 页面（F05）：年份分组 + 组内按 date 倒序（种子数据已有序，防御性排序）
+// Timeline 页面（F05）：年份分组（降序）+ 组内 date 倒序（防御性排序，14 §5.9.5）
 import { computed } from 'vue'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import TimelineItem from '@/components/features/TimelineItem.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { timeline } from '@/utils/content.js'
 
-// 分组：2026 / 2025（06 §5 说明：成长叙事页面）
+// 分组：年份降序、组内 date 倒序（同月保持 JSON 顺序——稳定排序，14 §5.9.5）
 const groups = computed(() => {
   const map = new Map()
   for (const item of timeline) {
@@ -15,6 +15,11 @@ const groups = computed(() => {
     map.get(year).push(item)
   }
   return [...map.entries()]
+    .sort(([a], [b]) => b.localeCompare(a)) // 年份降序
+    .map(([year, items]) => [
+      year,
+      [...items].sort((x, y) => y.date.localeCompare(x.date)), // 组内 date 倒序
+    ])
 })
 </script>
 
@@ -55,13 +60,14 @@ const groups = computed(() => {
   padding: 0;
   position: relative;
 }
-/* 竖线：沿节点列连续绘制（节点圆点背景色遮盖，形成断点效果） */
+/* 竖线：沿节点列连续绘制（节点圆点背景色遮盖，形成断点效果）
+   TimelineItem grid = 48px 日期列 + 12px gap + 20px 节点列；圆点中心 48+12+10=70px */
 .timeline__list::before {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 58px; /* 48px 日期列 + 8px 间距 + 4px 圆点半宽 ≈ 58px */
+  left: calc(48px + var(--space-3) + 10px); /* 70px，与圆点中心对齐 */
   width: 1px;
   background: var(--color-border);
 }
