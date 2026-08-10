@@ -27,13 +27,19 @@ const PROJECT_REQUIRED = ['slug', 'title', 'subtitle', 'status', 'featured', 'da
 const NOTE_REQUIRED = ['title', 'date', 'tags', 'summary']
 const PROJECT_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '技术选择', '开发过程', '挑战与解决', '未来计划', '源码与 Demo']
 const REQUIRED_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '技术选择', '未来计划'] // 规则 8
+// 保留字：frontmatter 允许的全部键（防拼写错误静默失效；新增字段需同时改 parse-frontmatter 消费者）
+const ALLOWED_KEYS = new Set([
+  ...PROJECT_REQUIRED,
+  ...NOTE_REQUIRED,
+  'draft', 'type', 'link', 'description',
+])
 
 // --- 规则 12：JSON 文件合法 + schema ---
 function checkJson(name) {
   const file = join(ROOT, `${name}.json`)
   if (!existsSync(file)) return
   const data = JSON.parse(readFileSync(file, 'utf8'))
-  if (name === 'site.json') {
+  if (name === 'site') {
     for (const key of ['name', 'brand', 'role', 'bio']) {
       if (typeof data[key] !== 'string') report(12, file, `site.json.${key} 应为字符串`)
     }
@@ -45,9 +51,9 @@ function checkJson(name) {
     report(12, file, `${name}.json 应为数组`)
   }
 }
-checkJson('site.json')
-checkJson('lab.json')
-checkJson('timeline.json')
+checkJson('site')
+checkJson('lab')
+checkJson('timeline')
 
 // --- Markdown 内容校验 ---
 const mdFiles = walk(ROOT).filter((f) => f.endsWith('.md'))
@@ -57,6 +63,22 @@ const innerLinks = [] // 规则 10：跨文件统一复核
 
 for (const file of mdFiles) {
   const raw = readFileSync(file, 'utf8')
+  const norm = file.split(/[\\/]/).join('/') // Windows 路径归一化（join 生成 \）
+  const isAbout = norm.endsWith('/about.md') // about.md 无 frontmatter，仅查规则 15（04 §10）
+  const isProject = norm.includes('/projects/')
+  const isNote = norm.includes('/notes/')
+  const required = isProject ? PROJECT_REQUIRED : NOTE_REQUIRED
+
+  if (isAbout) {
+    // 规则 15：非代码块内容不得出现 < 开头 HTML 标签
+    const nonCode = raw.split(/^```/m).filter((_, i) => i % 2 === 0)
+    for (const seg of nonCode) {
+      for (const m of seg.matchAll(/<\/?[a-zA-Z][^>]*>/g)) {
+        report(15, file, `正文出现 HTML 标签: ${m[0]}（代码块外禁止）`)
+      }
+    }
+    continue
+  }
 
   // 规则 1：frontmatter 可解析
   let meta, body
@@ -67,10 +89,9 @@ for (const file of mdFiles) {
     continue
   }
 
-  const norm = file.split(/[\\/]/).join('/') // Windows 路径归一化（join 生成 \）
-  const isProject = norm.includes('/projects/')
-  const isNote = norm.includes('/notes/')
-  const required = isProject ? PROJECT_REQUIRED : NOTE_REQUIRED
+  // 规则 16：frontmatter 键全部在保留字表内（防拼写错误被静默忽略）
+  const badKeys = Object.keys(meta).filter((k) => !ALLOWED_KEYS.has(k))
+  if (badKeys.length) report(16, file, `frontmatter 含保留字外键: ${badKeys.join(', ')}`)
 
   // 规则 2：必填字段齐全
   const missing = required.filter((k) => !(k in meta))
@@ -159,6 +180,21 @@ if (featuredCount.n > 3) report(11, 'projects/*', `featured 项目 ${featuredCou
 for (const { link, file } of innerLinks) {
   if (!allSlugs.has(link.split('/')[2])) report(10, file, `站内链接 "${link}" 指向不存在的 slug`)
 }
+
+// --- 规则 17：timeline.json / lab.json 的站内 link 指向存在的内容 ---
+function checkJsonLinks(name) {
+  const file = join(ROOT, `${name}.json`)
+  if (!existsSync(file)) return
+  const data = JSON.parse(readFileSync(file, 'utf8'))
+  for (const item of data) {
+    const link = item.link
+    if (!link || !/^\/(?:projects|notes)\//.test(link)) continue
+    const slug = link.split('/')[2]
+    if (!allSlugs.has(slug)) report(17, file, `"${item.title}" 的 link "${link}" 指向不存在的 slug`)
+  }
+}
+checkJsonLinks('timeline')
+checkJsonLinks('lab')
 
 // 收尾：全部检查完一次性打印（不 fail-fast），末尾汇总
 if (errors.length) {

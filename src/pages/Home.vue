@@ -8,29 +8,34 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 </script>
 
 <template>
-  <HeroSection :site="site" />
+  <div class="home">
+    <HeroSection :site="site" />
 
-  <!-- 空状态：无 featured 项目时区块隐藏，首页保持克制（06 §1） -->
-  <section v-if="featuredProjects.length" class="home-section">
-    <div class="container">
-      <SectionTitle index="01" title="Featured Projects" to="/projects" />
-      <div class="project-grid">
-        <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" featured />
+    <!-- 空状态：无 featured 项目时区块隐藏，首页保持克制（06 §1） -->
+    <section v-if="featuredProjects.length" class="home-section">
+      <div class="container">
+        <SectionTitle index="01" title="Featured Projects" to="/projects" />
+        <div class="project-grid">
+          <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" featured />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section v-if="recentNotes.length" class="home-section">
-    <div class="container">
-      <SectionTitle index="02" title="Recent Notes" to="/notes" />
-      <div class="note-grid">
-        <NoteCard v-for="n in recentNotes" :key="n.slug" :note="n" />
+    <section v-if="recentNotes.length" class="home-section">
+      <div class="container">
+        <SectionTitle index="02" title="Recent Notes" to="/notes" />
+        <div class="note-grid">
+          <NoteCard v-for="n in recentNotes" :key="n.slug" :note="n" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <style scoped>
+.home {
+  /* 单根容器：保证 <Transition> 可动画（组件根必须是单元素，14 §5.1） */
+}
 .home-section {
   padding-block: var(--space-12);
 }

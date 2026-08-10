@@ -6,7 +6,7 @@ import StatusBadge from '@/components/ui/StatusBadge.vue'
 import Tag from '@/components/ui/Tag.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
 import ArticleContent from '@/components/features/ArticleContent.vue'
-import { getProject, projectRawFiles } from '@/utils/content.js'
+import { getProject, projectRawFiles, site } from '@/utils/content.js'
 import { renderMarkdown } from '@/utils/markdown.js'
 import { setTitle, setDescription } from '@/utils/seo.js'
 
@@ -26,7 +26,7 @@ watchEffect(async (onInvalidate) => {
   project.value = getProject(slug)
   if (!project.value) return // 404 兜底由下方 if 处理
 
-  setTitle(`${project.value.title} · ${project.value.subtitle || ''}`)
+  setTitle(`${project.value.title} · ${project.value.subtitle || site.name}`)
   setDescription(project.value.summary)
 
   const loader = projectRawFiles[slug]
@@ -39,14 +39,15 @@ watchEffect(async (onInvalidate) => {
 </script>
 
 <template>
-  <div v-if="!project" class="container container--narrow">
-    <!-- slug 不存在 → 404（F04） -->
-    <p>项目不存在</p>
-    <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
-  </div>
+  <div class="project-detail-root">
+    <div v-if="!project" class="container container--narrow">
+      <!-- slug 不存在 → 404（F04） -->
+      <p>项目不存在</p>
+      <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
+    </div>
 
-  <div v-else class="container container--narrow project-detail">
-    <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
+    <div v-else class="container container--narrow project-detail">
+      <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
       <header class="project-detail__head">
         <div class="project-detail__title-row">
           <h1>{{ project.title }}</h1>
@@ -66,10 +67,14 @@ watchEffect(async (onInvalidate) => {
       <hr class="project-detail__divider" />
 
       <ArticleContent :html="html" />
+    </div>
   </div>
 </template>
 
 <style scoped>
+.project-detail-root {
+  /* 单根容器：保证 <Transition> 可动画（组件根必须是单元素，14 §5.1） */
+}
 .back-link {
   display: inline-block;
   margin-block: var(--space-6) var(--space-2);

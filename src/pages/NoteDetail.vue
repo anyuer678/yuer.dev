@@ -34,26 +34,33 @@ watchEffect(async (onInvalidate) => {
 </script>
 
 <template>
-  <div v-if="!note" class="container container--narrow">
-    <p>笔记不存在</p>
-    <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
-  </div>
+  <div class="note-detail-root">
+    <div v-if="!note" class="container container--narrow">
+      <p>笔记不存在</p>
+      <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
+    </div>
 
-  <div v-else class="container container--narrow note-detail">
-    <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
-    <header class="note-detail__head">
-      <h1>{{ note.title }}</h1>
-      <div class="note-detail__meta">
-        <time :datetime="note.date">{{ note.date }}</time>
-        <Tag v-for="t in note.tags" :key="t" :label="t" />
-      </div>
-    </header>
+    <div v-else class="container container--narrow note-detail">
+      <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
+      <header class="note-detail__head">
+        <h1>{{ note.title }}</h1>
+        <div class="note-detail__meta">
+          <time :datetime="note.date">{{ note.date }}</time>
+          <Tag v-for="t in note.tags" :key="t" :label="t" />
+        </div>
+      </header>
 
-    <hr class="note-detail__divider" />
+      <hr class="note-detail__divider" />
 
-    <ArticleContent :html="html" />
+      <ArticleContent :html="html" />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.note-detail-root {
+  /* 单根容器：保证 <Transition> 可动画（组件根必须是单元素，14 §5.1） */
+}
 
 <style scoped>
 .back-link {
