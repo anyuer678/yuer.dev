@@ -1,6 +1,6 @@
 <script setup>
 import { provide } from 'vue'
-import site from '@/content/site.json'
+import { site } from '@/utils/content.js'
 import SkipLink from '@/components/layout/SkipLink.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
