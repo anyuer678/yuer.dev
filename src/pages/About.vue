@@ -3,7 +3,6 @@
 // 全部数据驱动（site.json + projects + timeline），不硬编码
 import PageHeader from '@/components/layout/PageHeader.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
-import StatusBadge from '@/components/ui/StatusBadge.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import ProjectCard from '@/components/features/ProjectCard.vue'
 import { site, projects, notes, lab, techList } from '@/utils/content.js'
@@ -19,6 +18,9 @@ const stats = [
 
 // 代表作：order 前 3（旗舰优先）
 const selectedProjects = [...projects].sort((a, b) => (a.order ?? 999) - (b.order ?? 999)).slice(0, 3)
+
+// 当前在做：site.focus.link 指向的项目（默认 EvoCode），直接渲染标准项目卡
+const currentFocus = projects.find((p) => p.slug === site.focus?.link?.split('/').filter(Boolean).pop()) ?? projects[0]
 
 // What I Build：按方向归类真实项目（slug → 一句话，非详情页，仅方向展示）
 const BUILD_AREAS = [
@@ -120,12 +122,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
       <!-- 当前在做 -->
       <section v-if="site.focus" class="about__block">
         <h2 class="about__sub">Currently Building</h2>
-        <RouterLink :to="site.focus.link || '/projects'" class="about__focus">
-          <span class="about__focus-title">{{ site.focus.title }}</span>
-          <StatusBadge :status="site.focus.status" />
-          <span v-if="site.focus.subtitle" class="about__focus-sub">{{ site.focus.subtitle }}</span>
-          <span class="about__focus-goal">{{ site.focus.goal }}</span>
-        </RouterLink>
+        <ProjectCard :project="currentFocus" />
       </section>
 
       <!-- 技术方向 -->
@@ -349,38 +346,6 @@ const stackGroups = STACK_GROUPS.map((g) => ({
   font-size: var(--text-h3);
   line-height: var(--lh-h3);
   margin-bottom: var(--space-2);
-}
-.about__focus {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-5);
-  background: var(--color-surface);
-  border: var(--border-default);
-  border-radius: var(--radius-lg);
-  max-width: var(--container-narrow);
-  box-shadow: var(--shadow-card);
-  transition: box-shadow var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
-}
-.about__focus:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-2px);
-}
-.about__focus-title {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  color: var(--color-text);
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-3);
-}
-.about__focus-sub {
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
-  color: var(--color-text-secondary);
-}
-.about__focus-goal {
-  font-size: var(--text-small);
-  color: var(--color-text-secondary);
 }
 .about__tech {
   display: flex;
