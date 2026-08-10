@@ -60,7 +60,7 @@ function checkJson(name) {
   }
   if (name === 'lab' && Array.isArray(data)) {
     for (const item of data) {
-      if (item.category && !['AI', 'Desktop', 'Infrastructure'].includes(item.category))
+      if (item.category && !['AI', 'Desktop', 'Infrastructure', 'Design', 'Ideas'].includes(item.category))
         report(12, file, `lab.json 条目 "${item.title}" 的 category "${item.category}" 不在枚举内`)
     }
   }
