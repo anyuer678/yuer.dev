@@ -74,5 +74,8 @@ const resetAnchor = createAnchorPlugin()
 
 export function renderMarkdown(raw, prefix = 's') {
   resetAnchor(prefix)
-  return md.render(raw)
+  // 剥离 YAML frontmatter（文件开头的 --- 块），避免元数据泄漏进正文；
+  // 无 frontmatter 的片段（如 site.json 的 markdown 字段）不受影响。
+  const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
+  return md.render(body)
 }
