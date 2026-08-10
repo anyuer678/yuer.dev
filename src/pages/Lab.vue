@@ -1,11 +1,78 @@
 <script setup>
-// P1 骨架：P6 实现实验项目列表
+// Lab 页面（F07）：原生 select 状态筛选，URL query ?status=（14 §5.9.8）
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/layout/PageHeader.vue'
+import LabItem from '@/components/features/LabItem.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
+import { lab } from '@/utils/content.js'
+
+const route = useRoute()
+const router = useRouter()
+
+const STATUS_LABELS = { completed: '已完成', archived: '已归档', experiment: '实验' }
+
+const status = computed(() => route.query.status ?? '')
+const filtered = computed(() => (status.value ? lab.filter((i) => i.status === status.value) : lab))
+// 按 date 倒序（F07：按日期倒序）
+const sorted = computed(() => [...filtered.value].sort((a, b) => b.date.localeCompare(a.date)))
+
+function applyStatus(next) {
+  const query = { ...route.query }
+  next === '' ? delete query.status : (query.status = next)
+  router.replace({ query })
+}
 </script>
 
 <template>
   <div class="container">
-    <PageHeader title="实验室" description="实验小项目" />
-    <p>Lab（P6 填充）</p>
+    <PageHeader title="实验室" description="不成熟但真实的小项目" :count="sorted.length" />
+
+    <div class="lab-filter">
+      <label class="lab-filter__label" for="lab-status">状态</label>
+      <select
+        id="lab-status"
+        class="lab-filter__select"
+        :value="status"
+        @change="applyStatus($event.target.value)"
+      >
+        <option value="">全部</option>
+        <option v-for="(label, value) in STATUS_LABELS" :key="value" :value="value">
+          {{ label }}
+        </option>
+      </select>
+    </div>
+
+    <div v-if="sorted.length" class="lab-grid">
+      <LabItem v-for="(item, i) in sorted" :key="`${item.title}-${i}`" :item="item" />
+    </div>
+    <EmptyState v-else message="没有符合条件的实验项目" action-label="清除筛选" @action="applyStatus('')" />
   </div>
 </template>
+
+<style scoped>
+.lab-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+.lab-filter__label {
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+}
+.lab-filter__select {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-small);
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--grid-gap);
+}
+</style>
