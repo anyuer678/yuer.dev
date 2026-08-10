@@ -13,7 +13,7 @@
     "title": "EvoCode",
     "subtitle": "AI 软件维护与演化平台",
     "status": "development",
-    "goal": "帮助开发者更高效地维护、重构和演化软件",
+    "goal": "探索把代码结构分析、质量评估与重构建议串成一条工作流",
     "link": "/projects/evocode"
   },
   "links": {

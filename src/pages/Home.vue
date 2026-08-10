@@ -18,7 +18,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
         <SectionTitle index="01" title="Currently Building" to="/projects" />
         <RouterLink v-if="site.focus.link" :to="site.focus.link" class="focus-card">
           <div class="focus-card__head">
-            <h2 class="focus-card__title">{{ site.focus.title }}</h2>
+            <h3 class="focus-card__title">{{ site.focus.title }}</h3>
             <StatusBadge :status="site.focus.status" />
           </div>
           <p v-if="site.focus.subtitle" class="focus-card__subtitle">{{ site.focus.subtitle }}</p>
@@ -83,7 +83,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
   right: var(--space-6);
   top: 50%;
   transform: translateY(-50%);
-  font-size: var(--text-h3);
+  font-size: var(--text-body);
   color: var(--color-text-tertiary);
   transition: transform var(--dur-fast) var(--ease-standard);
 }
@@ -103,8 +103,8 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 }
 .focus-card__title {
   font-family: var(--font-display);
-  font-size: var(--text-h2);
-  line-height: var(--lh-h2);
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
   color: var(--color-text);
 }
 .focus-card__subtitle {
@@ -114,8 +114,8 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
   color: var(--color-text-secondary);
 }
 .focus-card__goal {
-  margin-top: var(--space-3);
+  margin-top: var(--space-1);
   font-size: var(--text-small);
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 </style>
