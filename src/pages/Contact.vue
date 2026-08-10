@@ -1,10 +1,11 @@
 <script setup>
 // Contact 页（F08）：无表单；邮箱实体编码防爬（&#64;）+ mailto 运行时拼接
+// 邮箱可选：site.json 未配置 email 时整项隐藏（v-if 保护 + 顶层判空）
 import PageHeader from '@/components/layout/PageHeader.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
 import { site } from '@/utils/content.js'
 
-const email = site.links.email
+const email = site.links.email ?? ''
 const emailLocal = email.split('@')[0] ?? ''
 const emailDomain = email.split('@')[1] ?? ''
 </script>
