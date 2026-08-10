@@ -7,7 +7,7 @@ featured: false
 date: 2026-05
 tech: [React, TypeScript, Tauri, LLM]
 tags: [AI, Desktop]
-summary: 个人 AI 工作台：多模型统一入口 + 上下文管理。为 EvoCode 的 LLM 实践打下基础。
+summary: 天天在聊天工具里切模型、换角色太麻烦，于是做了个能配 Prompt 和 Skill 的 AI 工作台——它也是 EvoCode 的 LLM 实践前身。
 demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
 order: 3
@@ -18,6 +18,7 @@ order: 3
 日常要频繁切换角色和模型，通用聊天工具不够用——Chatez 就是为此做的
 **可配置 Prompt + Skill 的 AI 工作台**（v1.14.1），支持 Web、Windows、Android 三端：
 多 Prompt 角色切换、Skill 技能系统、流式输出与会话持久化。
+后来做 EvoCode 时，LLM 接入、流式、密钥管理这些经验都从它这儿来。
 
 ## 设计目标
 

@@ -10,8 +10,8 @@ import { lab } from '@/utils/content.js'
 const route = useRoute()
 const router = useRouter()
 
-const STATUS_LABELS = { completed: '已完成', archived: '已归档', experiment: '实验' }
-const CATEGORY_LABELS = { AI: 'AI 实验', Desktop: '桌面应用', Infrastructure: '基础设施' }
+const STATUS_LABELS = { completed: '已完成', archived: '已归档', experiment: '实验', idea: '想法' }
+const CATEGORY_LABELS = { AI: 'AI 实验', Desktop: '桌面应用', Infrastructure: '基础设施', Design: '设计', Ideas: '想法库' }
 
 const status = computed(() => route.query.status ?? '')
 const filtered = computed(() => (status.value ? lab.filter((i) => i.status === status.value) : lab))

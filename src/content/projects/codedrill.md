@@ -7,7 +7,7 @@ featured: true
 date: 2026-07
 tech: [Java, Spring Boot, Vue 3]
 tags: [Learning]
-summary: 自己的 Java 练习平台：题目、判题与提交记录，用完整项目倒逼自己掌握 Spring Boot 全流程。
+summary: 学 Java 光看教程不够。自己搭的练习平台，用完整项目倒逼自己走通 Spring Boot + Vue 全流程。
 demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 2
@@ -16,7 +16,8 @@ order: 2
 ## 项目介绍
 
 学 Java 需要练，但刷题网站体验割裂。CodeDrill 是自己搭的练习平台，
-从 0 到 1 走完 Spring Boot 后端 + Vue 前端的完整链路。
+从 0 到 1 走完 Spring Boot 后端 + Vue 前端的完整链路，题目、判题、
+提交记录都在自己手里。
 
 ## 设计目标
 

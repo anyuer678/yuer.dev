@@ -4,7 +4,7 @@ defineProps({
   status: {
     type: String,
     required: true,
-    validator: (v) => ['development', 'completed', 'archived', 'experiment'].includes(v),
+    validator: (v) => ['development', 'completed', 'archived', 'experiment', 'idea'].includes(v),
   },
 })
 
@@ -13,12 +13,14 @@ const LABELS = {
   completed: '已完成',
   archived: '已归档',
   experiment: '实验',
+  idea: '想法',
 }
 const CLASSES = {
   development: 'badge--dev',
   completed: 'badge--done',
   archived: 'badge--arch',
   experiment: 'badge--exp',
+  idea: 'badge--idea',
 }
 </script>
 
@@ -50,6 +52,10 @@ const CLASSES = {
   background: var(--color-arch-bg);
 }
 .badge--exp {
+  color: var(--color-exp-text);
+  background: var(--color-exp-bg);
+}
+.badge--idea {
   color: var(--color-exp-text);
   background: var(--color-exp-bg);
 }

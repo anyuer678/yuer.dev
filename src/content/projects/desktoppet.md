@@ -7,7 +7,7 @@ featured: false
 date: 2026-08
 tech: [Electron, TypeScript]
 tags: [Desktop]
-summary: 桌面宠物：Electron 桌宠 v1.0，支持事件记录、统计报表、角色包与推送 API。
+summary: 想让桌面不只是工作区。Desktoppet 是个可扩展的 Electron 桌宠：角色是资源包，状态由事件驱动，会说话、有心情。
 demo:
 github: https://github.com/anyuer678/desktoppet
 order: 4

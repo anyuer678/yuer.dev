@@ -2,7 +2,7 @@
 title: 我的 N100 服务器部署过程
 date: 2026-07-20
 tags: [Linux, 部署]
-summary: 从刷系统到跑服务的完整记录：Debian + Docker + frp 内网穿透 + 探活监控。
+summary: 一台 N100 迷你主机当家庭服务器：刷系统、装 Docker、frp 内网穿透、探活监控，从零到能跑服务的完整记录。
 ---
 
 ## 背景

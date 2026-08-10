@@ -2,17 +2,17 @@
   "name": "Yuer",
   "brand": "Yuer Studio",
   "role": "Software Developer",
-  "tagline": ["构建 AI 应用", "探索软件工程", "从想法到可用软件"],
-  "positioning": "喜欢把想法变成可用的软件。",
+  "tagline": ["把想法做成软件", "AI 应用与软件架构", "从原型写到部署"],
+  "positioning": "做了几年软件，最大的乐趣是把想法变成真能用的东西，从原型一路写到部署。",
   "heroTags": ["AI 应用", "软件架构", "Linux", "开源"],
-  "bio": "做软件的 Yuer。关注 AI 应用与工程化，从需求到部署自己搞定。",
+  "bio": "做软件的 Yuer。关注 AI 应用与工程化，习惯从需求一路写到部署，全程自己搞定。",
   "philosophy": "我相信软件应该解决真实问题。通常从小工具起步，再逐步演进成完整系统。",
   "buildProcess": ["想法", "原型", "架构设计", "实现", "开源"],
   "focus": {
     "title": "EvoCode",
     "subtitle": "AI Software Evolution Platform",
     "status": "development",
-    "goal": "帮助开发者理解、维护与演进软件项目",
+    "goal": "帮开发者快速看懂老项目，把维护成本降下来",
     "link": "/projects/evocode"
   },
   "links": {

@@ -7,7 +7,7 @@ featured: false
 date: 2026-07
 tech: [JavaScript, HTML, CSS]
 tags: [Learning]
-summary: CET-6 考试大纲全部 5023 词，背诵/默写/回忆/选择题多模式学习，错词本与学习统计，支持 Web、Windows、Android 三端。
+summary: 5023 个六级词，纯靠刷书很难坚持。这套工具用背诵、默写、回忆、选择题换着学，错词本盯薄弱词，三端通用。
 demo: https://anyuer678.github.io/cet6-vocabulary/
 github: https://github.com/anyuer678/cet6-vocabulary
 order: 5
