@@ -23,9 +23,9 @@ function loadJson(name) {
   return raw ? JSON.parse(raw) : undefined
 }
 
-export const site = loadJson('site.json')
-export const lab = loadJson('lab.json') ?? []
-export const timeline = loadJson('timeline.json') ?? []
+export const site = loadJson('site')
+export const lab = loadJson('lab') ?? []
+export const timeline = loadJson('timeline') ?? []
 
 // 归一化：布尔/数组缺省补值、空值 → undefined（04 §8 字段约束）
 function normalizeMeta(meta) {
@@ -46,30 +46,30 @@ function buildMeta(entries) {
     .filter(([path]) => !path.includes('_')) // 模板不入管线
     .map(([path, raw]) => {
       const { meta } = parseFrontmatter(raw)
-      return { slug: path.split('/').pop().replace(/\.md$/, ''), meta: normalizeMeta(meta) }
+      return { slug: path.split('/').pop().replace(/\.md$/, ''), ...normalizeMeta(meta) }
     })
-    .filter((item) => !item.meta.draft) // draft 已过滤，内存中恒为 false
+    .filter((item) => !item.draft) // draft 已过滤，内存中恒为 false
 }
 
 // 排序：order 升序优先，同 order 按 date 降序（04 §8.3）
 export const projects = buildMeta(Object.entries(globProjects)).sort(
-  (a, b) => (a.meta.order ?? 999) - (b.meta.order ?? 999) || b.meta.date.localeCompare(a.meta.date)
+  (a, b) => (a.order ?? 999) - (b.order ?? 999) || b.date.localeCompare(a.date)
 )
 export const notes = buildMeta(Object.entries(globNotes)).sort((a, b) =>
-  b.meta.date.localeCompare(a.meta.date)
+  b.date.localeCompare(a.date)
 )
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug)
 export const getNote = (slug) => notes.find((n) => n.slug === slug)
 
-export const featuredProjects = projects.filter((p) => p.meta.featured).slice(0, 3)
+export const featuredProjects = projects.filter((p) => p.featured).slice(0, 3)
 export const recentNotes = notes.slice(0, 3)
 
 // 派生过滤集合（04 §9.3 校验配套：与内容同步变化）
-export const techList = [...new Set(projects.flatMap((p) => p.meta.tech))].sort((a, b) =>
+export const techList = [...new Set(projects.flatMap((p) => p.tech))].sort((a, b) =>
   a.localeCompare(b, 'zh')
 )
-export const noteTags = [...new Set(notes.flatMap((n) => n.meta.tags))].sort((a, b) =>
+export const noteTags = [...new Set(notes.flatMap((n) => n.tags))].sort((a, b) =>
   a.localeCompare(b, 'zh')
 )
 
