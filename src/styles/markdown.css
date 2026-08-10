@@ -1,0 +1,118 @@
+/* markdown.css —— .article 作用域（09 §3 草稿 + 03 亮色纸张风） */
+.article {
+  font-size: var(--text-body);
+  line-height: var(--lh-body);
+}
+.article > * + * {
+  margin-top: 1.2em;
+}
+.article h2 {
+  font-size: var(--text-h2);
+  line-height: var(--lh-h2);
+  font-weight: 600;
+  margin-top: 2.2em;
+}
+.article h2:first-child {
+  margin-top: 0;
+}
+.article h3 {
+  font-size: var(--text-h3);
+  font-weight: 600;
+  margin-top: 1.6em;
+}
+.article ul,
+.article ol {
+  padding-left: 1.4em;
+}
+.article li + li {
+  margin-top: 6px;
+}
+.article strong {
+  font-weight: 600;
+}
+
+/* 代码：行内 */
+.article code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+/* 代码：块级（浅色纸张风，非暗色终端风） */
+.article pre {
+  background: var(--color-surface-muted);
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--text-small);
+  line-height: var(--lh-small);
+}
+.article pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+/* hljs 亮色主题覆盖（颜色对齐 03 状态徽章色板，避免引入第三方 CSS） */
+.article .hljs-keyword,
+.article .hljs-selector-tag {
+  color: #a74a1f;
+}
+.article .hljs-string,
+.article .hljs-attr,
+.article .hljs-attribute {
+  color: #336b43;
+}
+.article .hljs-title,
+.article .hljs-title.function_ {
+  color: #5a4b8a;
+}
+.article .hljs-comment,
+.article .hljs-quote {
+  color: #6f6f6a;
+}
+.article .hljs-number,
+.article .hljs-literal,
+.article .hljs-built_in {
+  color: #1f1f1d;
+}
+.article .hljs-variable,
+.article .hljs-params,
+.article .hljs-name {
+  font-style: italic;
+}
+
+/* 引用 / 表格 / 图片 / 分隔线 */
+.article blockquote {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-secondary);
+}
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+}
+.article th,
+.article td {
+  border: 1px solid var(--color-border);
+  padding: 8px 12px;
+  text-align: left;
+}
+.article th {
+  background: var(--color-surface-muted);
+  font-weight: 600;
+}
+.article img {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  height: auto;
+}
+.article hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
