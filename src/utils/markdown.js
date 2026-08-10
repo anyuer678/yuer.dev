@@ -28,19 +28,25 @@ md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
   return defaultLinkOpen(tokens, idx, options, env, self)
 }
 
-// h2 锚点：<h2 id="<prefix>-<n>">；计数器每次渲染重置，同文恒等
-let idPrefix = 's'
-let idCounter = 0
-md.core.ruler.push('h2_anchor', (state) => {
-  for (const token of state.tokens) {
-    if (token.type === 'heading_open' && token.tag === 'h2') {
-      token.attrSet('id', `${idPrefix}-${++idCounter}`)
+// h2 锚点：<h2 id="<prefix>-<n>">；计数用闭包状态，渲染调用间互不污染
+function createAnchorPlugin() {
+  let idPrefix = 's'
+  let idCounter = 0
+  md.core.ruler.push('h2_anchor', (state) => {
+    for (const token of state.tokens) {
+      if (token.type === 'heading_open' && token.tag === 'h2') {
+        token.attrSet('id', `${idPrefix}-${++idCounter}`)
+      }
     }
+  })
+  return (prefix) => {
+    idPrefix = prefix
+    idCounter = 0
   }
-})
+}
+const resetAnchor = createAnchorPlugin()
 
 export function renderMarkdown(raw, prefix = 's') {
-  idPrefix = prefix
-  idCounter = 0
+  resetAnchor(prefix)
   return md.render(raw)
 }

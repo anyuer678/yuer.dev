@@ -36,7 +36,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 }
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* 03 §5 */
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); /* 防 <350px 溢出（review 终审） */
   gap: var(--grid-gap);
 }
 .note-grid {

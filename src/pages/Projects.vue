@@ -65,7 +65,7 @@ function clearFilter() {
 <style scoped>
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); /* 防 <350px 溢出 */
   gap: var(--grid-gap);
 }
 </style>
