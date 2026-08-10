@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "postbuild": "node scripts/copy-404.mjs",
+    "postbuild": "node scripts/prerender-pages.mjs",
     "validate": "node scripts/validate-content.mjs",
     "lint": "eslint src --ext .js,.vue",
     "format": "prettier --write src scripts",
