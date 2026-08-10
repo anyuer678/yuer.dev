@@ -9,13 +9,32 @@ const navItems = routes.filter((r) => r.meta?.nav)
 // 移动端抽屉（02 §3 / 05 §1 / 14 §5.8）
 const open = ref(false)
 const menuBtn = ref(null)
+const drawer = ref(null)
 
+// 焦点陷阱：抽屉打开时焦点移入首项，Tab/Shift+Tab 循环限制在抽屉内
 function onKeydown(e) {
-  if (e.key === 'Escape' && open.value) close()
+  if (!open.value) return
+  if (e.key === 'Escape') {
+    close()
+    return
+  }
+  if (e.key !== 'Tab') return
+  const focusables = drawer.value?.querySelectorAll('a[href], button:not([disabled])')
+  if (!focusables?.length) return
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault()
+    first.focus()
+  }
 }
 function openDrawer() {
   open.value = true
   document.body.style.overflow = 'hidden' // 锁定 body 滚动
+  requestAnimationFrame(() => drawer.value?.querySelector('a')?.focus()) // 焦点移入抽屉
 }
 function close() {
   open.value = false
@@ -66,7 +85,7 @@ onBeforeUnmount(() => {
           <div v-if="open" class="drawer-overlay" @click="close" />
         </Transition>
         <Transition name="drawer">
-          <nav v-if="open" id="mobile-nav" class="drawer" aria-label="移动端导航">
+          <nav v-if="open" id="mobile-nav" ref="drawer" class="drawer" aria-label="移动端导航">
             <RouterLink
               v-for="item in navItems"
               :key="item.name"
