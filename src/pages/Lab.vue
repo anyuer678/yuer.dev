@@ -72,7 +72,7 @@ function applyStatus(next) {
 }
 .lab-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); /* 防 <300px 溢出 */
   gap: var(--grid-gap);
 }
 </style>

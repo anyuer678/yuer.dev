@@ -32,7 +32,9 @@ export function setCanonical(path = '') {
     el.rel = 'canonical'
     document.head.appendChild(el)
   }
-  el.href = new URL(path, SITE_URL).toString()
+  // route.path 以 / 开头，直接 new URL(path, base) 会替换整个路径丢掉 /yuer.dev/ 目录
+  // （review 复核阻断项）→ 去前导 / 后按相对路径解析，保留 base 目录
+  el.href = new URL(path.replace(/^\//, ''), SITE_URL).toString()
   upsertMeta('property', 'og:url', el.href)
 }
 
