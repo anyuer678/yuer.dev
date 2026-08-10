@@ -3,7 +3,7 @@
   { "title": "本地 AI 知识库", "description": "Dify、Wiki.js、Ollama、RAG、文件解析一路折腾（2026-04 ~ 2026-06），想让 AI 读懂个人资料和文件——Personal AI Infrastructure 方向。", "status": "experiment", "date": "2026-04", "tags": ["AI", "RAG"], "category": "AI" },
   { "title": "AI 图片/UI 设计实验", "description": "给 TodoList、Chatez、CodeDrill 等做了大量图标、背景与 UI 方案：书房、水墨、墨水屏、低饱和（2025 年起跨年持续）——Design Lab 方向。", "status": "experiment", "date": "2025-06", "tags": ["AI", "设计"], "category": "Design" },
   { "title": "小工具想法库", "description": "还没落地的想法（2025 年起陆续讨论）：AI Slop 检测、日志时间戳查询、图片智能整理、Star 仓库清理、API Key 保险箱、AI 代码教学器、离线题库（PDF → 题目）——未来的实验方向。", "status": "idea", "date": "2025-06", "tags": ["Ideas"], "category": "Ideas" },
-  { "title": "N100 服务器搭建", "description": "旧笔记本改装家用服务器：Debian + Docker + frp 内网穿透 + 探活监控。", "status": "experiment", "date": "2026-07", "tags": ["Linux", "部署"], "category": "Infrastructure", "link": "/notes/n100-server" },
+  { "title": "N100 服务器搭建", "description": "闲鱼购买的成品 N100 迷你小主机当家用服务器：Debian + Docker + frp 内网穿透 + 探活监控。", "status": "experiment", "date": "2026-07", "tags": ["Linux", "部署"], "category": "Infrastructure", "link": "/notes/n100-server" },
   { "title": "frp 内网穿透", "description": "把内网服务暴露到公网的实验，配合 N100 服务器使用。", "status": "experiment", "date": "2026-07", "tags": ["Linux", "网络"], "category": "Infrastructure" },
   { "title": "Docker 编排实验", "description": "用 docker compose 编排多服务，熟悉容器网络、数据卷与服务重启策略。", "status": "experiment", "date": "2026-06", "tags": ["Docker"], "category": "Infrastructure" },
   { "title": "Linux 服务器学习", "description": "从命令行到 systemd 服务的系统学习，为自托管打基础。", "status": "archived", "date": "2026-06", "tags": ["Linux"], "category": "Infrastructure" },
