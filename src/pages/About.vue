@@ -354,14 +354,16 @@ const stackGroups = STACK_GROUPS.map((g) => ({
   display: grid;
   gap: var(--space-1);
   padding: var(--space-5);
-  background: var(--color-surface-muted);
+  background: var(--color-surface);
   border: var(--border-default);
   border-radius: var(--radius-lg);
   max-width: var(--container-narrow);
-  transition: box-shadow var(--dur-fast) var(--ease-standard);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
 }
 .about__focus:hover {
   box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 .about__focus-title {
   font-family: var(--font-display);
@@ -378,7 +380,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
 }
 .about__focus-goal {
   font-size: var(--text-small);
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 .about__tech {
   display: flex;
