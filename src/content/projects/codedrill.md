@@ -8,7 +8,7 @@ date: 2026-07
 tech: [Java, Spring Boot, Vue 3]
 tags: [Learning]
 summary: 自己的 Java 练习平台：题目、判题与提交记录，用完整项目倒逼自己掌握 Spring Boot 全流程。
-demo:
+demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 2
 ---

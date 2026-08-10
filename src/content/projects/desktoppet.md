@@ -1,7 +1,7 @@
 ---
 slug: desktoppet
 title: Desktoppet
-subtitle: 桌面宠物
+subtitle: Extensible Desktop Pet Platform
 status: completed
 featured: false
 date: 2026-08

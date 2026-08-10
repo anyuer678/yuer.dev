@@ -1,14 +1,14 @@
 ---
 slug: todo-list
 title: Todo List
-subtitle: 轻量级个人待办事项应用
+subtitle: Lightweight Personal Todo App
 status: completed
 featured: false
 date: 2026-07
 tech: [CSS, JavaScript]
 tags: [Tool]
-summary: 轻量级个人待办事项应用：无依赖、打开即用。
-demo:
+summary: 轻量级个人待办事项应用：今日视图/收件箱/番茄钟，无依赖、打开即用，支持备份恢复。
+demo: https://anyuer678.github.io/todo-list/
 github: https://github.com/anyuer678/todo-list
 order: 6
 ---

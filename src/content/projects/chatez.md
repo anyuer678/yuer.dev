@@ -8,7 +8,7 @@ date: 2026-05
 tech: [React, TypeScript, Tauri, LLM]
 tags: [AI, Desktop]
 summary: 个人 AI 工作台：多模型统一入口 + 上下文管理。为 EvoCode 的 LLM 实践打下基础。
-demo:
+demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
 order: 3
 ---

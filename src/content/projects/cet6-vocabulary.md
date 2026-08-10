@@ -1,14 +1,14 @@
 ---
 slug: cet6-vocabulary
 title: CET-6 词汇背诵系统
-subtitle: 彩色版
+subtitle: CET-6 Vocabulary Learning System
 status: completed
 featured: false
 date: 2026-07
-tech: [JavaScript]
+tech: [JavaScript, HTML, CSS]
 tags: [Learning]
-summary: CET-6 英语六级词汇背诵系统（彩色版），配合记忆曲线的背词工具。
-demo:
+summary: CET-6 考试大纲全部 5023 词，背诵/默写/回忆/选择题多模式学习，错词本与学习统计，支持 Web、Windows、Android 三端。
+demo: https://anyuer678.github.io/cet6-vocabulary/
 github: https://github.com/anyuer678/cet6-vocabulary
 order: 5
 ---
