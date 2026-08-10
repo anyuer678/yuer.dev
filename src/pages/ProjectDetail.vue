@@ -45,10 +45,8 @@ watchEffect(async (onInvalidate) => {
     <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
   </div>
 
-  <div v-else class="container">
+  <div v-else class="container container--narrow project-detail">
     <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
-
-    <article class="container container--narrow project-detail">
       <header class="project-detail__head">
         <div class="project-detail__title-row">
           <h1>{{ project.title }}</h1>
@@ -68,7 +66,6 @@ watchEffect(async (onInvalidate) => {
       <hr class="project-detail__divider" />
 
       <ArticleContent :html="html" />
-    </article>
   </div>
 </template>
 

@@ -39,22 +39,19 @@ watchEffect(async (onInvalidate) => {
     <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
   </div>
 
-  <div v-else class="container">
+  <div v-else class="container container--narrow note-detail">
     <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
+    <header class="note-detail__head">
+      <h1>{{ note.title }}</h1>
+      <div class="note-detail__meta">
+        <time :datetime="note.date">{{ note.date }}</time>
+        <Tag v-for="t in note.tags" :key="t" :label="t" />
+      </div>
+    </header>
 
-    <article class="container container--narrow note-detail">
-      <header class="note-detail__head">
-        <h1>{{ note.title }}</h1>
-        <div class="note-detail__meta">
-          <time :datetime="note.date">{{ note.date }}</time>
-          <Tag v-for="t in note.tags" :key="t" :label="t" />
-        </div>
-      </header>
+    <hr class="note-detail__divider" />
 
-      <hr class="note-detail__divider" />
-
-      <ArticleContent :html="html" />
-    </article>
+    <ArticleContent :html="html" />
   </div>
 </template>
 

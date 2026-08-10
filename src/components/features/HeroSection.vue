@@ -75,4 +75,20 @@ defineProps({
   display: block;
   margin-top: var(--space-6);
 }
+/* 响应式（14 §5.10 组件级行为表）：<640 文字降档、高度收窄 */
+@media (max-width: 639px) {
+  .hero {
+    min-height: 45vh;
+  }
+  .hero__name {
+    font-size: 32px; /* display 40px → h1 32px 降档 */
+  }
+  .hero__inner {
+    padding-block: var(--space-12);
+  }
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
 </style>

@@ -46,8 +46,17 @@ const emit = defineEmits(['click'])
 }
 button.tag {
   cursor: pointer;
+  min-height: 28px; /* 默认紧凑 */
 }
 button.tag:hover {
   border-color: var(--color-border-strong);
+}
+/* 触摸目标 ≥ 44px（14 §5.10；F10）——仅可点击态 */
+@media (max-width: 639px) {
+  button.tag {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 </style>

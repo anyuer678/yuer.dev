@@ -77,4 +77,14 @@ a.timeline-item__title:hover {
   font-size: var(--text-caption);
   color: var(--color-text-tertiary);
 }
+/* 响应式（14 §5.10）：<640 月列收窄 */
+@media (max-width: 639px) {
+  .timeline-item {
+    grid-template-columns: 36px 20px 1fr;
+    column-gap: var(--space-2);
+  }
+  .timeline-item__date {
+    text-align: right;
+  }
+}
 </style>

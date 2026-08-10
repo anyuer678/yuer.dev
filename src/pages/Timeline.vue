@@ -61,14 +61,20 @@ const groups = computed(() => {
   position: relative;
 }
 /* 竖线：沿节点列连续绘制（节点圆点背景色遮盖，形成断点效果）
-   TimelineItem grid = 48px 日期列 + 12px gap + 20px 节点列；圆点中心 48+12+10=70px */
+   位置 = 日期列宽 + gap + 圆点半宽，与 TimelineItem grid 联动；
+   移动端列宽变化由 --tl-col-w / --tl-gap 同步（TimelineItem media query） */
 .timeline__list::before {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc(48px + var(--space-3) + 10px); /* 70px，与圆点中心对齐 */
+  left: calc(var(--tl-col-w, 48px) + var(--tl-gap, var(--space-3)) + 10px);
   width: 1px;
   background: var(--color-border);
+}
+@media (max-width: 639px) {
+  .timeline__list::before {
+    left: calc(36px + var(--space-2) + 10px); /* 与 TimelineItem 移动端 grid 对齐 */
+  }
 }
 </style>
