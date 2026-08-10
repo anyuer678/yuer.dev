@@ -4,6 +4,7 @@ import HeroSection from '@/components/features/HeroSection.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import ProjectCard from '@/components/features/ProjectCard.vue'
 import NoteCard from '@/components/features/NoteCard.vue'
+import StatusBadge from '@/components/ui/StatusBadge.vue'
 import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 </script>
 
@@ -11,10 +12,25 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
   <div class="home">
     <HeroSection :site="site" />
 
+    <!-- Current Focus：当前在做的事（活人感；site.focus 由内容驱动） -->
+    <section v-if="site.focus" class="home-section">
+      <div class="container">
+        <SectionTitle index="01" title="Currently Building" to="/projects" />
+        <RouterLink v-if="site.focus.link" :to="site.focus.link" class="focus-card">
+          <div class="focus-card__head">
+            <h2 class="focus-card__title">{{ site.focus.title }}</h2>
+            <StatusBadge :status="site.focus.status" />
+          </div>
+          <p v-if="site.focus.subtitle" class="focus-card__subtitle">{{ site.focus.subtitle }}</p>
+          <p v-if="site.focus.goal" class="focus-card__goal">{{ site.focus.goal }}</p>
+        </RouterLink>
+      </div>
+    </section>
+
     <!-- 空状态：无 featured 项目时区块隐藏，首页保持克制（06 §1） -->
     <section v-if="featuredProjects.length" class="home-section">
       <div class="container">
-        <SectionTitle index="01" title="Featured Projects" to="/projects" />
+        <SectionTitle index="02" title="Featured Projects" to="/projects" />
         <div class="project-grid">
           <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" featured />
         </div>
@@ -23,7 +39,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 
     <section v-if="recentNotes.length" class="home-section">
       <div class="container">
-        <SectionTitle index="02" title="Recent Notes" to="/notes" />
+        <SectionTitle index="03" title="Recent Notes" to="/notes" />
         <div class="note-grid">
           <NoteCard v-for="n in recentNotes" :key="n.slug" :note="n" />
         </div>
@@ -47,5 +63,40 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 .note-grid {
   display: grid;
   gap: var(--grid-gap);
+}
+/* Current Focus 卡片（首页活人感区块） */
+.focus-card {
+  display: block;
+  padding: var(--space-6);
+  background: var(--color-surface-muted);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--dur-fast) var(--ease-standard);
+}
+.focus-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+.focus-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.focus-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  line-height: var(--lh-h2);
+  color: var(--color-text);
+}
+.focus-card__subtitle {
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+}
+.focus-card__goal {
+  margin-top: var(--space-3);
+  font-size: var(--text-small);
+  color: var(--color-text);
 }
 </style>

@@ -45,8 +45,16 @@ function checkJson(name) {
     }
     if (!Array.isArray(data.tagline) || !Array.isArray(data.heroTags))
       report(12, file, 'site.json.tagline/heroTags 应为数组')
+    if (data.positioning && typeof data.positioning !== 'string')
+      report(12, file, 'site.json.positioning 应为字符串')
     if (!data.links || typeof data.links.github !== 'string')
       report(12, file, 'site.json.links.github 应为字符串')
+    if (data.focus) {
+      if (typeof data.focus.title !== 'string' || typeof data.focus.goal !== 'string')
+        report(12, file, 'site.json.focus.title/goal 应为字符串')
+      if (data.focus.status && !STATUS_ENUM.has(data.focus.status))
+        report(12, file, `site.json.focus.status "${data.focus.status}" 不在枚举内`)
+    }
   } else if (!Array.isArray(data)) {
     report(12, file, `${name}.json 应为数组`)
   }

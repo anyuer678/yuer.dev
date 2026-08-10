@@ -2,9 +2,17 @@
   "name": "Yuer",
   "brand": "Yuer Studio",
   "role": "Software Developer",
-  "tagline": ["Building AI Tools", "Exploring Software Engineering"],
-  "heroTags": ["AI", "Software Architecture", "Linux", "Open Source"],
+  "tagline": ["构建 AI 应用", "探索软件工程", "从想法到可用软件"],
+  "positioning": "喜欢把想法变成可用的软件。",
+  "heroTags": ["AI 应用", "软件架构", "Linux", "开源"],
   "bio": "做软件的 Yuer。关注 AI 应用与工程化，从需求到部署自己搞定。",
+  "focus": {
+    "title": "EvoCode",
+    "subtitle": "AI Software Evolution Platform",
+    "status": "development",
+    "goal": "帮助开发者理解、维护与演进软件项目",
+    "link": "/projects/evocode"
+  },
   "links": {
     "github": "https://github.com/anyuer678"
   }
