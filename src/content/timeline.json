@@ -1,0 +1,11 @@
+[
+  { "date": "2026-08", "title": "开始 EvoCode", "type": "project", "link": "/projects/evocode" },
+  { "date": "2026-08", "title": "发布桌面宠物 Desktoppet", "type": "project", "link": "/projects/desktoppet" },
+  { "date": "2026-07", "title": "完成 CodeDrill", "type": "project", "link": "/projects/codedrill" },
+  { "date": "2026-07", "title": "发布 CET-6 词汇背诵系统", "type": "project", "link": "/projects/cet6-vocabulary" },
+  { "date": "2026-07", "title": "部署 N100 服务器", "type": "learning", "link": "/notes/n100-server" },
+  { "date": "2026-06", "title": "学习 Linux 服务器", "type": "learning" },
+  { "date": "2026-05", "title": "开发 Chatez", "type": "project", "link": "/projects/chatez" },
+  { "date": "2026-04", "title": "开始接触 LLM API", "type": "learning" },
+  { "date": "2025-11", "title": "开始 Java 学习", "type": "milestone" }
+]
