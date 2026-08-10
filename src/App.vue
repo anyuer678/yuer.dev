@@ -1,11 +1,19 @@
 <script setup>
-// P0：最小壳占位。P1 将替换为 SkipLink / AppHeader / PageTransition / AppFooter。
+import { provide } from 'vue'
+import site from '@/content/site.json'
+import SkipLink from '@/components/layout/SkipLink.vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
+import PageTransition from '@/components/layout/PageTransition.vue'
+
+provide('site', site)
 </script>
 
 <template>
-  <main>
-    <div class="container">
-      <p>Yuer Studio — 建设中（P0 脚手架已就绪）</p>
-    </div>
+  <SkipLink />
+  <AppHeader />
+  <main id="main" tabindex="-1">
+    <PageTransition />
   </main>
+  <AppFooter />
 </template>
