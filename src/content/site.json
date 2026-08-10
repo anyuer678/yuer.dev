@@ -6,6 +6,8 @@
   "positioning": "喜欢把想法变成可用的软件。",
   "heroTags": ["AI 应用", "软件架构", "Linux", "开源"],
   "bio": "做软件的 Yuer。关注 AI 应用与工程化，从需求到部署自己搞定。",
+  "philosophy": "我相信软件应该解决真实问题。通常从小工具起步，再逐步演进成完整系统。",
+  "buildProcess": ["想法", "原型", "架构设计", "实现", "开源"],
   "focus": {
     "title": "EvoCode",
     "subtitle": "AI Software Evolution Platform",

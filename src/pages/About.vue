@@ -22,6 +22,18 @@ const journey = Object.entries(
 )
   .sort(([a], [b]) => b.localeCompare(a))
   .slice(0, 3)
+
+// 技术方向分组（Current Stack）：静态类别映射，按实际 techList 归类
+const STACK_GROUPS = [
+  { name: '前端', keys: ['Vue 3', 'Vite', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Electron'] },
+  { name: '后端', keys: ['Spring Boot', 'Java', 'Python', 'FastAPI', 'Flask', 'Node.js', 'MySQL', 'Redis'] },
+  { name: '基础设施', keys: ['Linux', 'Docker', 'Git', 'GitHub Actions', 'Nginx'] },
+  { name: 'AI', keys: ['LLM', 'AI', 'OpenAI API', 'MCP', 'FastAPI'] },
+]
+const stackGroups = STACK_GROUPS.map((g) => ({
+  name: g.name,
+  items: techList.filter((t) => g.keys.includes(t)),
+})).filter((g) => g.items.length)
 </script>
 
 <template>
@@ -47,6 +59,15 @@ const journey = Object.entries(
         </p>
       </section>
 
+      <!-- 开发理念 -->
+      <section v-if="site.philosophy" class="about__block">
+        <h2 class="about__sub">开发理念</h2>
+        <p class="about__philosophy">{{ site.philosophy }}</p>
+        <ol v-if="site.buildProcess?.length" class="about__process">
+          <li v-for="step in site.buildProcess" :key="step" class="about__process-step">{{ step }}</li>
+        </ol>
+      </section>
+
       <!-- 当前在做 -->
       <section v-if="site.focus" class="about__block">
         <h2 class="about__sub">Currently Building</h2>
@@ -61,8 +82,11 @@ const journey = Object.entries(
       <!-- 技术方向 -->
       <section class="about__block">
         <h2 class="about__sub">技术方向</h2>
-        <div class="about__tech">
-          <span v-for="t in techList" :key="t" class="about__tech-tag">{{ t }}</span>
+        <div v-for="group in stackGroups" :key="group.name" class="about__stack">
+          <h3 class="about__stack-name">{{ group.name }}</h3>
+          <div class="about__tech">
+            <span v-for="t in group.items" :key="t" class="about__tech-tag">{{ t }}</span>
+          </div>
         </div>
       </section>
 
@@ -146,6 +170,44 @@ const journey = Object.entries(
   line-height: var(--lh-body);
   color: var(--color-text-secondary);
   max-width: var(--container-narrow);
+}
+.about__philosophy {
+  font-size: var(--text-body);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  max-width: var(--container-narrow);
+}
+.about__process {
+  margin-top: var(--space-3);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.about__process-step {
+  counter-increment: step;
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-muted);
+  border: var(--border-default);
+  border-radius: 999px;
+}
+.about__process-step::before {
+  content: counter(step, decimal-leading-zero) ' ';
+  color: var(--color-accent);
+}
+.about__stack {
+  margin-top: var(--space-4);
+}
+.about__stack-name {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+  margin-bottom: var(--space-2);
 }
 .about__focus {
   display: grid;

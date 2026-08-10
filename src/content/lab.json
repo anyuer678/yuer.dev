@@ -1,7 +1,7 @@
 [
-  { "title": "AI 图片整理实验", "description": "用视觉模型自动归类本地图片，分类器未完成。", "status": "experiment", "date": "2026-05", "tags": ["AI"] },
-  { "title": "桌宠 Prototype", "description": "桌面宠物原型，验证系统托盘与悬浮窗交互。", "status": "archived", "date": "2026-04" },
-  { "title": "MCP 尝试", "description": "给工具接入 MCP Server 的实验，探索工具调用边界。", "status": "experiment", "date": "2026-05", "tags": ["MCP"] },
-  { "title": "视觉识别 Demo", "description": "摄像头实时识别的演示项目。", "status": "archived", "date": "2026-03", "tags": ["AI"] },
-  { "title": "小游戏实验", "description": "用 Canvas 写的小游戏原型，练手用。", "status": "archived", "date": "2025-12" }
+  { "title": "AI 图片整理实验", "description": "用视觉模型自动归类本地图片，分类器未完成。", "status": "experiment", "date": "2026-05", "tags": ["AI"], "category": "AI" },
+  { "title": "MCP 尝试", "description": "给工具接入 MCP Server 的实验，探索工具调用边界。", "status": "experiment", "date": "2026-05", "tags": ["MCP"], "category": "AI" },
+  { "title": "视觉识别 Demo", "description": "摄像头实时识别的演示项目。", "status": "archived", "date": "2026-03", "tags": ["AI"], "category": "AI" },
+  { "title": "桌宠 Prototype", "description": "桌面宠物原型，验证系统托盘与悬浮窗交互。", "status": "archived", "date": "2026-04", "category": "Desktop" },
+  { "title": "小游戏实验", "description": "用 Canvas 写的小游戏原型，练手用。", "status": "archived", "date": "2025-12", "category": "Desktop" }
 ]
