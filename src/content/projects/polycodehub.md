@@ -3,7 +3,7 @@ slug: polycodehub
 title: PolyCodeHub
 subtitle: Full-stack Online Judge Platform
 status: development
-featured: false
+featured: true
 date: 2026-08
 tech: [TypeScript, JavaScript, Java, Spring Boot, Python, FastAPI, Node.js, Docker, Redis]
 tags: [OJ, 全栈, 判题沙箱]

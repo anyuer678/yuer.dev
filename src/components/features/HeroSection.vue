@@ -34,7 +34,7 @@ defineProps({
 <style scoped>
 .hero {
   position: relative;
-  min-height: 55vh; /* F02 */
+  min-height: 46vh; /* F02：首屏信息密度（原 55vh 过空） */
   display: flex;
   align-items: center;
 }
