@@ -70,9 +70,10 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
   position: relative; /* ::after 箭头定位基准 */
   padding: var(--space-6);
   padding-right: var(--space-8);
-  background: var(--color-surface-muted);
+  background: var(--color-surface);
   border: var(--border-default);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card); /* 与 ProjectCard 画风一致 */
   transition:
     box-shadow var(--dur-fast) var(--ease-standard),
     transform var(--dur-fast) var(--ease-standard);
