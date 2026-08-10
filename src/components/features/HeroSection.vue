@@ -45,7 +45,7 @@ defineProps({
   width: 100%; /* flex item 撑满，container 的 max-width 负责收窄居中 */
   padding-block: var(--space-16);
 }
-/* 网格纹理叠加层（03 §5：用叠加层实现，不直接放背景上） */
+/* 网格纹理叠加层（03 §5：用叠加层实现，不直接放背景上）—— 0.28 透明度保持纸感但不抢内容 */
 .hero::before {
   content: '';
   position: absolute;
@@ -53,8 +53,8 @@ defineProps({
   background-image:
     linear-gradient(var(--color-border) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.5;
+  background-size: 32px 32px;
+  opacity: 0.28;
   pointer-events: none;
 }
 .hero__name {
@@ -67,10 +67,10 @@ defineProps({
   font-family: var(--font-display);
   font-size: var(--text-h3);
   line-height: var(--lh-h3);
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 .hero__role {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   font-family: var(--font-mono);
   font-size: var(--text-small);
   color: var(--color-text-secondary);
@@ -79,6 +79,7 @@ defineProps({
   margin-top: var(--space-2);
   font-size: var(--text-body);
   color: var(--color-text-secondary);
+  max-width: 52ch; /* 限宽，避免首屏说明行过长 */
 }
 .hero__actions {
   margin-top: var(--space-6);

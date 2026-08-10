@@ -67,14 +67,33 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 /* Current Focus 卡片（首页活人感区块） */
 .focus-card {
   display: block;
+  position: relative; /* ::after 箭头定位基准 */
   padding: var(--space-6);
+  padding-right: var(--space-8);
   background: var(--color-surface-muted);
   border: var(--border-default);
   border-radius: var(--radius-lg);
-  transition: box-shadow var(--dur-fast) var(--ease-standard);
+  transition:
+    box-shadow var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+.focus-card::after {
+  content: '→';
+  position: absolute;
+  right: var(--space-6);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-h3);
+  color: var(--color-text-tertiary);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .focus-card:hover {
   box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.focus-card:hover::after {
+  transform: translateY(-50%) translateX(3px);
+  color: var(--color-accent);
 }
 .focus-card__head {
   display: flex;

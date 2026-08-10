@@ -25,14 +25,21 @@ defineProps({
   display: flex;
   align-items: baseline;
   gap: var(--space-6);
-  padding: var(--space-4) 0;
+  margin-inline: calc(var(--space-2) * -1);
+  padding: var(--space-4) var(--space-2);
   border-bottom: var(--border-default);
+  border-radius: var(--radius-md);
   color: var(--color-text);
   text-decoration: none;
+  transition:
+    background var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
 }
 .note-card:hover {
   text-decoration: none;
   color: var(--color-text);
+  background: var(--color-surface-muted);
+  border-color: transparent;
 }
 .note-card__date {
   flex-shrink: 0;
@@ -40,6 +47,10 @@ defineProps({
   font-family: var(--font-mono);
   font-size: var(--text-caption);
   color: var(--color-text-tertiary);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.note-card:hover .note-card__date {
+  color: var(--color-text-secondary);
 }
 .note-card__title {
   font-family: var(--font-display);

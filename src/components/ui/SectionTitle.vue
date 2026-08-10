@@ -11,7 +11,7 @@ defineProps({
   <header class="section-title">
     <span v-if="index" class="section-title__index">{{ index }}</span>
     <h2 class="section-title__text">{{ title }}</h2>
-    <RouterLink v-if="to" :to="to" class="section-title__more">查看全部 →</RouterLink>
+    <RouterLink v-if="to" :to="to" class="section-title__more">查看全部 <span class="section-title__more-arrow" aria-hidden="true">→</span></RouterLink>
   </header>
 </template>
 
@@ -36,5 +36,18 @@ defineProps({
   margin-left: auto;
   font-size: var(--text-small);
   white-space: nowrap;
+  color: var(--color-text-secondary);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.section-title__more:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.section-title__more-arrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.section-title__more:hover .section-title__more-arrow {
+  transform: translateX(3px);
 }
 </style>

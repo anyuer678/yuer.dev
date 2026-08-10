@@ -69,6 +69,7 @@ const TYPE_LABELS = { project: '项目', learning: '学习', note: '笔记', mil
   font-size: var(--text-body);
   color: var(--color-text);
   text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
 }
 a.timeline-item__title:hover {
   color: var(--color-accent);

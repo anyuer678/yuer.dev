@@ -80,9 +80,13 @@ watchEffect(async (onInvalidate) => {
   margin-block: var(--space-6) var(--space-2);
   font-size: var(--text-small);
   color: var(--color-text-tertiary);
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
 }
 .back-link:hover {
   color: var(--color-accent);
+  transform: translateX(-2px);
 }
 .project-detail {
   max-width: var(--container-narrow);
