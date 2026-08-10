@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
   tags: { type: Array, default: () => [] },
-  interval: { type: Number, default: 500 },
+  interval: { type: Number, default: 3000 },
 })
 
 const index = ref(0)

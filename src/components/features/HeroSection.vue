@@ -40,6 +40,7 @@ defineProps({
 .hero__inner {
   position: relative;
   z-index: 1;
+  width: 100%; /* flex item 撑满，container 的 max-width 负责收窄居中 */
   padding-block: var(--space-16);
 }
 /* 网格纹理叠加层（03 §5：用叠加层实现，不直接放背景上） */
