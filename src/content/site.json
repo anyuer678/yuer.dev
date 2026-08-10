@@ -1,0 +1,12 @@
+{
+  "name": "Yuer",
+  "brand": "Yuer Studio",
+  "role": "Software Developer",
+  "tagline": ["Building AI Tools", "Exploring Software Engineering"],
+  "heroTags": ["AI", "Software Architecture", "Linux", "Open Source"],
+  "bio": "做软件的 Yuer。关注 AI 应用与工程化，从需求到部署自己搞定。",
+  "links": {
+    "github": "https://github.com/anyuer678",
+    "email": "hello@yuer.dev"
+  }
+}
