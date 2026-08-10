@@ -1,4 +1,5 @@
 [
+  { "date": "2026-08", "title": "PolyCodeHub 迁移上线", "type": "project", "link": "/projects/polycodehub" },
   { "date": "2026-08", "title": "开始 EvoCode", "type": "project", "link": "/projects/evocode" },
   { "date": "2026-08", "title": "发布桌面宠物 Desktoppet", "type": "project", "link": "/projects/desktoppet" },
   { "date": "2026-07", "title": "完成 CodeDrill", "type": "project", "link": "/projects/codedrill" },
@@ -7,5 +8,9 @@
   { "date": "2026-06", "title": "学习 Linux 服务器", "type": "learning" },
   { "date": "2026-05", "title": "开发 Chatez", "type": "project", "link": "/projects/chatez" },
   { "date": "2026-04", "title": "开始接触 LLM API", "type": "learning" },
-  { "date": "2025-11", "title": "开始 Java 学习", "type": "milestone" }
+  { "date": "2025-11", "title": "深入 Java 服务端开发", "type": "learning" },
+  { "date": "2025-09", "title": "写出 PolyCodeHub 雏形", "type": "project", "link": "/projects/polycodehub" },
+  { "date": "2025-06", "title": "学习 Java 与 Web 后端", "type": "learning" },
+  { "date": "2024-09", "title": "学习 Python 与编程基础", "type": "learning" },
+  { "date": "2024-03", "title": "开始接触计算机编程", "type": "milestone" }
 ]

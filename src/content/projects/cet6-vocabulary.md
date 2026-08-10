@@ -4,7 +4,7 @@ title: CET-6 词汇背诵系统
 subtitle: 彩色版
 status: completed
 featured: false
-date: 2026-07-30
+date: 2026-07
 tech: [JavaScript]
 tags: [Learning]
 summary: CET-6 英语六级词汇背诵系统（彩色版），配合记忆曲线的背词工具。

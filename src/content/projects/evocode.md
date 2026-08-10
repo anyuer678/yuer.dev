@@ -4,7 +4,7 @@ title: EvoCode
 subtitle: AI Software Evolution Platform
 status: development
 featured: true
-date: 2026-08-01
+date: 2026-08
 tech: [Vue 3, Spring Boot, Python, LLM]
 tags: [AI, FullStack]
 summary: 面向软件维护场景的 AI 进化平台：代码分析、架构理解、AI 报告生成，让维护者 5 分钟读懂一个老项目。

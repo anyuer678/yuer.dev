@@ -4,7 +4,7 @@ title: CodeDrill
 subtitle: Java Coding Practice Platform
 status: completed
 featured: false
-date: 2026-07-10
+date: 2026-07
 tech: [Java, Spring Boot, Vue 3]
 tags: [Learning]
 summary: 自己的 Java 练习平台：题目、判题与提交记录，用完整项目倒逼自己掌握 Spring Boot 全流程。

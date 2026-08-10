@@ -4,7 +4,7 @@ title: Todo List
 subtitle: 轻量级个人待办事项应用
 status: completed
 featured: false
-date: 2026-07-30
+date: 2026-07
 tech: [CSS, JavaScript]
 tags: [Tool]
 summary: 轻量级个人待办事项应用：无依赖、打开即用。

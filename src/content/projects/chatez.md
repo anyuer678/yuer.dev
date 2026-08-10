@@ -4,7 +4,7 @@ title: Chatez
 subtitle: Personal AI Work Platform
 status: archived
 featured: false
-date: 2026-05-01
+date: 2026-05
 tech: [Electron, Vue 3, Node.js, LLM]
 tags: [AI, Desktop]
 summary: 个人 AI 工作台：多模型统一入口 + 上下文管理。为 EvoCode 的 LLM 实践打下基础。

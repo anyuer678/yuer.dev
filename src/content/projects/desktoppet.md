@@ -4,7 +4,7 @@ title: Desktoppet
 subtitle: 桌面宠物
 status: completed
 featured: false
-date: 2026-08-08
+date: 2026-08
 tech: [Electron, TypeScript]
 tags: [Desktop]
 summary: 桌面宠物：Electron 桌宠 v1.0，支持事件记录、统计报表、角色包与推送 API。
