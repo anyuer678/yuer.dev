@@ -24,7 +24,7 @@ const TECH_WHITELIST = new Set(
 const STATUS_ENUM = new Set(['development', 'completed', 'archived', 'experiment'])
 const NOTE_TYPE_ENUM = new Set(['project', 'learning', 'note', 'milestone'])
 const PROJECT_REQUIRED = ['slug', 'title', 'subtitle', 'status', 'featured', 'date', 'tech', 'tags', 'summary', 'demo', 'github', 'order']
-const NOTE_REQUIRED = ['slug', 'title', 'date', 'tags', 'summary']
+const NOTE_REQUIRED = ['title', 'date', 'tags', 'summary']
 const PROJECT_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '技术选择', '开发过程', '挑战与解决', '未来计划', '源码与 Demo']
 const REQUIRED_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '技术选择', '未来计划'] // 规则 8
 
@@ -76,13 +76,13 @@ for (const file of mdFiles) {
   const missing = required.filter((k) => !(k in meta))
   if (missing.length) report(2, file, `缺必填字段: ${missing.join(', ')}`)
 
-  // 规则 3：slug 唯一、kebab-case、与文件名一致
+  // 规则 3：slug 唯一、kebab-case、与文件名一致（notes 无 slug 字段，文件名即 slug）
   const filename = file.split(/[\\/]/).pop().replace(/\.md$/, '')
-  if (meta.slug && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(meta.slug))
-    report(3, file, `slug "${meta.slug}" 应为 kebab-case`)
-  if (meta.slug !== filename) report(3, file, `slug "${meta.slug}" 与文件名 "${filename}" 不一致`)
-  if (allSlugs.has(meta.slug)) report(3, file, `slug "${meta.slug}" 重复`)
-  allSlugs.add(meta.slug)
+  const slug = meta.slug || filename
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) report(3, file, `slug "${slug}" 应为 kebab-case`)
+  if (meta.slug && meta.slug !== filename) report(3, file, `slug "${meta.slug}" 与文件名 "${filename}" 不一致`)
+  if (allSlugs.has(slug)) report(3, file, `slug "${slug}" 重复`)
+  allSlugs.add(slug)
 
   // 规则 4：枚举
   if (isProject && !STATUS_ENUM.has(meta.status)) report(4, file, `status "${meta.status}" 不在枚举内`)
