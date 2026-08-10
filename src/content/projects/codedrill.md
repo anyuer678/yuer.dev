@@ -3,7 +3,7 @@ slug: codedrill
 title: CodeDrill
 subtitle: Java Coding Practice Platform
 status: completed
-featured: false
+featured: true
 date: 2026-07
 tech: [Java, Spring Boot, Vue 3]
 tags: [Learning]

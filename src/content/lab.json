@@ -1,5 +1,10 @@
 [
+  { "title": "N100 服务器搭建", "description": "旧笔记本改装家用服务器：Debian + Docker + frp 内网穿透 + 探活监控。", "status": "experiment", "date": "2026-07", "tags": ["Linux", "部署"], "category": "Infrastructure", "link": "/notes/n100-server" },
+  { "title": "frp 内网穿透", "description": "把内网服务暴露到公网的实验，配合 N100 服务器使用。", "status": "experiment", "date": "2026-07", "tags": ["Linux", "网络"], "category": "Infrastructure" },
+  { "title": "Docker 编排实验", "description": "用 docker compose 编排多服务，熟悉容器网络、数据卷与服务重启策略。", "status": "experiment", "date": "2026-06", "tags": ["Docker"], "category": "Infrastructure" },
+  { "title": "Linux 服务器学习", "description": "从命令行到 systemd 服务的系统学习，为自托管打基础。", "status": "archived", "date": "2026-06", "tags": ["Linux"], "category": "Infrastructure" },
   { "title": "AI 图片整理实验", "description": "用视觉模型自动归类本地图片，分类器未完成。", "status": "experiment", "date": "2026-05", "tags": ["AI"], "category": "AI" },
+  { "title": "LLM API 接入实验", "description": "第一次调用大模型 API，尝试对话、总结与结构化输出。", "status": "experiment", "date": "2026-04", "tags": ["AI", "LLM"], "category": "AI" },
   { "title": "MCP 尝试", "description": "给工具接入 MCP Server 的实验，探索工具调用边界。", "status": "experiment", "date": "2026-05", "tags": ["MCP"], "category": "AI" },
   { "title": "视觉识别 Demo", "description": "摄像头实时识别的演示项目。", "status": "archived", "date": "2026-03", "tags": ["AI"], "category": "AI" },
   { "title": "桌宠 Prototype", "description": "桌面宠物原型，验证系统托盘与悬浮窗交互。", "status": "archived", "date": "2026-04", "category": "Desktop" },
