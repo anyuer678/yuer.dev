@@ -72,9 +72,9 @@ defineProps({
 .project-card__img {
   display: block;
   width: 100%;
-  height: 160px;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   border: var(--border-default);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-4);
