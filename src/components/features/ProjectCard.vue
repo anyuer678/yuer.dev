@@ -7,6 +7,8 @@ import StatusBadge from '@/components/ui/StatusBadge.vue'
 import Tag from '@/components/ui/Tag.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
 
+const baseUrl = import.meta.env.BASE_URL
+
 defineProps({
   project: { type: Object, required: true },
   featured: { type: Boolean, default: false },
@@ -20,6 +22,13 @@ defineProps({
       :to="`/projects/${project.slug}`"
       class="project-card__cover"
       :aria-label="`查看项目 ${project.title} 详情`"
+    />
+    <img
+      v-if="project.cover"
+      :src="baseUrl + project.cover"
+      :alt="`${project.title} 预览`"
+      class="project-card__img"
+      loading="lazy"
     />
     <header class="project-card__head">
       <h3 class="project-card__title">{{ project.title }}</h3>
@@ -59,6 +68,17 @@ defineProps({
   inset: 0;
   z-index: 1;
   border-radius: inherit;
+}
+.project-card__img {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  object-position: top;
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  background: var(--color-surface-muted);
 }
 .project-card__cover:focus-visible {
   outline-offset: -4px; /* 焦点环收进卡片内，避免被裁切 */

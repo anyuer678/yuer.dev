@@ -11,6 +11,7 @@ summary: 原生实现的开箱即用待办应用：今日视图 + 收件箱 + �
 demo: https://anyuer678.github.io/todo-list/
 github: https://github.com/anyuer678/todo-list
 order: 6
+cover: projects/todo-list.png
 ---
 
 ## 项目介绍

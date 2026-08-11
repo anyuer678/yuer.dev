@@ -11,6 +11,8 @@ summary: 可配置 Prompt + Skill 的 AI 工作台（v1.14.1）：多角色切�
 demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
 order: 3
+related: [qq-ai-bot-notes, voice-console-mcp-notes]
+cover: projects/chatez.png
 ---
 
 ## 项目介绍

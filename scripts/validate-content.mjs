@@ -31,7 +31,7 @@ const REQUIRED_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '
 const ALLOWED_KEYS = new Set([
   ...PROJECT_REQUIRED,
   ...NOTE_REQUIRED,
-  'draft', 'type', 'link', 'description',
+  'draft', 'type', 'link', 'description', 'related', 'cover',
 ])
 
 // --- 规则 12：JSON 文件合法 + schema ---
@@ -74,6 +74,8 @@ const mdFiles = walk(ROOT).filter((f) => f.endsWith('.md'))
 const allSlugs = new Set()
 const featuredCount = { n: 0 }
 const innerLinks = [] // 规则 10：跨文件统一复核
+const noteSlugs = new Set() // 规则 18：related 指向的笔记集合
+const relatedRefs = [] // 规则 18：项目 related 字段跨文件复核
 
 for (const file of mdFiles) {
   const raw = readFileSync(file, 'utf8')
@@ -155,6 +157,16 @@ for (const file of mdFiles) {
     if (v && !/^https:\/\/.+/.test(v)) report(9, file, `${key} "${v}" 应为 https:// URL`)
   }
 
+  // 规则 19：cover 指向 public/ 下真实文件
+  if (meta.cover) {
+    const coverPath = join('public', meta.cover)
+    if (!existsSync(coverPath)) report(19, file, `cover "${meta.cover}" 对应的 public 文件不存在`)
+  }
+
+  // 规则 18：收集 related（项目 → 笔记互链）与笔记 slug 集合
+  if (isNote) noteSlugs.add(slug)
+  if (isProject && meta.related) relatedRefs.push({ file, related: meta.related })
+
   // 规则 10：站内链接指向存在的 slug（跨 projects/notes 校验，循环后复核）
   for (const m of body.matchAll(/\]\((\/(?:projects|notes)\/[a-z0-9-]+)(?:[?#][^)\s]*)?\)/g)) {
     innerLinks.push({ link: m[1], file })
@@ -193,6 +205,16 @@ if (featuredCount.n > 3) report(11, 'projects/*', `featured 项目 ${featuredCou
 // --- 规则 10 汇总：站内链接目标存在（跨文件） ---
 for (const { link, file } of innerLinks) {
   if (!allSlugs.has(link.split('/')[2])) report(10, file, `站内链接 "${link}" 指向不存在的 slug`)
+}
+
+// --- 规则 18 汇总：项目 related 必须指向已存在的笔记 ---
+for (const { file, related } of relatedRefs) {
+  if (!Array.isArray(related)) {
+    report(18, file, 'related 应为笔记 slug 数组')
+    continue
+  }
+  const bad = related.filter((s) => !noteSlugs.has(s))
+  if (bad.length) report(18, file, `related 指向不存在的笔记 slug: ${bad.join(', ')}`)
 }
 
 // --- 规则 17：timeline.json / lab.json 的站内 link 指向存在的内容 ---

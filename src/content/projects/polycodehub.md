@@ -11,6 +11,8 @@ summary: 自用全栈 OJ：题库、提交、判题、比赛、题解与社区�
 demo: https://anyuer678.github.io/polycodehub/
 github: https://github.com/anyuer678/polycodehub
 order: 7
+related: [polycodehub-architecture]
+cover: projects/polycodehub.png
 ---
 
 ## 项目介绍

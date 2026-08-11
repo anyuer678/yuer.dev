@@ -11,6 +11,8 @@ summary: CET-6 全词库 5023 词：背诵、默写、回忆、选择题四种�
 demo: https://anyuer678.github.io/cet6-vocabulary/
 github: https://github.com/anyuer678/cet6-vocabulary
 order: 5
+related: [quiz-tools-notes, ai-design-notes]
+cover: projects/cet6-vocabulary.png
 ---
 
 ## 项目介绍
