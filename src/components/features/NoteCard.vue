@@ -68,7 +68,8 @@ defineProps({
 .note-card__tags {
   margin-top: var(--space-3);
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
 }
 </style>
