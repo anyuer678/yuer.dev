@@ -52,12 +52,6 @@ watchEffect(async (onInvalidate) => {
 
     <div v-else class="container container--narrow project-detail">
       <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
-      <img
-        v-if="project.cover"
-        :src="baseUrl + project.cover"
-        :alt="`${project.title} 预览`"
-        class="project-detail__cover"
-      />
       <header class="project-detail__head">
         <div class="project-detail__title-row">
           <h1>{{ project.title }}</h1>
@@ -73,6 +67,13 @@ watchEffect(async (onInvalidate) => {
           <ExternalLink v-if="project.demo" :href="project.demo">Demo</ExternalLink>
         </div>
       </header>
+
+      <img
+        v-if="project.cover"
+        :src="baseUrl + project.cover"
+        :alt="`${project.title} 预览`"
+        class="project-detail__cover"
+      />
 
       <hr class="project-detail__divider" />
 
@@ -156,9 +157,7 @@ watchEffect(async (onInvalidate) => {
 .project-detail__cover {
   display: block;
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  object-position: top;
+  height: auto;
   border: var(--border-default);
   border-radius: var(--radius-lg);
   margin: var(--space-6) 0 0;
