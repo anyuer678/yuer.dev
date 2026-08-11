@@ -12,6 +12,7 @@ demo: https://anyuer678.github.io/todo-list/
 github: https://github.com/anyuer678/todo-list
 order: 6
 cover: projects/todo-list.png
+journey: [{"date": "2026-07", "title": "开始开发", "desc": "轻量个人待办应用，集待办、番茄钟、统计于一体"}]
 ---
 
 ## 项目介绍

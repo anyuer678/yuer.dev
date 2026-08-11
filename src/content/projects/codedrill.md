@@ -12,6 +12,7 @@ demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 2
 cover: projects/codedrill.png
+journey: [{"date": "2026-07", "title": "开始开发", "desc": "离线编程训练系统：代码临摹、填空、改错，Web / Windows / Android 三端"}]
 ---
 
 ## 项目介绍

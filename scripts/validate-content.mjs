@@ -31,7 +31,7 @@ const REQUIRED_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '
 const ALLOWED_KEYS = new Set([
   ...PROJECT_REQUIRED,
   ...NOTE_REQUIRED,
-  'draft', 'type', 'link', 'description', 'related', 'cover',
+  'draft', 'type', 'link', 'description', 'related', 'cover', 'journey',
 ])
 
 // --- 规则 12：JSON 文件合法 + schema ---
