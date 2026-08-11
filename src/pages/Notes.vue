@@ -58,26 +58,24 @@ const router = useRouter()
 const tag = computed(() => String(route.query.tag ?? '')) // 防数组形态 ?tag=a&tag=b
 const q = computed(() => String(route.query.q ?? '').trim())
 
-// 分组折叠：默认全部收起，只显示组标题行；选中被折叠组的标签时自动展开
-const collapsedGroups = ref(new Set(TAG_GROUPS.map((g) => g.name).concat(['其他'])))
+// 分组折叠：主标签横排，点击展开该组子标签（互斥：同一时间只展开一组）
+const activeGroup = ref(null)
 function toggleGroup(name) {
-  const next = new Set(collapsedGroups.value)
-  next.has(name) ? next.delete(name) : next.add(name)
-  collapsedGroups.value = next
+  activeGroup.value = activeGroup.value === name ? null : name
 }
-function isCollapsed(name) {
-  return collapsedGroups.value.has(name)
+function clearGroup() {
+  activeGroup.value = null
 }
+const activeGroupTags = computed(() => {
+  const g = groupedTags.value.find((grp) => grp.name === activeGroup.value)
+  return g ? g.tags : []
+})
 watch(
   tag,
   (val) => {
     if (!val) return
     const g = groupedTags.value.find((grp) => grp.tags.some((t) => t.label === val))
-    if (g && collapsedGroups.value.has(g.name)) {
-      const next = new Set(collapsedGroups.value)
-      next.delete(g.name)
-      collapsedGroups.value = next
-    }
+    if (g) activeGroup.value = g.name
   },
   { immediate: true },
 )
@@ -157,23 +155,27 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
     </PageHeader>
 
     <div v-if="groupedTags.length" class="note-toolbar">
-      <div class="note-tags note-tags--all" role="group" aria-label="按标签筛选">
-        <Tag label="全部" :clickable="true" :active="tag === ''" @click="applyTag('')" />
-      </div>
-      <div v-for="g in groupedTags" :key="g.name" class="tag-group">
-        <button
-          type="button"
-          class="tag-group__head"
-          :aria-expanded="!isCollapsed(g.name)"
+      <div class="note-tags note-tags--main" role="group" aria-label="标签分组">
+        <Tag
+          label="全部"
+          :clickable="true"
+          :active="tag === ''"
+          @click="applyTag(''); clearGroup()"
+        />
+        <Tag
+          v-for="g in groupedTags"
+          :key="g.name"
+          :label="g.name"
+          :count="g.tags.length"
+          :clickable="true"
+          :active="activeGroup === g.name"
           @click="toggleGroup(g.name)"
-        >
-          <span class="tag-group__name">{{ g.name }}</span>
-          <span class="tag-group__meta">{{ g.tags.length }} 个标签</span>
-          <span class="tag-group__arrow" :class="{ 'is-open': !isCollapsed(g.name) }">▸</span>
-        </button>
-        <div v-if="!isCollapsed(g.name)" class="tag-group__body" role="group" :aria-label="`${g.name}标签`">
+        />
+      </div>
+      <Transition name="fade">
+        <div v-if="activeGroup" class="tag-group" role="group" :aria-label="`${activeGroup}标签`">
           <Tag
-            v-for="t in g.tags"
+            v-for="t in activeGroupTags"
             :key="t.label"
             :label="t.label"
             :count="t.count"
@@ -182,7 +184,7 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
             @click="applyTag(t.label)"
           />
         </div>
-      </div>
+      </Transition>
     </div>
 
     <div v-if="paged.length" class="note-list">
@@ -256,52 +258,25 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
   flex-wrap: wrap;
   gap: var(--space-2);
 }
-.note-tags--all {
+.note-tags--main {
   margin-bottom: var(--space-2);
 }
 .tag-group {
-  border-top: 1px solid var(--color-border);
-}
-.tag-group__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-  padding: var(--space-3) 0;
-  font-family: var(--font-sans);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-}
-.tag-group__name {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  line-height: var(--lh-h3);
-  color: var(--color-text);
-}
-.tag-group__meta {
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
-}
-.tag-group__arrow {
-  margin-left: auto;
-  font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
-  transition: transform var(--dur-fast) var(--ease-standard);
-}
-.tag-group__arrow.is-open {
-  transform: rotate(90deg);
-}
-.tag-group__head:hover .tag-group__name {
-  color: var(--color-accent);
-}
-.tag-group__body {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  padding-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 .note-list {
   display: grid;
