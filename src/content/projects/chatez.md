@@ -13,6 +13,7 @@ github: https://github.com/anyuer678/chatez
 order: 3
 related: [qq-ai-bot-notes, voice-console-mcp-notes]
 cover: projects/chatez.png
+journey: [{"date": "2026-05", "title": "开始开发", "desc": "可配置 Prompt + Skill 的 AI 工作台（React 18 + Tauri 2.x）"}]
 ---
 
 ## 项目介绍

@@ -13,6 +13,7 @@ github: https://github.com/anyuer678/cet6-vocabulary
 order: 5
 related: [quiz-tools-notes, ai-design-notes]
 cover: projects/cet6-vocabulary.png
+journey: [{"date": "2026-07", "title": "开始开发", "desc": "CET-6 词汇背诵系统，覆盖考试大纲全部 5023 词"}]
 ---
 
 ## 项目介绍

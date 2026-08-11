@@ -77,6 +77,17 @@ watchEffect(async (onInvalidate) => {
 
       <hr class="project-detail__divider" />
 
+      <section v-if="project.journey?.length" class="project-detail__journey">
+        <h2 class="project-detail__journey-title">开发历程</h2>
+        <ol class="project-detail__journey-list">
+          <li v-for="(j, i) in project.journey" :key="i" class="project-detail__journey-item">
+            <time class="project-detail__journey-date">{{ j.date }}</time>
+            <span class="project-detail__journey-name">{{ j.title }}</span>
+            <p v-if="j.desc" class="project-detail__journey-desc">{{ j.desc }}</p>
+          </li>
+        </ol>
+      </section>
+
       <ArticleContent :html="html" />
 
       <section v-if="relatedNotes.length" class="project-detail__related">
@@ -167,6 +178,59 @@ watchEffect(async (onInvalidate) => {
   margin: var(--space-8) 0;
   border: none;
   border-top: 1px solid var(--color-border);
+}
+.project-detail__journey {
+  margin-bottom: var(--space-8);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+.project-detail__journey-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+  margin-bottom: var(--space-5);
+}
+.project-detail__journey-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.project-detail__journey-item {
+  position: relative;
+  padding: 0 0 var(--space-5) var(--space-6);
+  border-left: 1px solid var(--color-border);
+  margin-left: var(--space-2);
+}
+.project-detail__journey-item:last-child {
+  padding-bottom: 0;
+}
+.project-detail__journey-item::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+.project-detail__journey-date {
+  display: inline-block;
+  margin-right: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-accent);
+}
+.project-detail__journey-name {
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+.project-detail__journey-desc {
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
 }
 .project-detail__related {
   margin-top: var(--space-10);

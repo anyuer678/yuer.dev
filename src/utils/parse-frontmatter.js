@@ -15,6 +15,14 @@ export function parseFrontmatter(raw) {
       continue
     }
     if (v.startsWith('[') && v.endsWith(']')) {
+      if (v.includes('{')) {
+        try {
+          meta[key] = JSON.parse(v)
+          continue
+        } catch {
+          // 不是合法 JSON（如对象数组未转义），落入普通字符串数组解析
+        }
+      }
       meta[key] = v
         .slice(1, -1)
         .split(',')

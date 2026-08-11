@@ -13,6 +13,7 @@ github: https://github.com/anyuer678/polycodehub
 order: 7
 related: [polycodehub-architecture]
 cover: projects/polycodehub.png
+journey: [{"date": "2025-09", "title": "雏形", "desc": "用 Next.js 搭出第一版在线判题平台"}, {"date": "2026-08", "title": "迁移迭代", "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"}]
 ---
 
 ## 项目介绍

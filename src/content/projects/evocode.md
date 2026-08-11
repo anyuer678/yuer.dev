@@ -12,6 +12,7 @@ demo:
 github:
 order: 1
 related: [evocode-architecture]
+journey: [{"date": "2026-08", "title": "立项", "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"}]
 ---
 
 ## 项目介绍

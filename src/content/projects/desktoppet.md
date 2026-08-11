@@ -13,6 +13,7 @@ github: https://github.com/anyuer678/desktoppet
 order: 4
 related: [deskpet-notes]
 cover: projects/desktoppet.jpg
+journey: [{"date": "2026-08", "title": "v1.0", "desc": "Electron 桌宠：事件记录、统计报表、角色包、推送 API"}]
 ---
 
 ## 项目介绍
