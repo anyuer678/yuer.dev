@@ -12,5 +12,6 @@
   { "title": "MCP 尝试", "description": "给工具接入 MCP Server 的实验，探索工具调用边界。", "status": "experiment", "date": "2026-05", "tags": ["MCP"], "category": "AI" },
   { "title": "视觉识别 Demo", "description": "摄像头实时识别的演示项目。", "status": "archived", "date": "2026-03", "tags": ["AI"], "category": "AI" },
   { "title": "桌宠 Prototype", "description": "桌面宠物原型，验证系统托盘与悬浮窗交互。", "status": "archived", "date": "2026-04", "category": "Desktop" },
-  { "title": "小游戏实验", "description": "用 Canvas 写的小游戏原型，练手用。", "status": "archived", "date": "2025-12", "category": "Desktop" }
+  { "title": "小游戏实验", "description": "用 Canvas 写的小游戏原型，练手用。", "status": "archived", "date": "2025-12", "category": "Desktop" },
+  { "title": "课程刷题工具", "description": "考前给自己和同学做的单文件刷题工具：Linux 刷题系统、Linux 新题库、开源操作系统复习系统、数据库原理刷题系统、数字电路 mock 考试——HTML + JSON 题库，打开即用。", "status": "completed", "date": "2026-06", "tags": ["工具", "刷题"], "category": "Desktop" }
 ]
