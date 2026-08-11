@@ -11,6 +11,8 @@ summary: Electron 桌面宠物：角色以资源包扩展、状态事件驱动�
 demo:
 github: https://github.com/anyuer678/desktoppet
 order: 4
+related: [deskpet-notes]
+cover: projects/desktoppet.jpg
 ---
 
 ## 项目介绍

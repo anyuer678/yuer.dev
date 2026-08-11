@@ -6,14 +6,17 @@ import StatusBadge from '@/components/ui/StatusBadge.vue'
 import Tag from '@/components/ui/Tag.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
 import ArticleContent from '@/components/features/ArticleContent.vue'
-import { getProject, projectRawFiles, site } from '@/utils/content.js'
+import { getProject, getNote, projectRawFiles, site } from '@/utils/content.js'
 import { renderMarkdown } from '@/utils/markdown.js'
 import { setTitle, setDescription } from '@/utils/seo.js'
+
+const baseUrl = import.meta.env.BASE_URL
 
 const route = useRoute()
 
 const project = ref(getProject(route.params.slug))
 const html = ref('')
+const relatedNotes = ref([])
 
 // 正文异步加载 + title/description 覆盖（14 §5.7）
 // 竞态防护：slug 快速切换时丢弃过期 promise 结果（onInvalidate 清理）
@@ -25,6 +28,7 @@ watchEffect(async (onInvalidate) => {
   })
   project.value = getProject(slug)
   if (!project.value) return // 404 兜底由下方 if 处理
+  relatedNotes.value = (project.value.related ?? []).map(getNote).filter(Boolean)
 
   setTitle(`${project.value.title} · ${project.value.subtitle || site.name}`)
   setDescription(project.value.summary)
@@ -48,6 +52,12 @@ watchEffect(async (onInvalidate) => {
 
     <div v-else class="container container--narrow project-detail">
       <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
+      <img
+        v-if="project.cover"
+        :src="baseUrl + project.cover"
+        :alt="`${project.title} 预览`"
+        class="project-detail__cover"
+      />
       <header class="project-detail__head">
         <div class="project-detail__title-row">
           <h1>{{ project.title }}</h1>
@@ -67,6 +77,18 @@ watchEffect(async (onInvalidate) => {
       <hr class="project-detail__divider" />
 
       <ArticleContent :html="html" />
+
+      <section v-if="relatedNotes.length" class="project-detail__related">
+        <h2 class="project-detail__related-title">相关笔记</h2>
+        <ul class="project-detail__related-list">
+          <li v-for="n in relatedNotes" :key="n.slug">
+            <RouterLink :to="`/notes/${n.slug}`" class="project-detail__related-link">
+              <span class="project-detail__related-name">{{ n.title }}</span>
+              <span class="project-detail__related-summary">{{ n.summary }}</span>
+            </RouterLink>
+          </li>
+        </ul>
+      </section>
     </div>
   </div>
 </template>
@@ -131,9 +153,64 @@ watchEffect(async (onInvalidate) => {
   font-size: var(--text-caption);
   color: var(--color-text-secondary);
 }
+.project-detail__cover {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: top;
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  margin: var(--space-6) 0 0;
+  background: var(--color-surface-muted);
+}
 .project-detail__divider {
   margin: var(--space-8) 0;
   border: none;
   border-top: 1px solid var(--color-border);
+}
+.project-detail__related {
+  margin-top: var(--space-10);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+.project-detail__related-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: var(--lh-h3);
+  margin-bottom: var(--space-4);
+}
+.project-detail__related-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.project-detail__related-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  transition:
+    background var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+.project-detail__related-link:hover {
+  background: var(--color-surface-muted);
+}
+.project-detail__related-name {
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+.project-detail__related-link:hover .project-detail__related-name {
+  color: var(--color-accent);
+}
+.project-detail__related-summary {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
 }
 </style>

@@ -9,8 +9,9 @@ tech: [Vue 3, TypeScript, Spring Boot, Python, PostgreSQL, Redis, LLM, Docker]
 tags: [AI, FullStack]
 summary: AST 代码分析 + LLM 报告生成，为老项目输出中文架构全景文档（开发中）。
 demo:
-github: https://github.com/anyuer678/evocode
+github:
 order: 1
+related: [evocode-architecture]
 ---
 
 ## 项目介绍

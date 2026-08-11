@@ -11,6 +11,7 @@ summary: 离线编程训练系统：代码临摹、代码填空、错误修复�
 demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 2
+cover: projects/codedrill.png
 ---
 
 ## 项目介绍
