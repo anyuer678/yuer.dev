@@ -1,6 +1,0 @@
-feat(notes): 新增数电 ALU 与 Java 面向对象两篇实验笔记
-
-- alu-lab-notes: 数电实验，SystemVerilog 4 位 ALU（加/减/与/或 + N/Z/C/V 标志），Icarus 仿真
-- java-oop-lab-notes: Java 八个实验归纳（类设计/继承/多态/异常/字符串IO/抽象接口）
-
-累计笔记 22 篇，素材均按"阅读报告后归纳重写"原则整理。
