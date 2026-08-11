@@ -4,6 +4,7 @@ defineProps({
   label: { type: String, required: true },
   active: { type: Boolean, default: false },
   clickable: { type: Boolean, default: false },
+  count: { type: [Number, String], default: null },
 })
 const emit = defineEmits(['click'])
 </script>
@@ -18,9 +19,9 @@ const emit = defineEmits(['click'])
     :aria-pressed="active"
     @click="emit('click')"
   >
-    {{ label }}
+    {{ label }}<span v-if="count !== null" class="tag__count">{{ count }}</span>
   </button>
-  <span v-else class="tag" :class="{ 'is-active': active }" :title="label">{{ label }}</span>
+  <span v-else class="tag" :class="{ 'is-active': active }" :title="label">{{ label }}<span v-if="count !== null" class="tag__count">{{ count }}</span></span>
 </template>
 
 <style scoped>
@@ -43,6 +44,14 @@ const emit = defineEmits(['click'])
   color: var(--color-accent);
   background: var(--color-accent-soft);
   border-color: var(--color-accent);
+}
+.tag__count {
+  margin-left: 6px;
+  font-size: 0.82em;
+  opacity: 0.65;
+}
+.tag.is-active .tag__count {
+  opacity: 0.85;
 }
 button.tag {
   cursor: pointer;
