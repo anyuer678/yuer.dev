@@ -6,6 +6,10 @@ import ExternalLink from '@/components/ui/ExternalLink.vue'
 defineProps({
   item: { type: Object, required: true },
 })
+// 站内 link（/notes/xxx 或 /projects/xxx）用 RouterLink 跳转（自动带 base），站外 URL 走 ExternalLink
+function isInternal(href) {
+  return /^\/(?:notes|projects)\//.test(href)
+}
 </script>
 
 <template>
@@ -17,7 +21,8 @@ defineProps({
     <p class="lab-item__desc">{{ item.description }}</p>
     <footer class="lab-item__foot">
       <time :datetime="item.date" class="lab-item__date">{{ item.date }}</time>
-      <ExternalLink v-if="item.link" :href="item.link">链接</ExternalLink>
+      <RouterLink v-if="item.link && isInternal(item.link)" :to="item.link" class="lab-item__link">阅读笔记 →</RouterLink>
+      <ExternalLink v-else-if="item.link" :href="item.link">链接</ExternalLink>
     </footer>
   </article>
 </template>
@@ -56,8 +61,16 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-caption);
   color: var(--color-text-tertiary);
+}
+.lab-item__link {
+  color: var(--color-accent);
+}
+.lab-item__link:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
 }
 </style>
