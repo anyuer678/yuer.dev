@@ -156,7 +156,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
       <section class="about__block">
         <SectionTitle index="01" title="Selected Projects" to="/projects" />
         <div class="about__projects">
-          <ProjectCard v-for="p in selectedProjects" :key="p.slug" :project="p" />
+          <ProjectCard v-for="p in selectedProjects" :key="p.slug" :project="p" :show-cover="false" />
         </div>
       </section>
 
