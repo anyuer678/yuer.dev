@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // PageHeader —— 列表页页头（05 §1）
 defineProps({
   title: { type: String, required: true },
@@ -48,6 +48,6 @@ defineProps({
   margin-top: var(--space-2);
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 </style>

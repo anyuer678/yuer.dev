@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // Notes 列表页（F06）：tag 单选过滤 + 关键词搜索 + 分页
 // URL query 组合：?tag=&q=&page=（14 §5.4 同款模式）
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
@@ -246,7 +246,7 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
     box-shadow var(--dur-fast) var(--ease-standard);
 }
 .note-search::placeholder {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .note-search:focus {
   outline: none;

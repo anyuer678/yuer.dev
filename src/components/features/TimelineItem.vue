@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // TimelineItem —— 时间线条目（05 §3；F05）
 // 圆点按 type 着色：project=accent / learning=green / note=purple / milestone=text
 defineProps({
@@ -36,7 +36,7 @@ const TYPE_LABELS = { project: '项目', learning: '学习', note: '笔记', mil
 .timeline-item__date {
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   text-align: right;
 }
 .timeline-item__dot {
@@ -76,7 +76,7 @@ a.timeline-item__title:hover {
 }
 .timeline-item__badge {
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 /* 响应式（14 §5.10）：<640 月列收窄 */
 @media (max-width: 639px) {

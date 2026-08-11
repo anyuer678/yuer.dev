@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // About 页（F08）：开发者档案——定位 → 简介 → Current Focus → 技术方向 → 代表作 → 成长路径
 // 全部数据驱动（site.json + projects + timeline），不硬编码
 import PageHeader from '@/components/layout/PageHeader.vue'
@@ -234,7 +234,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
   display: block;
   margin-top: var(--space-1);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .about__story {
   margin-top: var(--space-4);
@@ -285,7 +285,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
 }
 .about__area-sub {
   margin-left: var(--space-2);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .about__sub {
   font-family: var(--font-display);
@@ -374,7 +374,7 @@ const stackGroups = STACK_GROUPS.map((g) => ({
 .about__year-count {
   font-size: var(--text-small);
   font-weight: 400;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .about__year-summary {
   font-size: var(--text-small);

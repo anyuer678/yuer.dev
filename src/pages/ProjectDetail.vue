@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // ProjectDetail 详情页（F04）：懒加载原文 + markdown 渲染
 import { ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
@@ -86,7 +86,7 @@ watchEffect(async (onInvalidate) => {
   display: inline-block;
   margin-block: var(--space-6) var(--space-2);
   font-size: var(--text-small);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   transition:
     color var(--dur-fast) var(--ease-standard),
     transform var(--dur-fast) var(--ease-standard);
@@ -129,7 +129,7 @@ watchEffect(async (onInvalidate) => {
   gap: var(--space-6);
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .project-detail__divider {
   margin: var(--space-8) 0;
