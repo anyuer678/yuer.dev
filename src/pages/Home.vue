@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // P2 完成：Hero + FeaturedProjects + RecentNotes（F02）
 import HeroSection from '@/components/features/HeroSection.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
@@ -85,7 +85,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
   top: 50%;
   transform: translateY(-50%);
   font-size: var(--text-body);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   transition: transform var(--dur-fast) var(--ease-standard);
 }
 .focus-card:hover {

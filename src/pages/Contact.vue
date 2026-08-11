@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // Contact 页（F08）：无表单；邮箱实体编码防爬（&#64;）+ mailto 运行时拼接
 // 邮箱可选：site.json 未配置 email 时整项隐藏（v-if 保护 + 顶层判空）
 import PageHeader from '@/components/layout/PageHeader.vue'
@@ -61,7 +61,7 @@ const emailDomain = email.split('@')[1] ?? ''
   flex-shrink: 0;
   width: 80px;
   font-size: var(--text-small);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .contact__value {
   font-size: var(--text-body);

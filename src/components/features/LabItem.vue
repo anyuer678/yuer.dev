@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // LabItem —— Lab 卡片（05 §3；F07）
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
@@ -64,7 +64,7 @@ function isInternal(href) {
   gap: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .lab-item__link {
   color: var(--color-accent);
