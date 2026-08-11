@@ -83,6 +83,10 @@ server {
 }
 ```
 
+负载均衡算法：轮询（默认）、weight 加权轮询、ip_hash（会话保持）、least_conn（最小连接）、fair（响应时间）。upstream 健康检查：`max_fails` 失败次数 + `fail_timeout` 窗口 + `backup` 备用机，被动探测失败自动摘除。
+
+**Nginx 缓存**：`proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mycache:10m max_size=1g inactive=60m` 定义缓存目录与共享内存；location 里 `proxy_cache mycache;` 启用、`proxy_cache_valid 200 302 10m;` 按状态码设有效期、`proxy_cache_key` 自定义键（默认 scheme+host+uri）、`add_header X-Cache-Status $upstream_cache_status` 查看命中状态；清除缓存 `rm -rf /var/cache/nginx/*` 或加 `proxy_cache_purge`（需第三方模块）。
+
 SSL：`listen 443 ssl http2`、`ssl_certificate`/`ssl_certificate_key`、`ssl_protocols TLSv1.2 TLSv1.3`；HTTP 跳 HTTPS `return 301`；certbot 免费证书 `certbot --nginx -d example.com`。
 
 重写：`rewrite ^/article/(\d+)\.html$ /article.php?id=$1 last;`，flag 为 last/break/redirect/permanent。安全：`server_tokens off` 隐藏版本、`limit_req_zone rate=1r/s` 限流、`valid_referers` 防盗链。
