@@ -46,7 +46,7 @@ defineProps({
   width: 96px;
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   transition: color var(--dur-fast) var(--ease-standard);
 }
 .note-card:hover .note-card__date {

@@ -25,7 +25,7 @@ defineProps({
 .section-title__index {
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .section-title__text {
   font-family: var(--font-display);

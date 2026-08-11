@@ -46,7 +46,7 @@ const year = new Date().getFullYear()
   text-align: center;
   padding-block: var(--space-4);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   border-top: var(--border-default);
 }
 </style>
