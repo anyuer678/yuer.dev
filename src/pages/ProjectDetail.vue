@@ -40,9 +40,9 @@ watchEffect(async (onInvalidate) => {
 
 <template>
   <div class="project-detail-root">
-    <div v-if="!project" class="container container--narrow">
+    <div v-if="!project" class="container container--narrow project-detail-missing">
       <!-- slug 不存在 → 404（F04） -->
-      <p>项目不存在</p>
+      <h1>项目不存在</h1>
       <RouterLink to="/projects" class="back-link">← 返回项目列表</RouterLink>
     </div>
 
@@ -74,6 +74,13 @@ watchEffect(async (onInvalidate) => {
 <style scoped>
 .project-detail-root {
   /* 单根容器：保证 <Transition> 可动画（组件根必须是单元素，14 §5.1） */
+}
+.project-detail-missing {
+  padding-block: var(--space-12) var(--space-16);
+}
+.project-detail-missing h1 {
+  font-size: var(--text-h1);
+  line-height: var(--lh-h1);
 }
 .back-link {
   display: inline-block;

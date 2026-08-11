@@ -35,8 +35,8 @@ watchEffect(async (onInvalidate) => {
 
 <template>
   <div class="note-detail-root">
-    <div v-if="!note" class="container container--narrow">
-      <p>笔记不存在</p>
+    <div v-if="!note" class="container container--narrow note-detail-missing">
+      <h1>笔记不存在</h1>
       <RouterLink to="/notes" class="back-link">← 返回笔记列表</RouterLink>
     </div>
 
@@ -61,8 +61,13 @@ watchEffect(async (onInvalidate) => {
 .note-detail-root {
   /* 单根容器：保证 <Transition> 可动画（组件根必须是单元素，14 §5.1） */
 }
-
-<style scoped>
+.note-detail-missing {
+  padding-block: var(--space-12) var(--space-16);
+}
+.note-detail-missing h1 {
+  font-size: var(--text-h1);
+  line-height: var(--lh-h1);
+}
 .back-link {
   display: inline-block;
   margin-block: var(--space-6) var(--space-2);

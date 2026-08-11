@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { applyMeta } from '@/utils/seo.js'
+import Home from '@/pages/Home.vue' // 静态导入：首页是首屏，避免动态 chunk 两阶段加载造成 CLS
 
 // 路由表：path/name/title/description 的唯一权威是 02 §2/§8（14 §5.3）
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/pages/Home.vue'),
+    component: Home,
     meta: {
       nav: false,
       title: (s) => `${s.brand} · ${s.tagline[0]}`,
