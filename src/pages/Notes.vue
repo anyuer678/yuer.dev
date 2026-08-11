@@ -10,12 +10,24 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import { notes, noteTags } from '@/utils/content.js'
 
 const PAGE_SIZE = 10
+const VISIBLE_TAGS = 10 // 筛选区默认显示的标签数，其余折叠收纳
 
 const route = useRoute()
 const router = useRouter()
 
 const tag = computed(() => String(route.query.tag ?? '')) // 防数组形态 ?tag=a&tag=b
 const q = computed(() => String(route.query.q ?? '').trim())
+
+// 筛选区标签收纳：选中标签被折叠时自动展开
+const showAllTags = ref(false)
+watch(
+  tag,
+  (val) => {
+    if (val && noteTags.indexOf(val) >= VISIBLE_TAGS) showAllTags.value = true
+  },
+  { immediate: true },
+)
+const visibleTags = computed(() => (showAllTags.value ? noteTags : noteTags.slice(0, VISIBLE_TAGS)))
 
 // 先 tag 过滤，再关键词搜索（标题/摘要/标签，忽略大小写）
 const filtered = computed(() => {
@@ -79,20 +91,23 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
 
 <template>
   <div class="container">
-    <PageHeader title="笔记" description="开发日志" :count="filtered.length" />
+    <PageHeader title="笔记" description="开发日志" :count="filtered.length">
+      <template #actions>
+        <input
+          v-model="searchInput"
+          class="note-search"
+          type="search"
+          placeholder="搜索标题、摘要或标签…"
+          aria-label="搜索笔记"
+        />
+      </template>
+    </PageHeader>
 
-    <div class="note-toolbar">
-      <input
-        v-model="searchInput"
-        class="note-search"
-        type="search"
-        placeholder="搜索标题、摘要或标签…"
-        aria-label="搜索笔记"
-      />
-      <div v-if="noteTags.length" class="note-tags" role="group" aria-label="按标签筛选">
+    <div v-if="noteTags.length" class="note-toolbar">
+      <div class="note-tags" role="group" aria-label="按标签筛选">
         <Tag label="全部" :clickable="true" :active="tag === ''" @click="applyTag('')" />
         <Tag
-          v-for="t in noteTags"
+          v-for="t in visibleTags"
           :key="t"
           :label="t"
           :clickable="true"
@@ -100,6 +115,9 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
           @click="applyTag(t)"
         />
       </div>
+      <button v-if="noteTags.length > VISIBLE_TAGS" type="button" class="note-tags-toggle" @click="showAllTags = !showAllTags">
+        {{ showAllTags ? '收起标签' : `更多标签（${noteTags.length}）` }}
+      </button>
     </div>
 
     <div v-if="paged.length" class="note-list">
@@ -147,8 +165,8 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
   margin-bottom: var(--space-6);
 }
 .note-search {
-  width: 100%;
-  max-width: 320px;
+  width: 260px;
+  max-width: 100%;
   padding: 8px 14px;
   font-family: var(--font-sans);
   font-size: var(--text-body);
@@ -172,6 +190,23 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+}
+.note-tags-toggle {
+  align-self: flex-start;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+.note-tags-toggle:hover {
+  border-bottom-color: var(--color-accent);
 }
 .note-list {
   display: grid;

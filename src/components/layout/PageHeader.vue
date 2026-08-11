@@ -11,7 +11,12 @@ defineProps({
 <template>
   <header class="page-header" :class="{ 'page-header--grid': grid }">
     <h1 class="page-header__title">{{ title }}</h1>
-    <p v-if="description" class="page-header__desc">{{ description }}</p>
+    <div v-if="description || $slots.actions" class="page-header__row">
+      <p v-if="description" class="page-header__desc">{{ description }}</p>
+      <div v-if="$slots.actions" class="page-header__actions">
+        <slot name="actions" />
+      </div>
+    </div>
     <p v-if="count !== undefined" class="page-header__count">共 {{ count }} 项</p>
   </header>
 </template>
@@ -25,9 +30,19 @@ defineProps({
   font-size: var(--text-h1);
   line-height: var(--lh-h1);
 }
-.page-header__desc {
+.page-header__row {
   margin-top: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.page-header__desc {
   color: var(--color-text-secondary);
+}
+.page-header__actions {
+  margin-left: auto;
 }
 .page-header__count {
   margin-top: var(--space-2);
