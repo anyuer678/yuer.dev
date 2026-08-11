@@ -12,6 +12,7 @@ const baseUrl = import.meta.env.BASE_URL
 defineProps({
   project: { type: Object, required: true },
   featured: { type: Boolean, default: false },
+  showCover: { type: Boolean, default: true },
 })
 </script>
 
@@ -24,7 +25,7 @@ defineProps({
       :aria-label="`查看项目 ${project.title} 详情`"
     />
     <img
-      v-if="project.cover"
+      v-if="project.cover && showCover"
       :src="baseUrl + project.cover"
       :alt="`${project.title} 预览`"
       class="project-card__img"

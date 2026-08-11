@@ -32,7 +32,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
       <div class="container">
         <SectionTitle index="02" title="Featured Projects" to="/projects" />
         <div class="project-grid">
-          <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" featured />
+          <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" featured :show-cover="false" />
         </div>
       </div>
     </section>
