@@ -16,8 +16,7 @@ const emailDomain = email.split('@')[1] ?? ''
 
     <div class="container container--narrow contact">
       <p class="contact__intro">
-        没有表单，直接通过下面的方式找我。我的项目大多公开在 GitHub，可以先去看看；对某个项目有疑问，或者有个想法想找人聊聊，都欢迎。
-        消息我都会看，回复可能慢一些。
+        我的项目大多公开在 GitHub，若对某个项目有疑问，或是有想法，随时都欢迎，恭候一切友善建议。
       </p>
       <ul class="contact__list">
         <li v-if="email" class="contact__item">
