@@ -5,11 +5,11 @@ subtitle: AI 软件维护与演化平台
 status: development
 featured: true
 date: 2026-08
-tech: [Vue 3, Spring Boot, Python, LLM]
+tech: [Vue 3, TypeScript, Spring Boot, Python, PostgreSQL, Redis, LLM, Docker]
 tags: [AI, FullStack]
 summary: AST 代码分析 + LLM 报告生成，为老项目输出中文架构全景文档（开发中）。
 demo:
-github:
+github: https://github.com/anyuer678/evocode
 order: 1
 ---
 
@@ -17,7 +17,7 @@ order: 1
 
 一个探索 AI 辅助软件工程的项目。目标是让 AI 不仅能够生成代码，也能够理解已有软件，帮助开发者完成分析、维护和优化。
 
-目前处于开发阶段：先用代码分析、架构理解和 LLM 报告生成验证核心流程，再逐步扩展维护与演化能力。
+目前已完成 v0.1 代码体检 MVP：上传项目（zip 或 GitHub 地址）→ 扫描 → 质量/架构/演化分析 → AI 体检报告，端到端跑通。AI 医生与技术债看板还在开发中。
 
 ## 设计目标
 
@@ -57,8 +57,7 @@ LLM 只做"基于分析结果的生成"，避免幻觉污染事实。
 
 ## 开发过程
 
-2026-08 立项 → 先用 Python 验证代码解析与依赖提取 → 定 API 契约 → Spring Boot
-网关 → Vue 3 前端原型 → LLM 报告接入（当前阶段）。
+2026-08 立项 → Python 分析服务（扫描/质量/架构/演化）→ Spring Boot 后端 → Vue 3 前端 → LLM 报告接入。目前 P0–P5 已完成，正在做 AI 医生（P6）与技术债看板（P7）。
 
 ## 挑战与解决
 
@@ -74,5 +73,5 @@ LLM 只做"基于分析结果的生成"，避免幻觉污染事实。
 
 ## 源码与 Demo
 
-- GitHub：待补充
+- GitHub：https://github.com/anyuer678/evocode
 - Demo：待补充
