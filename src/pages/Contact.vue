@@ -12,9 +12,13 @@ const emailDomain = email.split('@')[1] ?? ''
 
 <template>
   <div class="container">
-    <PageHeader title="联系" description="欢迎交流 AI 应用与工程化相关话题" />
+    <PageHeader title="联系" description="聊聊项目、聊聊想法都欢迎" />
 
     <div class="container container--narrow contact">
+      <p class="contact__intro">
+        没有表单，直接通过下面的方式找我。我的项目大多公开在 GitHub，可以先去看看；对某个项目有疑问，或者有个想法想找人聊聊，都欢迎。
+        消息我都会看，回复可能慢一些。
+      </p>
       <ul class="contact__list">
         <li v-if="email" class="contact__item">
           <span class="contact__label">邮箱</span>
@@ -33,6 +37,13 @@ const emailDomain = email.split('@')[1] ?? ''
 <style scoped>
 .contact {
   padding-bottom: var(--space-16);
+}
+.contact__intro {
+  margin: 0 0 var(--space-6);
+  font-size: var(--text-body);
+  line-height: var(--lh-body);
+  color: var(--color-text-secondary);
+  max-width: 60ch;
 }
 .contact__list {
   list-style: none;
