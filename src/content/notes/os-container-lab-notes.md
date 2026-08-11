@@ -1,94 +1,64 @@
 ---
-title: 操作系统实验二：Docker、Nginx 与 K8s 部署链路
+title: 把 JPetStore 部署上线：从 Linux 裸机到 K8s 集群
 date: 2026-06
 type: learning
-tags: [Linux, Docker, Kubernetes, 实验]
-summary: 开源操作系统实验二记录：从 Docker 容器化、Compose 多容器编排，到 Tomcat 集群 + Nginx 负载均衡，再到 K8s 基础环境搭建的实验笔记。
+tags: [Linux, Nginx, Docker, Kubernetes, 部署实践]
+summary: 把 JPetStore 用三种方式部署：Linux 裸机 + Nginx、Docker Compose 容器化、Tomcat 集群与 K8s（选做）。踩坑 16 个，大半是环境兼容问题。
 ---
 
-## 实验内容
+## 这次做了什么
 
-《开源操作系统》实验二，主题是容器化与编排部署。按实验指导书走了一条完整链路：**安装 Docker → 编写 Dockerfile 容器化项目 → Compose 构建多容器集群 → 部署多 Tomcat 节点 → Nginx 负载均衡 → 安装 Kubernetes 基础环境**。
+课程要求搭一套完整的 Web 服务器环境并把前后端分离项目部署上去。我拿 JPetStore（Java Web 项目）当实验对象，先后用三种方式把它跑起来：**Linux 裸机部署 → Docker 容器化 → 分布式集群（选做）**。做完最大的感受是：部署的核心工作不是"执行命令"，而是"解决兼容性问题"。
 
-## 第一步：Docker 环境
+## 第一条路：Linux 裸机部署
 
-安装并配置本地 Docker 环境。验证：`docker version`、`docker info`；拉镜像加速可以配 `/etc/docker/daemon.json` 的 registry-mirrors。这一步主要是把 Docker 装好、跑通 `hello-world`。
+在虚拟机（192.168.33.128）上从零装环境：OpenJDK 17、Git、Node.js 20、Maven、Tomcat 9、Nginx、MySQL、Redis，然后 Git 拉源码 → MySQL 初始化建表 → Maven 打 war 包 → 部署到 Tomcat → Nginx 反向代理。
 
-## 第二步：Dockerfile 容器化
+这部分写了 9 个小任务，最有价值的两个：
 
-把课程项目环境容器化，写一个基础 Dockerfile：
+**自动化部署脚本**：手动部署要敲几十条命令，错一步从头排查。我把"停服务 → 清缓存 → Maven 构建 → 拷 war 包 → 启动 → 等初始化"写成一个 `deploy_all.sh`，一键完成。这是这次实验里最实用的一步。
 
-```dockerfile
-FROM openjdk:8-jre
-COPY app.war /usr/local/tomcat/webapps/
-EXPOSE 8080
-CMD ["catalina.sh", "run"]
-```
+**定时备份日志**：用 cron 每天凌晨 2 点把 Tomcat/Nginx 日志打包到 `/data/logs/bak`，同时自动删掉 7 天前的旧包。第一次体会到运维里"无人值守"是怎么实现的。
 
-要点：`FROM` 选基础镜像，`COPY` 把构建产物放进去，`EXPOSE` 声明端口。构建 `docker build -t myapp:v1.0 .`。
+## 第二条路：Docker 容器化
 
-## 第三步：Compose 多容器编排
+写了 Dockerfile（openjdk:17-jdk-slim 基础镜像 + war 包 + EXPOSE 8080），再用 docker-compose.yml 编排 **3 个容器**：后端服务、MySQL 8.0、Nginx 反代入口。`docker-compose up -d` 一条命令全部起来，页面和裸机部署完全一致。
 
-用 `docker-compose.yml` 构建多容器集群，常见组合是应用容器 + 数据库容器：
+这一步让我真正理解了容器化的价值：之前"我本地能跑，虚拟机跑不起来"的环境一致性问题，容器直接打包掉了——项目和依赖一起进镜像，任何机器一键启动。
 
-```yaml
-services:
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - dbdata:/var/lib/mysql
-volumes:
-  dbdata:
-```
+## 第三条路：分布式集群（选做）
 
-命令：`docker-compose up -d` 启动、`docker-compose ps/logs -f` 查看、`down -v` 连带删卷。要点：`depends_on` 控制启动顺序，命名卷持久化数据。
+两个方案都做了：
 
-## 第四步：Tomcat 集群
+**多 Tomcat + Nginx 负载均衡**：复制 Tomcat 目录做两个节点（改端口 8080/8081 避免冲突），Nginx upstream 轮询分发。验证时用 `ps -ef | grep tomcat` 确认两个进程都在跑，单节点挂了另一个还能服务。
 
-部署多 Tomcat 节点，修改端口避免冲突。常见做法是同一镜像跑多个容器，映射不同宿主机端口：
+**Docker + K8s 单节点集群**：kubeadm init 建集群 → 移除 master 污点 → Flannel 网络插件 → Deployment 起 3 个 Pod 副本 → Service（NodePort 30080）做统一入口。`kubectl scale --replicas=5` 一条命令扩到 5 个副本。
 
-```bash
-docker run -d -p 8081:8080 --name tomcat1 myapp:v1.0
-docker run -d -p 8082:8080 --name tomcat2 myapp:v1.0
-```
+对比下来：传统集群简单直接，适合中小项目；K8s 除了分发还带扩缩容、故障自愈，是云服务的主流方向。这条演进线（物理机 → 容器 → 云原生）是这次实验额外收获的视野。
 
-这样得到两个应用节点，为下一步负载均衡做准备。
+## 踩坑记录（16 个问题的归纳）
 
-## 第五步：Nginx 负载均衡
+大部分问题不是代码 bug，而是**环境与项目预期不匹配**：
 
-Nginx 做反向代理 + 负载均衡，把请求分发到两个 Tomcat 节点：
+| 类别 | 问题 | 根因与解法 |
+|---|---|---|
+| JDK 版本 | war 包部署后页面 404 | 项目要 Java 17，Tomcat 默认 JDK 8，字节码加载失败。装 JDK 17 + setenv.sh 指定 JAVA_HOME |
+| 跨平台构建 | Maven 构建报 cmd 不存在 | pom 里 exec 插件绑了 Windows 批处理。加 `-Dmaven.exec.skip=true` 跳过 |
+| Nginx 占端口 | 80 端口一直显示欢迎页 | Ubuntu 默认 sites-enabled/default 优先级更高。删掉默认站点 |
+| 上下文路径 | 图片/样式 404 裂图 | 项目上下文是 /jpetstore，代理转发到根路径丢了前缀。改首页 302 跳转带完整前缀 |
+| 路径叠加 | 加 rewrite 后大面积 404 | rewrite 补前缀 + location 转发叠加成 /jpetstore/jpetstore/。移除 rewrite，拆两条规则 |
+| K8s 端口 | kubeadm init 预检失败 | kubelet 提前启动常驻占端口。停用并清理所有 kube 进程后重启 |
+| containerd | 版本过高降级警告 | 系统 containerd 比 K8s 1.28 新。init 时 `--cri-socket` 显式指定 |
+| docker.sock | 日志刷屏警告 | 只装了 containerd 没装 Docker。init 加 `--cri-socket` 屏蔽 docker 探测 |
+| swap | 重启后预检警告 | 只 swapoff -a 没改 /etc/fstab，重启复原。永久注释 fstab 挂载项 |
+| 内核网络 | Flannel 装完节点 NotReady | 没加载 overlay/br_netfilter，没配网桥转发。modprobe + sysctl 全局生效 |
+| 权限 | docker build 拒绝连接 | 用户没加 docker 组。usermod -aG docker + newgrp |
+| 操作 | 终端直接粘贴 YAML 报"未找到命令" | 终端把 apiVersion 当命令执行。vim 建文件再 kubectl apply -f |
 
-```nginx
-upstream tomcat_cluster {
-    server 127.0.0.1:8081;
-    server 127.0.0.1:8082;
-}
+还有一个插曲：SFTP 文件服务器方案尝试失败后换了别的方式传文件——"一计不成，再换方法"。
 
-server {
-    listen 80;
-    location / {
-        proxy_pass http://tomcat_cluster;
-    }
-}
-```
+## 我的体会
 
-验证：连续访问 Nginx 端口，观察请求被轮询分发到不同节点；停掉一个节点再访问，确认另一节点仍能服务（配合 `max_fails` 自动摘除）。
-
-## 第六步：Kubernetes 基础环境
-
-安装 Kubernetes 基础环境，这一步只搭环境不做应用编排。要点：kubeadm 初始化集群、kubelet/kube-proxy 组件、`kubectl get nodes` 验证节点 Ready。
-
-## 实验收获
-
-- Docker 的镜像分层 + 容器可写层模型，理解了"一次构建到处运行"
-- Compose 用声明式 yaml 管理多容器，比一个个 `docker run` 清晰
-- 负载均衡不是玄学：upstream + proxy_pass 三行配置就能把流量分到多个后端，配合健康检查能自动摘除故障节点
-- 从 Docker 单机 → Compose 编排 → 集群 + 负载均衡 → K8s，是一条递进的学习路径，后面学编排就不会觉得 K8s 突兀
+- **代码能本地跑 ≠ 能部署成功**。环境配置、路径匹配、权限管理这些细节才是生产部署的核心难点
+- 排查要按"日志 → 原理 → 根因"走，盲目试错最浪费时间
+- 这轮实验时间跨度很大（电脑崩坏重装后环境反复出问题，实验做了很多次），过程中不停查资料、问同学和 AI，攒下的排查经验比结果本身值钱
