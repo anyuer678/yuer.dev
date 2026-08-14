@@ -17,7 +17,7 @@ function walk(dir) {
 
 // --- 技术栈规范名表（04 §7） ---
 const TECH_WHITELIST = new Set(
-  'Vue 3, Vite, TypeScript, JavaScript, Spring Boot, Java, Python, LLM, Electron, React, Tauri, Node.js, Docker, Linux, Git, MySQL, Redis, PostgreSQL, Flask, FastAPI, MCP, AI, OpenAI API, GitHub Actions, HTML, CSS'.split(
+  'Vue 3, Vite, TypeScript, JavaScript, Spring Boot, Java, Python, LLM, Electron, React, Tauri, Node.js, Docker, Linux, Git, MySQL, Redis, PostgreSQL, Flask, FastAPI, MCP, AI, OpenAI API, GitHub Actions, HTML, CSS, Three.js, MyBatis, Capacitor'.split(
     ', '
   )
 )
