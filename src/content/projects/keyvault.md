@@ -11,6 +11,7 @@ summary: 本地加密钥匙串管 LLM API Key / GitHub Token：主密码不落�
 demo:
 github: https://github.com/anyuer678/keyvault
 order: 14
+cover: projects/keyvault.svg
 related: [keyvault-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "AES-256-GCM 加密钥匙串 + audit 审计 + shell 注入"}]
 ---
@@ -44,6 +45,16 @@ kv CLI / tkinter GUI
 ## 技术选择
 
 - **Python 标准库 + cryptography**：加密原语成熟，CLI 跨平台
+
+## 开发过程
+
+按文档实现后对照修正：先定加密设计（scrypt 派生 + AES-256-GCM + AAD），再实现命令集与审计；README 专门写了"实现说明（与架构文档的偏差）"一节。
+
+## 挑战与解决
+
+1. 密钥安全 → 主密码不落盘，主密钥只存进程内存、退出即失效；主密码丢失 = 数据不可恢复，无后门
+2. 篡改防护 → 每条独立 nonce，AAD 绑 name+provider；密文/标签/nonce 被改直接抛错
+3. Windows 权限 → os.chmod 的 0600 只影响只读位，README 提示需配合磁盘加密
 
 ## 未来计划
 

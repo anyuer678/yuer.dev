@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#e8e8e4" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <rect width="1280" height="720" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- 星标 + 清理线 -->
+    <circle cx="640" cy="330" r="130" fill="#f6e9e1"/>
+    <path d="M640 235 l26 53 58 8 -42 41 10 58 -52 -27 -52 27 10 -58 -42 -41 58 -8 z" fill="none" stroke="#b05c3a" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M730 420 l60 -60" stroke="#6e6e68" stroke-width="10" stroke-linecap="round"/>
+    <path d="M750 420 l40 -40" stroke="#6e6e68" stroke-width="10" stroke-linecap="round"/>
+  <text x="72" y="620" font-family="Georgia, 'Songti SC', serif" font-size="64" fill="#1f1f1d">Star 清理建议器</text>
+  <text x="74" y="672" font-family="ui-monospace, Consolas, monospace" font-size="28" fill="#6e6e68">StarGrave</text>
+  <rect x="72" y="96" width="88" height="6" fill="#b05c3a"/>
+</svg>

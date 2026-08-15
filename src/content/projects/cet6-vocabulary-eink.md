@@ -11,6 +11,7 @@ summary: 针对 E-Ink 墨水屏优化的 CET-6 词汇应用：去彩色动画、
 demo: https://anyuer678.github.io/cet6-vocabulary-eink/
 github: https://github.com/anyuer678/cet6-vocabulary-eink
 order: 18
+cover: projects/cet6-vocabulary-eink.svg
 journey: [{"date": "2026-07", "title": "完成", "desc": "E-Ink 优化版：去动画、高对比度，三端构建"}]
 ---
 
@@ -53,6 +54,16 @@ word-eink/
 - **Electron**：Windows 桌面壳；**Capacitor**：Android 打包
 - **eSpeak-ng**：TTS 离线发音引擎
 - **localStorage**：数据本地持久化
+
+## 开发过程
+
+在彩色版基础上做 E-Ink 专项优化：先梳理彩色版的动画/主题/动效依赖点，再逐一替换为高对比度、粗边框、纯色背景的墨水屏样式；发音切到 eSpeak-ng 离线引擎，保留完整学习功能。
+
+## 挑战与解决
+
+1. 护眼与功能平衡 → 去彩色动画但保留背诵/练习/错词本/统计全部功能，黑白为主 + 衬线字体提升可读性
+2. 静态环境限制 → TTS 离线发音引擎、IndexedDB 在 GitHub Pages 静态环境下受限，提供 Web / Android APK / Windows EXE 三端安装包
+3. 多端构建 → Electron 桌面壳 + Capacitor Android 打包，`build.ps1` 交互式选择构建目标
 
 ## 未来计划
 
