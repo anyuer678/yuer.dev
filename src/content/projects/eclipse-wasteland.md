@@ -11,6 +11,7 @@ summary: 浏览器端 FPS PVE 射击游戏：多波次副本、无尽爬塔、Ro
 demo: https://anyuer678.github.io/eclipse-wasteland/
 github: https://github.com/anyuer678/eclipse-wasteland
 order: 15
+cover: projects/eclipse-wasteland.svg
 journey: [{"date": "2026-08", "title": "开发中", "desc": "副本/爬塔 + 局内成长 + 深度养成系统，AI 协同开发"}]
 ---
 
@@ -51,6 +52,16 @@ src/
 
 - **Three.js**：程序化建模 + 开源 GLB 模型 + 阴影，浏览器 3D 渲染
 - **TypeScript + Vite**：类型安全与快速构建
+
+## 开发过程
+
+AI 协同开发：DeepSeek 全程深度参与——资料搜集与设计（多款射击与 Roguelite 游戏的武器机制、数值体系、养成框架调研整理成设计依据）、10 把武器的机制差异与敌人行为树、BOSS 招式、局内成长构筑均由 AI 设计实现；玩家侧负责提出设计思路、修正数值与体验问题（命中判定、地形高度、UI 布局），并全程把关功能迭代方向。代码审查（正确性/性能/存档安全）由子代理执行并修复。
+
+## 挑战与解决
+
+1. 玩法深度 → 集百家之长的设计：武器 10 种机制 × 敌人 7 兵种 + 精英词缀 + 2 BOSS + 12 种局内 BUFF，形成原创 PVE 循环
+2. 纯前端约束 → localStorage 存档，无后端，任意静态服务器可部署
+3. 数据安全 → 存档安全纳入代码审查项，养成数据与局内构筑独立管理
 
 ## 未来计划
 

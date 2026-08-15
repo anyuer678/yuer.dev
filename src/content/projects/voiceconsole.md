@@ -11,6 +11,7 @@ summary: 对着电脑说一句就执行并播报：本地语音识别 → 意图
 demo:
 github: https://github.com/anyuer678/voiceconsole
 order: 8
+cover: projects/voiceconsole.svg
 related: [voice-console-mcp-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "五层链路打通：STT → 意图解析 → MCP 工具 → 安全校验 → TTS 播报"}]
 ---
@@ -49,6 +50,16 @@ journey: [{"date": "2026-08", "title": "雏形", "desc": "五层链路打通：S
 - **faster-whisper**：本地语音识别，首次运行下载 base 模型约 150MB
 - **edge-tts**：TTS 播报，失败自动降级系统播报
 - **MCP**：以标准工具协议暴露执行能力，便于扩展
+
+## 开发过程
+
+先搭 STT → 意图解析的骨架，再把执行能力收进 `mcp_server.py` 的 5 个工具；安全门最后接入（先空值/注入检查，再黑名单、白名单，剩余走语音确认）。测试覆盖了安全门、意图解析、执行体、STT 与 MCP 真实 stdio 子进程握手。
+
+## 挑战与解决
+
+1. 误触发风险 → 二阶段语音确认：命令先过静态校验，白名单外必须口头确认，30 秒超时自动取消
+2. 隐私与本地优先 → faster-whisper 本地识别，Web 面板只监听 127.0.0.1，密钥走环境变量
+3. 使用门槛 → `keyboard` 热键在 Windows 需要管理员权限，提供 `main.py --text` 免麦克风演示模式
 
 ## 未来计划
 

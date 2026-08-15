@@ -11,6 +11,7 @@ summary: 规则驱动的跨语言代码升级：行级正则替换生成 unified
 demo:
 github: https://github.com/anyuer678/upgrademate
 order: 11
+cover: projects/upgrademate.svg
 related: [upgrademate-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "规则集驱动 + 三级风险报告 + 备份回滚"}]
 ---
@@ -48,6 +49,16 @@ CLI upgrade → 规则加载校验 → dry-run 生成 diff + 风险报告
 ## 技术选择
 
 - **Python 3.9+**：标准库实现，零第三方依赖，跨平台
+
+## 开发过程
+
+先定"规则即 JSON"的 profile 契约（id / priority / match / replace / explain / example），再实现 dry-run 与 diff 生成；安全链路（备份 → 原子替换 → 日志）最后接入。测试会对每条内置规则做断言。
+
+## 挑战与解决
+
+1. 替换破坏代码 → 默认 dry-run 绝不写文件；`--apply` 前备份原文件并记录前后 SHA256，`--restore` 按 SHA256 比对还原
+2. 正则灾难性回溯 → 加载时静态检查拒绝；单行用 `re.subn`，count=0 视为未命中；>100KB 超长行按未命中处理
+3. 写入安全 → 临时文件 + `os.replace` 原子替换，备份权限尽量 0600
 
 ## 未来计划
 

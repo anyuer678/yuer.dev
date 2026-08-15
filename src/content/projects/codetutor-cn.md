@@ -11,6 +11,7 @@ summary: 贴一段代码，像老师一样按水平逐步讲"这段代码在干�
 demo:
 github: https://github.com/anyuer678/codetutor-cn
 order: 9
+cover: projects/codetutor-cn.svg
 related: [codetutor-cn-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "五步教学流程 + 年龄分级词汇表，纯静态单页可用"}]
 ---
@@ -48,6 +49,16 @@ index.html（纯静态）
 
 - **原生 JavaScript**：零框架零依赖，任何静态服务器可部署
 - **LLM 接口**：OpenAI 兼容协议，JSON 契约约束输出格式
+
+## 开发过程
+
+先定五步教学流程与 JSON 契约，再按模块拆分实现：prompts（词表/角色卡）、llm（唯一网络出口）、state（状态机）、ui（纯函数渲染）。测试用 pytest + node 内置测试器，零第三方依赖。
+
+## 挑战与解决
+
+1. 浏览器直调部分 API 会 CORS 失败 → 提供可选 `server.py` 代理，key 从环境变量读、不出现在前端
+2. 隐私 → 粘贴的代码只在浏览器内存处理，localStorage 只存偏好不存代码
+3. 讲解超时 → 超 30 秒提示重试，README 明确列出已知限制
 
 ## 未来计划
 

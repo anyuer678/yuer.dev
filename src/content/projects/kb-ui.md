@@ -11,6 +11,7 @@ summary: 自建前端素材库与工程模板集：55+ 组件、48 套主题、3
 demo: https://anyuer678.github.io/kb-ui/
 github: https://github.com/anyuer678/kb-ui
 order: 16
+cover: projects/kb-ui.svg
 journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"}]
 ---
 
@@ -51,6 +52,16 @@ kb-ui/（pnpm workspace monorepo）
 - **Vue 3.5 + TypeScript 5.9**：组件库与类型安全
 - **Vite 8（lib mode）+ tsup**：构建；pnpm 10 workspace monorepo 管理多包
 - **Vitest + Playwright**：239 例单测 + 19 项 e2e
+
+## 开发过程
+
+按包分层推进：先建 monorepo 骨架与共享配置（tsconfig/eslint/prettier/stylelint），再实现组件库与主题系统，随后补工具库、脚手架模板与 DevOps 资产；docs 用 Vitepress 承载组件文档与模板说明。
+
+## 挑战与解决
+
+1. 零运行时依赖 → 样式全部原生 CSS + 设计 token，每个组件独立 `style.css`，构建产物 `dist/styles/*` 可单独引入
+2. 多包管理 → pnpm workspace monorepo + changesets 管理版本与 changelog，CI 自动创建版本 PR
+3. 工程质量 → Vitest 239 例单测 + Playwright 19 项 e2e，覆盖组件与文档站
 
 ## 未来计划
 

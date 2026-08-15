@@ -11,6 +11,7 @@ summary: 让 AI 看图把 IMG 照片改成中文语义名：默认 dry-run 只�
 demo:
 github: https://github.com/anyuer678/picren
 order: 12
+cover: projects/picren.svg
 related: [picrename-ai-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "AI 看图 → 中文语义命名 → dry-run/execute/undo 全链路"}]
 ---
@@ -47,6 +48,16 @@ journey: [{"date": "2026-08", "title": "雏形", "desc": "AI 看图 → 中文�
 
 - **Python + Pillow**：本地图片压缩，控制上传体积
 - **LLM 视觉**：OpenAI 兼容视觉接口，识别图片内容生成语义名
+
+## 开发过程
+
+先实现 dry-run 预览与命名模板，再接视觉识别与分类体系；回滚链路（rename_map.csv）与防覆盖逻辑在真实改名前接入。测试用 stub 注入模拟 API，离线可跑。
+
+## 挑战与解决
+
+1. 隐私 → 图片本地 Pillow 压缩（最长边 ≤800px、JPEG 质量 80）才发送，原图和 EXIF 不上传；支持 Ollama 等本地模型端点
+2. 误改名/覆盖 → 默认 dry-run 只预览，`--execute` 才真改；新文件名过滤 Windows 非法字符、重名自动追加 `_1`，绝不覆盖已有文件
+3. 识别失败 → 退出码区分正常 / 参数错误 / 识别失败超阈值（默认 20% 中止）
 
 ## 未来计划
 

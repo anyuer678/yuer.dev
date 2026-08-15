@@ -11,6 +11,7 @@ summary: 软件开发架构平台课程实验：8 人团队把 JPetStore 重构�
 demo:
 github: https://github.com/anyuer678/-SSM-PetStore-CMS-
 order: 17
+cover: projects/jpetstore-ssm-cms.svg
 related: [jpetstore-ssm-notes]
 journey: [{"date": "2026-05", "title": "完成", "desc": "SSM 重构 + 后台管理系统，8 人团队协作"}]
 ---
@@ -48,6 +49,16 @@ journey: [{"date": "2026-05", "title": "完成", "desc": "SSM 重构 + 后台管
 - **Spring Boot 2.7.18 + Spring MVC + MyBatis-Plus 3.5.3.1**：SSM 经典组合
 - **Webpack 5**：多入口、CSS 提取、代码分割、开发代理
 - **HSQLDB**：开发期内存数据库，生产切 MySQL
+
+## 开发过程
+
+8 人团队分模块并行：用户/订单/商品/购物车按模块拆解，前后端先定 RESTful API 契约再联调；我负责用户模块 API 设计与开发（与吴宗翰）、前端商品模块（与张振宇），其余模块参与测试与文档。
+
+## 挑战与解决
+
+1. 前后端跨域 → Webpack Dev Server 的 proxy 把 `/api` 请求代理到后端 8080，绕开同源策略
+2. Session Cookie 传递 → Axios 配 `withCredentials: true` 确保请求带 Cookie
+3. 多页面 chunk 配置 → HtmlWebpackPlugin 的 chunks 参数精确控制每个页面加载的 JS，避免多余加载
 
 ## 未来计划
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#e8e8e4" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <rect width="1280" height="720" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- 钥匙 -->
+    <circle cx="640" cy="330" r="130" fill="#f6e9e1"/>
+    <circle cx="640" cy="320" r="55" fill="none" stroke="#b05c3a" stroke-width="10"/>
+    <path d="M685 365 l80 80 M730 420 l25 25" stroke="#b05c3a" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="745" cy="445" r="9" fill="#b05c3a"/>
+  <text x="72" y="620" font-family="Georgia, 'Songti SC', serif" font-size="64" fill="#1f1f1d">API 密钥保险箱</text>
+  <text x="74" y="672" font-family="ui-monospace, Consolas, monospace" font-size="28" fill="#6e6e68">KeyVault</text>
+  <rect x="72" y="96" width="88" height="6" fill="#b05c3a"/>
+</svg>

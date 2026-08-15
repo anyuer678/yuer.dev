@@ -18,6 +18,60 @@
     "link": "/projects/desktoppet"
   },
   {
+    "date": "2026-08",
+    "title": "语音指令控制台（MCP）雏形",
+    "type": "project",
+    "link": "/projects/voiceconsole"
+  },
+  {
+    "date": "2026-08",
+    "title": "中文代码教学器雏形",
+    "type": "project",
+    "link": "/projects/codetutor-cn"
+  },
+  {
+    "date": "2026-08",
+    "title": "Star 清理建议器雏形",
+    "type": "project",
+    "link": "/projects/stargrave"
+  },
+  {
+    "date": "2026-08",
+    "title": "旧代码升级器雏形",
+    "type": "project",
+    "link": "/projects/upgrademate"
+  },
+  {
+    "date": "2026-08",
+    "title": "图片批量 AI 重命名器雏形",
+    "type": "project",
+    "link": "/projects/picren"
+  },
+  {
+    "date": "2026-08",
+    "title": "日志时间戳查询器雏形",
+    "type": "project",
+    "link": "/projects/logtimeline"
+  },
+  {
+    "date": "2026-08",
+    "title": "API 密钥保险箱雏形",
+    "type": "project",
+    "link": "/projects/keyvault"
+  },
+  {
+    "date": "2026-08",
+    "title": "开始开发 ECLIPSE 荒原防线",
+    "type": "project",
+    "link": "/projects/eclipse-wasteland"
+  },
+  {
+    "date": "2026-08",
+    "title": "开始 KB UI 组件库",
+    "type": "project",
+    "link": "/projects/kb-ui"
+  },
+  {
     "date": "2026-07",
     "title": "完成 CodeDrill",
     "type": "project",
@@ -28,6 +82,12 @@
     "title": "发布 CET-6 词汇背诵系统",
     "type": "project",
     "link": "/projects/cet6-vocabulary"
+  },
+  {
+    "date": "2026-07",
+    "title": "完成 CET-6 墨水屏版",
+    "type": "project",
+    "link": "/projects/cet6-vocabulary-eink"
   },
   {
     "date": "2026-07",
@@ -58,6 +118,12 @@
     "title": "开发 Chatez",
     "type": "project",
     "link": "/projects/chatez"
+  },
+  {
+    "date": "2026-05",
+    "title": "JPetStore SSM 重构（团队项目）",
+    "type": "project",
+    "link": "/projects/jpetstore-ssm-cms"
   },
   {
     "date": "2026-05",

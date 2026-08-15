@@ -11,6 +11,7 @@ summary: 说一句"昨天下午服务器为什么崩了"，自动解析成时间
 demo:
 github: https://github.com/anyuer678/logtimeline
 order: 13
+cover: projects/logtimeline.svg
 related: [logtimeline-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "自然语言时间 → 日志过滤 → LLM 归因链路跑通"}]
 ---
@@ -42,6 +43,16 @@ journey: [{"date": "2026-08", "title": "雏形", "desc": "自然语言时间 →
 ## 技术选择
 
 - **Python**：标准库 + 可选 OpenAI 兼容客户端，依赖极简
+
+## 开发过程
+
+先做自然语言 → RFC3339 时间解析，再接日志过滤与编码自动检测；LLM 归因与离线降级最后接入。测试配了 pytest，能跑通"时间描述 → 日志过滤 → 归因"整条链。
+
+## 挑战与解决
+
+1. Windows 中文日志乱码 → UTF-8 严格试读失败自动回退 GBK，日志文件只读打开
+2. 日志不出本机 → `--no-llm` / `--dry-run` 完全本地；LLM 只收约 2KB token 量的日志样本，API Key 只从环境变量读
+3. LLM 不可用 → 自动降级为离线统计，退出码区分归因失败与正常
 
 ## 未来计划
 
