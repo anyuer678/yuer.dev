@@ -11,6 +11,7 @@ summary: 让 AI Agent 深度理解你的代码仓库——从静态分析到 Git
 demo:
 github: https://github.com/anyuer678/developer-intelligence
 order: 10
+related: [developer-intelligence-notes]
 journey: [{"date": "2026-08", "title": "架构规划", "desc": "4 个子项目架构设计完成，repo-intel-core 静态分析引擎开发中"}]
 ---
 
