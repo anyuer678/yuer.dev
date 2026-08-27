@@ -10,7 +10,7 @@ tags: [GitHub, 工具]
 summary: 扫描 GitHub star 仓库，本地规则判断哪些已死、哪些值得复查，可选 LLM 复核，unstar 幂等可回滚；token 只走环境变量。
 demo:
 github: https://github.com/anyuer678/stargrave
-order: 10
+order: 12
 cover: projects/stargrave.svg
 related: [stargrave-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "扫描 → 规则判定 → LLM 复核 → 安全 unstar 全链路"}]

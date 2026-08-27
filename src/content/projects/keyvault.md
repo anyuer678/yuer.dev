@@ -10,7 +10,7 @@ tags: [安全, 工具]
 summary: 本地加密钥匙串管 LLM API Key / GitHub Token：主密码不落盘，scrypt 派生 + AES-256-GCM 加密，audit 扫明文但值永不打印。
 demo:
 github: https://github.com/anyuer678/keyvault
-order: 14
+order: 17
 cover: projects/keyvault.svg
 related: [keyvault-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "AES-256-GCM 加密钥匙串 + audit 审计 + shell 注入"}]

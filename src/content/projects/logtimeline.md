@@ -10,7 +10,7 @@ tags: [日志, 工具]
 summary: 说一句"昨天下午服务器为什么崩了"，自动解析成时间范围去扫日志，再用 LLM 归因；--no-llm 模式完全本地，日志不出本机。
 demo:
 github: https://github.com/anyuer678/logtimeline
-order: 13
+order: 15
 cover: projects/logtimeline.svg
 related: [logtimeline-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "自然语言时间 → 日志过滤 → LLM 归因链路跑通"}]

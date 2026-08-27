@@ -10,7 +10,7 @@ tags: [Desktop]
 summary: Electron 桌面宠物：角色以资源包扩展、状态事件驱动，带陪伴统计与事件推送 API，450 例单测。
 demo:
 github: https://github.com/anyuer678/desktoppet
-order: 4
+order: 5
 related: [deskpet-notes]
 cover: projects/desktoppet.jpg
 journey: [{"date": "2026-08", "title": "v1.0", "desc": "Electron 桌宠：事件记录、统计报表、角色包、推送 API"}]

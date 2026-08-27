@@ -10,7 +10,7 @@ tags: [AI, FullStack]
 summary: AST 代码分析 + LLM 报告生成，为老项目输出中文架构全景文档（开发中）。
 demo:
 github:
-order: 1
+order: 2
 related: [evocode-architecture]
 journey: [{"date": "2026-08", "title": "立项", "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"}]
 ---

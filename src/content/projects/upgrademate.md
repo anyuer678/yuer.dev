@@ -10,7 +10,7 @@ tags: [重构, 工具]
 summary: 规则驱动的跨语言代码升级：行级正则替换生成 unified diff 与风险分级报告，--apply 前自动备份可回滚；可选 LLM 只提示不改文件。
 demo:
 github: https://github.com/anyuer678/upgrademate
-order: 11
+order: 13
 cover: projects/upgrademate.svg
 related: [upgrademate-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "规则集驱动 + 三级风险报告 + 备份回滚"}]

@@ -10,7 +10,7 @@ tags: [SSM, 团队项目, 后台管理]
 summary: 软件开发架构平台课程实验：8 人团队把 JPetStore 重构为 Spring MVC + MyBatis-Plus，并开发三大后台模块；负责用户模块 API 与前端商品模块。
 demo:
 github: https://github.com/anyuer678/-SSM-PetStore-CMS-
-order: 17
+order: 21
 cover: projects/jpetstore-ssm-cms.svg
 related: [jpetstore-ssm-notes]
 journey: [{"date": "2026-05", "title": "完成", "desc": "SSM 重构 + 后台管理系统，8 人团队协作"}]

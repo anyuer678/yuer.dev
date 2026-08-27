@@ -10,7 +10,7 @@ tags: [游戏, Three.js, 前端]
 summary: 浏览器端 FPS PVE 射击游戏：多波次副本、无尽爬塔、Roguelite 局内成长与深度养成系统，纯前端无后端，Three.js 渲染。
 demo: https://anyuer678.github.io/eclipse-wasteland/
 github: https://github.com/anyuer678/eclipse-wasteland
-order: 15
+order: 19
 cover: projects/eclipse-wasteland.svg
 journey: [{"date": "2026-08", "title": "开发中", "desc": "副本/爬塔 + 局内成长 + 深度养成系统，AI 协同开发"}]
 ---

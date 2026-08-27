@@ -10,7 +10,7 @@ tags: [Learning]
 summary: CET-6 全词库 5023 词：背诵、默写、回忆、选择题四种模式 + 错词本，离线发音，Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/cet6-vocabulary/
 github: https://github.com/anyuer678/cet6-vocabulary
-order: 5
+order: 6
 related: [quiz-tools-notes, ai-design-notes]
 cover: projects/cet6-vocabulary.png
 journey: [{"date": "2026-07", "title": "开始开发", "desc": "CET-6 词汇背诵系统，覆盖考试大纲全部 5023 词"}]
