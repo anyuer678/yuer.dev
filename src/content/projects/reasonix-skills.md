@@ -11,6 +11,7 @@ summary: 5 个纯 Markdown 技能，把 DeepSeek Harness 的工程范式沉淀�
 demo:
 github: https://github.com/anyuer678/reasonix-skills
 order: 22
+related: [reasonix-skills-notes]
 journey: [{"date": "2026-08", "title": "完成", "desc": "5 个技能全部通过验证，408 行 / 17KB，12 项引用零虚构"}]
 ---
 

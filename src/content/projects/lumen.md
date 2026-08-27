@@ -11,6 +11,7 @@ summary: 24/7 常驻运行的个人 AI Runtime：拥有记忆、推理、工具�
 demo:
 github: https://github.com/anyuer678/lumen
 order: 1
+related: [lumen-notes]
 journey: [{"date": "2026-08", "title": "v3 Benchmark 通过", "desc": "100 用例全部通过，38 项测试 PASS，Agent Loop + 记忆 + 安全防护完整闭环"}]
 ---
 

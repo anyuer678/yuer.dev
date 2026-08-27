@@ -11,6 +11,7 @@ summary: LogTimeline 的 DeepSeek Harness 适配版：自然语言时间描述 �
 demo:
 github: https://github.com/anyuer678/dsh-logtimeline
 order: 16
+related: [dsh-logtimeline-notes]
 journey: [{"date": "2026-08", "title": "完成", "desc": "LogTimeline 核心功能适配为 DSH 插件，13 项测试通过"}]
 ---
 

@@ -11,6 +11,7 @@ summary: 多维度限额密钥签发与消费网关：项目体系 / 余额计�
 demo:
 github: https://github.com/anyuer678/key-tool
 order: 18
+related: [key-tool-notes]
 journey: [{"date": "2026-08", "title": "功能完整", "desc": "Web 面板 + CLI + OpenAI SDK 三种使用方式，65 项测试通过"}]
 ---
 
