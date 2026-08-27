@@ -3,14 +3,14 @@ slug: polycodehub
 title: PolyCodeHub
 subtitle: 全栈在线判题平台
 status: development
-featured: true
+featured: false
 date: 2026-08
 tech: [TypeScript, JavaScript, Java, Spring Boot, Python, FastAPI, Node.js, Docker, Redis]
 tags: [OJ, 全栈, 判题沙箱]
 summary: 自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，进程级沙箱判题（setuid 降权 + seccomp 隔离），Docker Compose 一键启动。
 demo: https://anyuer678.github.io/polycodehub/
 github: https://github.com/anyuer678/polycodehub
-order: 7
+order: 8
 related: [polycodehub-architecture]
 cover: projects/polycodehub.png
 journey: [{"date": "2025-09", "title": "雏形", "desc": "用 Next.js 搭出第一版在线判题平台"}, {"date": "2026-08", "title": "迁移迭代", "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"}]

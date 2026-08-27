@@ -10,7 +10,7 @@ tags: [学习, E-Ink, 跨端]
 summary: 针对 E-Ink 墨水屏优化的 CET-6 词汇应用：去彩色动画、保留完整学习功能，提供低功耗护眼阅读体验；Web / Android / Windows 三端。
 demo: https://anyuer678.github.io/cet6-vocabulary-eink/
 github: https://github.com/anyuer678/cet6-vocabulary-eink
-order: 18
+order: 23
 cover: projects/cet6-vocabulary-eink.svg
 journey: [{"date": "2026-07", "title": "完成", "desc": "E-Ink 优化版：去动画、高对比度，三端构建"}]
 ---

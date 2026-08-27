@@ -10,7 +10,7 @@ tags: [语音, 工具]
 summary: 对着电脑说一句就执行并播报：本地语音识别 → 意图解析 → MCP 工具调用，白名单 + 语音确认两道安全门，雏形链路完整。
 demo:
 github: https://github.com/anyuer678/voiceconsole
-order: 8
+order: 9
 cover: projects/voiceconsole.svg
 related: [voice-console-mcp-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "五层链路打通：STT → 意图解析 → MCP 工具 → 安全校验 → TTS 播报"}]

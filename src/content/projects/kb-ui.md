@@ -10,7 +10,7 @@ tags: [组件库, 工程化, monorepo]
 summary: 自建前端素材库与工程模板集：55+ 组件、48 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动。
 demo: https://anyuer678.github.io/kb-ui/
 github: https://github.com/anyuer678/kb-ui
-order: 16
+order: 20
 cover: projects/kb-ui.svg
 journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"}]
 ---

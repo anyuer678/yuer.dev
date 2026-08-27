@@ -10,7 +10,7 @@ tags: [AI, Desktop]
 summary: 可配置 Prompt + Skill 的 AI 工作台（v1.14.1）：多角色切换、Skill 技能系统、SSE 流式输出、会话持久化，支持 Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
-order: 3
+order: 4
 related: [qq-ai-bot-notes, voice-console-mcp-notes]
 cover: projects/chatez.png
 journey: [{"date": "2026-05", "title": "开始开发", "desc": "可配置 Prompt + Skill 的 AI 工作台（React 18 + Tauri 2.x）"}]

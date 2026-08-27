@@ -67,6 +67,36 @@
   },
   {
     "date": "2026-08",
+    "title": "Lumen Agent Runtime v3 Benchmark 通过",
+    "type": "project",
+    "link": "/projects/lumen"
+  },
+  {
+    "date": "2026-08",
+    "title": "Developer Intelligence 架构规划",
+    "type": "project",
+    "link": "/projects/developer-intelligence"
+  },
+  {
+    "date": "2026-08",
+    "title": "API Key 多租户网关功能完整",
+    "type": "project",
+    "link": "/projects/key-tool"
+  },
+  {
+    "date": "2026-08",
+    "title": "DSH LogTimeline 适配完成",
+    "type": "project",
+    "link": "/projects/dsh-logtimeline"
+  },
+  {
+    "date": "2026-08",
+    "title": "Reasonix Skills 5 个技能完成",
+    "type": "project",
+    "link": "/projects/reasonix-skills"
+  },
+  {
+    "date": "2026-08",
     "title": "开始 KB UI 组件库",
     "type": "project",
     "link": "/projects/kb-ui"

@@ -10,7 +10,7 @@ tags: [教学, AI]
 summary: 贴一段代码，像老师一样按水平逐步讲"这段代码在干什么、为什么这么写"，还能出练习题；纯静态单页零依赖，按年龄段分级词汇。
 demo:
 github: https://github.com/anyuer678/codetutor-cn
-order: 9
+order: 11
 cover: projects/codetutor-cn.svg
 related: [codetutor-cn-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "五步教学流程 + 年龄分级词汇表，纯静态单页可用"}]

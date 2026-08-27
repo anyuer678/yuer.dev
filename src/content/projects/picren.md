@@ -10,7 +10,7 @@ tags: [图片, 工具]
 summary: 让 AI 看图把 IMG 照片改成中文语义名：默认 dry-run 只预览，--execute 才真改，--undo 可回滚；图片本地压缩后才上传，隐私安全。
 demo:
 github: https://github.com/anyuer678/picren
-order: 12
+order: 14
 cover: projects/picren.svg
 related: [picrename-ai-notes]
 journey: [{"date": "2026-08", "title": "雏形", "desc": "AI 看图 → 中文语义命名 → dry-run/execute/undo 全链路"}]
