@@ -61,6 +61,11 @@ kv CLI / tkinter GUI
 - 跨平台 GUI 打磨
 - 与浏览器 / IDE 插件的集成
 
-## 源码
+## 源码与安装
+
+```bash
+pip install keyvault-local
+```
 
 - [GitHub](https://github.com/anyuer678/keyvault)
+- [PyPI](https://pypi.org/project/keyvault-local/)
