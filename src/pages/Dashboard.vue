@@ -1,16 +1,7 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 
-interface RepoStatus {
-  name: string
-  language: string | null
-  pushed_at: string
-  ci_status: 'success' | 'failure' | 'pending' | 'unknown'
-  release: string | null
-  open_issues: number
-}
-
-const repos = ref<RepoStatus[]>([])
+const repos = ref([])
 const loading = ref(true)
 const lastUpdate = ref('')
 
@@ -22,11 +13,10 @@ const REPO_LIST = [
 
 async function fetchRepos() {
   loading.value = true
-  const results: RepoStatus[] = []
+  const results = []
 
   for (const name of REPO_LIST) {
     try {
-      // 获取仓库基本信息
       const repoRes = await fetch(`https://api.github.com/repos/anyuer678/${name}`)
       if (!repoRes.ok) {
         results.push({ name, language: null, pushed_at: '', ci_status: 'unknown', release: null, open_issues: 0 })
@@ -34,8 +24,7 @@ async function fetchRepos() {
       }
       const repo = await repoRes.json()
 
-      // 获取最新 CI
-      let ci_status: RepoStatus['ci_status'] = 'unknown'
+      let ci_status = 'unknown'
       try {
         const ciRes = await fetch(`https://api.github.com/repos/anyuer678/${name}/actions/runs?per_page=1`)
         if (ciRes.ok) {
@@ -46,8 +35,7 @@ async function fetchRepos() {
         }
       } catch { /* ignore */ }
 
-      // 获取最新 Release
-      let release: string | null = null
+      let release = null
       try {
         const relRes = await fetch(`https://api.github.com/repos/anyuer678/${name}/releases/latest`)
         if (relRes.ok) {
@@ -74,7 +62,7 @@ async function fetchRepos() {
   loading.value = false
 }
 
-function ciBadge(status: string) {
+function ciBadge(status) {
   switch (status) {
     case 'success': return '🟢'
     case 'failure': return '🔴'
@@ -83,7 +71,7 @@ function ciBadge(status: string) {
   }
 }
 
-function timeAgo(dateStr: string) {
+function timeAgo(dateStr) {
   if (!dateStr) return '-'
   const diff = Date.now() - new Date(dateStr).getTime()
   const days = Math.floor(diff / 86400000)
