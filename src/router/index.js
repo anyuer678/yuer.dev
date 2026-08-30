@@ -93,6 +93,16 @@ const routes = [
     },
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/pages/Dashboard.vue'),
+    meta: {
+      nav: false,
+      title: (s) => `作品集控制面板 · ${s.name}`,
+      description: (s) => `${s.name} 的项目 CI/Release 状态面板`,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFound.vue'),
