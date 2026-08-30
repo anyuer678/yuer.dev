@@ -68,7 +68,12 @@ kb-ui/（pnpm workspace monorepo）
 - 组件库发布到 npm（当前私有仓库开发调试）
 - 更多业务组件与页面模块
 
-## 源码与 Demo
+## 源码与安装
+
+```bash
+npm install kb-ui-vue
+```
 
 - [GitHub](https://github.com/anyuer678/kb-ui)
+- [npm](https://www.npmjs.com/package/kb-ui-vue)
 - [在线预览](https://anyuer678.github.io/kb-ui/)

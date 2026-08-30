@@ -65,6 +65,6 @@ v0.8 推送 API → v0.9 剪贴板互动 → v1.0 事件通知页正式版。
 
 - 角色包生态持续扩展，计划支持更多动画模板与社区市场
 
-## 源码与 Demo
+## 源码与安装
 
-- [GitHub](https://github.com/anyuer678/desktoppet)
+- [GitHub Release](https://github.com/anyuer678/desktoppet/releases/tag/v1.1.0)（下载安装包）

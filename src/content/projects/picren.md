@@ -64,6 +64,11 @@ journey: [{"date": "2026-08", "title": "雏形", "desc": "AI 看图 → 中文�
 - 更多分类体系与自定义模板
 - 批量确认交互的打磨
 
-## 源码
+## 源码与安装
+
+```bash
+pip install picren-ai
+```
 
 - [GitHub](https://github.com/anyuer678/picren)
+- [PyPI](https://pypi.org/project/picren-ai/)
