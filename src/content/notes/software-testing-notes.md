@@ -1,84 +1,85 @@
 ---
-title: 软件测试技术：Doctest、Unittest 与 Locust 压测
-date: 2026-06-15
-type: learning
-tags: [软件工程, 实验, 测试, Python]
-summary: 软件工程测试技术实验归纳：Doctest 文档测试、Unittest + Mock 单元测试与 coverage 覆盖率、Locust 性能压测。三种测试分别对应代码级、模块级、系统级验证。
+title: "软件测试速记"
+date: "2025-06"
+type: "learning"
+tags: [软件测试, 黑盒测试, 白盒测试, 自动化测试, 性能测试]
+summary: "软件测试核心知识点速记，涵盖测试方法、测试用例设计、自动化测试、性能测试等内容"
 ---
 
-## 三种测试的定位
+## 测试分类
 
-| 测试 | 级别 | 工具 | 验证什么 |
-|---|---|---|---|
-| Doctest | 代码级 | Python 标准库 | 函数示例与文档一致 |
-| Unittest | 模块级 | unittest + Mock + coverage | 单元行为正确、覆盖率 |
-| Locust | 系统级 | Locust（协程压测） | 高并发下的响应/吞吐/错误率 |
+| 分类维度 | 类型 |
+|----------|------|
+| 按阶段 | 单元→集成→系统→验收 |
+| 按方法 | 黑盒→白盒→灰盒 |
+| 按目的 | 功能→性能→安全→兼容性 |
+| 手动/自动 | 手动测试→自动化测试 |
 
-## Doctest：文档即测试
+---
 
-在函数 docstring 里写交互式会话，`python -m doctest -v` 执行并比对输出：
+## 黑盒测试
 
-```python
-def add(a, b):
-    """加法函数，用于Doctest测试
-    >>> add(1, 2)
-    3
-    >>> add(-1, 1)
-    0
-    """
-    return a + b
+| 方法 | 核心 |
+|------|------|
+| 等价类划分 | 有效等价类+无效等价类 |
+| 边界值分析 | 边界值+边界两侧值 |
+| 因果图 | 输入条件组合→输出 |
+| 判定表 | 条件桩+动作桩 |
+| 正交试验 | 多因素多水平均匀搭配 |
+| 场景法 | 基本流+备选流 |
+
+---
+
+## 白盒测试
+
+| 覆盖类型 | 覆盖内容 | 强度 |
+|----------|----------|------|
+| 语句覆盖 | 每条语句至少执行一次 | 最弱 |
+| 判定覆盖 | 每个判定的真假分支至少各一次 | ↓ |
+| 条件覆盖 | 每个判定中每个条件的真假至少各一次 | ↓ |
+| 判定/条件覆盖 | 同时满足判定覆盖和条件覆盖 | ↓ |
+| 条件组合覆盖 | 每个判定中条件真假组合至少一次 | ↓ |
+| 路径覆盖 | 所有独立路径至少执行一次 | 最强 |
+
+---
+
+## 测试用例设计
+
+```
+测试用例 = 用例编号 + 测试标题 + 前置条件 + 测试步骤 + 预期结果 + 优先级
 ```
 
-特点：测试与文档合一、无需额外测试文件、适合快速验证简单函数。实验里 add/multiply 各 3 组数据，6 个用例全部通过。
+---
 
-## Unittest + Mock：隔离依赖
+## 自动化测试
 
-**Mock 对象**替代真实依赖（网络请求、数据库），隔离被测代码：
+| 工具类型 | 工具 |
+|----------|------|
+| 单元测试 | JUnit, pytest, Jest |
+| 接口测试 | Postman, RestAssured |
+| UI自动化 | Selenium, Cypress, Playwright |
+| 性能测试 | JMeter, Locust, Gatling |
+| 安全测试 | OWASP ZAP, Burp Suite |
 
-```python
-from unittest.mock import Mock
+---
 
-class MathAPI:
-    def add(self, a, b): return a + b
-    def divide(self, a, b):
-        if b == 0: raise ValueError("除数不能为0")
-        return a / b
+## 测试流程
 
-class TestMathAPI(unittest.TestCase):
-    def setUp(self):
-        self.mock_api = Mock(spec=MathAPI)   # 按 MathAPI 接口造 Mock
-        self.mock_api.add.return_value = 10
-    def test_add_with_mock(self):
-        result = self.mock_api.add(3, 7)
-        self.assertEqual(result, 10)
-        self.mock_api.add.assert_called_once_with(3, 7)  # 验证调用参数
+```
+需求分析→测试计划→用例设计→环境搭建→执行测试→缺陷管理→测试报告
 ```
 
-要点：`setUp` 初始化环境、`test_` 开头的方法、断言方法（assertEqual/assertRaises）、`assert_called_once_with` 验证调用。
+---
 
-**coverage 覆盖率**：`coverage run test_mathAPI.py` + `coverage report -m`，统计已执行代码行占比，找出未覆盖分支补测试。
+## 核心对比速查表
 
-## Locust：性能压测
+| 编号 | A | vs | B | 一句话 |
+|------|---|----|---|--------|
+| 1 | 黑盒 | 白盒 | 按功能测 vs 按代码结构测 |
+| 2 | 单元测试 | 集成测试 | 单个模块 vs 模块组合 |
+| 3 | 手动测试 | 自动化测试 | 人工执行 vs 脚本执行 |
+| 4 | 冒烟测试 | 回归测试 | 快速验证核心 vs 修改后验证功能 |
 
-协程模型单机模拟上万并发。脚本定义用户行为与权重：
+---
 
-```python
-from locust import HttpUser, task, between
-
-class WebsiteUser(HttpUser):
-    wait_time = between(1, 3)   # 每次操作间隔 1-3 秒
-    @task(3)                     # 权重 3
-    def visit_home(self):
-        self.client.get("/")
-    @task(1)                     # 权重 1
-    def query_courses(self):
-        self.client.get("/api/courses")
-```
-
-配合 Flask 写的测试服务（首页 + `/api/courses` 接口），`locust -f performance.py --host=http://127.0.0.1:5050` 启动，Web 界面实时看响应时间、RPS、失败率。
-
-**踩坑**：本地 8089 端口解析异常，Web 可视化打不开 → 用命令行日志 + 脚本配置核验结果。
-
-## 分层测试思路
-
-代码级（Doctest 快验证）→ 模块级（Unittest 保证行为）→ 系统级（Locust 评估承载）。测试不是"写完了才测"，而是开发过程中的质量门禁——配合覆盖率反馈，倒逼代码可测试、易维护。
+**使用建议**：黑盒测试用例设计方法和白盒覆盖类型是考试重点。
