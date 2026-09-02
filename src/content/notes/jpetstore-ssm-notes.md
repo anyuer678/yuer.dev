@@ -8,7 +8,7 @@ summary: 软件开发架构平台实验：8 人团队把 JPetStore 重构为 Spr
 
 ## 项目介绍
 
-《软件开发架构平台》课程实验一：用 SSM 框架重构 JPetStore 宠物商店，并开发一个后台管理系统（CMS）。团队 8 人：徐昱隆、何宇航、吴宗翰、冯正源、王仕汪、洪子枫、林良耀、张振宇。核心是两个任务：① 把原 JSP/Servlet 版 JPetStore 重构为 Spring MVC + MyBatis；② 设计开发商城后台管理系统。
+《软件开发架构平台》课程实验一：用 SSM 框架重构 JPetStore 宠物商店，并开发一个后台管理系统（CMS）。团队 8 人（姓名略）。核心是两个任务：① 把原 JSP/Servlet 版 JPetStore 重构为 Spring MVC + MyBatis；② 设计开发商城后台管理系统。
 
 ## 技术栈
 
@@ -32,11 +32,11 @@ summary: 软件开发架构平台实验：8 人团队把 JPetStore 重构为 Spr
 
 | 模块 | 分工 |
 |---|---|
-| 用户模块 API（AccountRestController） | 设计与开发（与吴宗翰） |
-| RESTful API 设计 | 测试（与吴宗翰） |
-| 订单模块 API | 测试（与吴宗翰） |
-| 前端商品模块（catalog） | 设计与开发（与张振宇） |
-| 前端购物车模块（cart） | 测试（与张振宇） |
+| 用户模块 API（AccountRestController） | 设计与开发（与组员A） |
+| RESTful API 设计 | 测试（与组员A） |
+| 订单模块 API | 测试（与组员A） |
+| 前端商品模块（catalog） | 设计与开发（与组员B） |
+| 前端购物车模块（cart） | 测试（与组员B） |
 | 集成测试与文档 | 全体成员 |
 
 ## 踩过的坑

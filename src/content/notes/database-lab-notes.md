@@ -19,7 +19,7 @@ summary: 数据库系统课程四个实验的归纳：建库建表与完整性�
 **要点**：CREATE DATABASE 指定字符集；建表时设置主键/外键；ALTER TABLE 增删列；mysqldump 备份还原。
 
 ```sql
-CREATE DATABASE student_8209240222 DEFAULT CHARACTER SET utf8;
+CREATE DATABASE student_XXXXXXXX DEFAULT CHARACTER SET utf8;
 CREATE TABLE S (
   Sno CHAR(10) PRIMARY KEY,
   Sname VARCHAR(20) NOT NULL,
@@ -81,7 +81,7 @@ CREATE PROCEDURE CalculateStudentAvg(IN p_sno CHAR(10), OUT p_avg DECIMAL(5,2))
 BEGIN
   SELECT AVG(grade) INTO p_avg FROM SC WHERE Sno = p_sno;
 END //
-CALL CalculateStudentAvg('8209240222', @avg);
+CALL CalculateStudentAvg('20240001', @avg);
 ```
 
 ## 实验四：触发器与游标
