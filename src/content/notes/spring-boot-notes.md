@@ -81,7 +81,9 @@ summary: "软件开发架构平台核心知识点速记，涵盖Spring IoC/AOP/M
 | Mapper.xml核心 | namespace(唯一标识) + id + parameterType + resultType |
 | #{} vs ${} | #{}预编译防注入，${}直接拼接有风险 |
 | resultType vs resultMap | resultType简单(80%)，resultMap复杂(20%)，不可同时用 |
+```
 | 动态SQL四标签 | `<if>` `<choose/when/otherwise>` `<trim/where/set>` `<foreach>` |
+```
 | 延迟加载 | lazyLoadingEnabled=true，关联对象用时才查 |
 | Hibernate三状态 | transient(瞬时,new)→persistence(持久,save)→detached(脱管,close)，update可重回持久 |
 | 阻抗不匹配五方面 | 粒度、继承、标识、关联、数据导航 |
@@ -113,7 +115,9 @@ summary: "软件开发架构平台核心知识点速记，涵盖Spring IoC/AOP/M
 |--------|------|
 | Session vs Token | Session服务器存储；Token客户端存储，服务器不存用户状态 |
 | JWT三部分 | Header(alg+typ) + Payload(标准字段iss/exp+自定义) + Signature(HMAC SHA256) |
+```
 | JWT流程 | 登录→服务器生成Token→客户端保存→每次请求带`Authorization: Bearer <token>`→服务器验证 |
+```
 | JWT特点 | 默认不加密/无法废止/短有效期/建议HTTPS |
 | 认证 vs 鉴权 | Authentication=你是谁；Authorization=你能干什么 |
 | OAuth 2.0 | 第三方登录鉴权开放标准，Spring Security OAuth2集成 |

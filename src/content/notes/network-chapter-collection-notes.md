@@ -4597,12 +4597,18 @@ CSMA/CA用于无线局域网，通过碰撞避免来共享无线介质。理解�
   ```
   C: HELO client.example.com
   S: 250 Hello client.example.com
+```
   C: MAIL FROM:<alice@example.com>
+```
   S: 250 OK
+```
   C: RCPT TO:<bob@example.org>
+```
   S: 250 OK
   C: DATA
+```
   S: 354 End data with <CR><LF>.<CR><LF>
+```
   C: Subject: Test
   C:
   C: Hello Bob!

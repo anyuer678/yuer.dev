@@ -188,20 +188,40 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     - 示例：AOP代理就是通过BeanPostProcessor实现的
 - Spring配置方式详解
   - XML配置方式
+```
     - Bean定义：<bean id="..." class="...">
+```
+```
     - 属性注入：<property name="..." value="..."> 或 <ref bean="...">
+```
+```
     - 构造器注入：<constructor-arg index="..." value="...">
+```
     - 示例：
       ```xml
+```
       <beans>
+```
+```
           <bean id="userDao" class="com.example.UserDaoImpl"/>
+```
+```
           <bean id="userService" class="com.example.UserService">
+```
+```
               <property name="userDao" ref="userDao"/>
+```
+```
           </bean>
+```
+```
       </beans>
+```
       ```
   - 注解配置方式
+```
     - 组件扫描：<context:component-scan base-package="..."/>
+```
     - 组件注解：
       - @Component：通用组件
       - @Service：业务层组件
@@ -412,13 +432,25 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
 - Spring AOP的配置方式详解
   - XML配置方式
     ```xml
+```
     <aop:config>
+```
+```
         <aop:aspect id="logAspect" ref="logAspect">
+```
+```
             <aop:pointcut id="servicePointcut" 
                 expression="execution(* com.example.service.*.*(..))"/>
+```
+```
             <aop:before pointcut-ref="servicePointcut" method="beforeAdvice"/>
+```
+```
         </aop:aspect>
+```
+```
     </aop:config>
+```
     ```
   - 注解配置方式
     - @Aspect：标记切面类
@@ -514,7 +546,9 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
         
         @GetMapping("/list")
         public String list(Model model) {
+```
             List<User> users = userService.findAll();
+```
             model.addAttribute("users", users);
             return "user/list";
         }
@@ -533,7 +567,9 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     public class UserRestController {
         
         @GetMapping
+```
         public List<User> list() {
+```
             return userService.findAll();
         }
         
@@ -728,7 +764,9 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
       ```
   - **自定义验证器**：
     ```java
+```
     public class PhoneValidator implements ConstraintValidator<Phone, String> {
+```
         @Override
         public boolean isValid(String value, ConstraintValidatorContext context) {
             if (value == null) return true;
@@ -799,27 +837,67 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     - IDE内置：IntelliJ IDEA、Eclipse
   - **pom.xml示例**
     ```xml
+```
     <parent>
+```
+```
         <groupId>org.springframework.boot</groupId>
+```
+```
         <artifactId>spring-boot-starter-parent</artifactId>
+```
+```
         <version>2.7.14</version>
+```
+```
     </parent>
+```
     
+```
     <dependencies>
+```
+```
         <dependency>
+```
+```
             <groupId>org.springframework.boot</groupId>
+```
+```
             <artifactId>spring-boot-starter-web</artifactId>
+```
+```
         </dependency>
+```
+```
         <dependency>
+```
+```
             <groupId>org.springframework.boot</groupId>
+```
+```
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+```
+```
         </dependency>
+```
+```
         <dependency>
+```
+```
             <groupId>mysql</groupId>
+```
+```
             <artifactId>mysql-connector-java</artifactId>
+```
+```
             <scope>runtime</scope>
+```
+```
         </dependency>
+```
+```
     </dependencies>
+```
     ```
   - **主类示例**
     ```java
@@ -898,18 +976,26 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
         private String password;
         
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+```
         private List<Order> orders;
+```
         
         // getters and setters
     }
     ```
   - **Repository接口**
     ```java
+```
     public interface UserRepository extends JpaRepository<User, Long> {
+```
         User findByUsername(String username);
+```
         List<User> findByAgeGreaterThan(Integer age);
+```
         @Query("SELECT u FROM User u WHERE u.email LIKE %:domain")
+```
         List<User> findByEmailDomain(@Param("domain") String domain);
+```
     }
     ```
 
@@ -930,30 +1016,78 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     <!DOCTYPE configuration
             PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             "http://mybatis.org/dtd/mybatis-3-config.dtd">
+```
     <configuration>
+```
+```
         <settings>
+```
+```
             <setting name="cacheEnabled" value="true"/>
+```
+```
             <setting name="lazyLoadingEnabled" value="true"/>
+```
+```
             <setting name="logImpl" value="SLF4J"/>
+```
+```
         </settings>
+```
+```
         <typeAliases>
+```
+```
             <typeAlias alias="User" type="com.example.entity.User"/>
+```
+```
         </typeAliases>
+```
+```
         <environments default="development">
+```
+```
             <environment id="development">
+```
+```
                 <transactionManager type="JDBC"/>
+```
+```
                 <dataSource type="POOLED">
+```
+```
                     <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+```
+```
                     <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+```
+```
                     <property name="username" value="root"/>
+```
+```
                     <property name="password" value="password"/>
+```
+```
                 </dataSource>
+```
+```
             </environment>
+```
+```
         </environments>
+```
+```
         <mappers>
+```
+```
             <mapper resource="mapper/UserMapper.xml"/>
+```
+```
         </mappers>
+```
+```
     </configuration>
+```
     ```
 - **Mapper映射文件详解**
   - **基本CRUD**
@@ -962,43 +1096,79 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     <!DOCTYPE mapper
             PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+```
     <mapper namespace="com.example.mapper.UserMapper">
+```
         
+```
         <resultMap id="UserResultMap" type="User">
+```
+```
             <id property="id" column="id"/>
+```
+```
             <result property="username" column="username"/>
+```
+```
             <result property="password" column="password"/>
+```
+```
         </resultMap>
+```
         
+```
         <select id="findById" parameterType="Long" resultMap="UserResultMap">
+```
             SELECT * FROM user WHERE id = #{id}
+```
         </select>
+```
         
+```
         <select id="findAll" resultMap="UserResultMap">
+```
             SELECT * FROM user
+```
         </select>
+```
         
+```
         <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+```
             INSERT INTO user (username, password)
             VALUES (#{username}, #{password})
+```
         </insert>
+```
         
+```
         <update id="update" parameterType="User">
+```
             UPDATE user 
             SET username = #{username}, password = #{password}
             WHERE id = #{id}
+```
         </update>
+```
         
+```
         <delete id="delete" parameterType="Long">
+```
             DELETE FROM user WHERE id = #{id}
+```
         </delete>
+```
+```
     </mapper>
+```
     ```
   - **Mapper接口**
     ```java
     public interface UserMapper {
         User findById(Long id);
+```
         List<User> findAll();
+```
         void insert(User user);
         void update(User user);
         void delete(Long id);
@@ -1007,65 +1177,133 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
 - **动态SQL详解**
   - **if标签**
     ```xml
+```
     <select id="findByCondition" resultMap="UserResultMap">
+```
         SELECT * FROM user
+```
         <where>
+```
+```
             <if test="username != null and username != ''">
+```
                 AND username LIKE CONCAT('%', #{username}, '%')
+```
             </if>
+```
+```
             <if test="age != null">
+```
                 AND age = #{age}
+```
             </if>
+```
+```
         </where>
+```
+```
     </select>
+```
     ```
   - **choose、when、otherwise标签**
     ```xml
+```
     <select id="findByCondition" resultMap="UserResultMap">
+```
         SELECT * FROM user
+```
         <where>
+```
+```
             <choose>
+```
+```
                 <when test="id != null">
+```
                     AND id = #{id}
+```
                 </when>
+```
+```
                 <when test="username != null">
+```
                     AND username = #{username}
+```
                 </when>
+```
+```
                 <otherwise>
+```
                     AND 1=1
+```
                 </otherwise>
+```
+```
             </choose>
+```
+```
         </where>
+```
+```
     </select>
+```
     ```
   - **foreach标签**
     ```xml
+```
     <select id="findByIds" resultMap="UserResultMap">
+```
         SELECT * FROM user
         WHERE id IN
+```
         <foreach collection="list" item="id" open="(" separator="," close=")">
+```
             #{id}
+```
         </foreach>
+```
+```
     </select>
+```
     
+```
     <insert id="batchInsert" parameterType="java.util.List">
+```
         INSERT INTO user (username, password)
         VALUES
+```
         <foreach collection="list" item="user" separator=",">
+```
             (#{user.username}, #{user.password})
+```
         </foreach>
+```
+```
     </insert>
+```
     ```
   - **set标签**
     ```xml
+```
     <update id="updateSelective" parameterType="User">
+```
         UPDATE user
+```
         <set>
+```
+```
             <if test="username != null">username = #{username},</if>
+```
+```
             <if test="password != null">password = #{password},</if>
+```
+```
         </set>
+```
         WHERE id = #{id}
+```
     </update>
+```
     ```
 - **缓存机制详解**
   - **一级缓存（本地缓存）**
@@ -1081,14 +1319,18 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     - 配置方式：
       ```xml
       <!-- mybatis-config.xml -->
+```
       <setting name="cacheEnabled" value="true"/>
+```
       
       <!-- Mapper XML -->
+```
       <cache
           eviction="LRU"
           flushInterval="60000"
           size="512"
           readOnly="true"/>
+```
       ```
   - **缓存策略**
     - LRU：最近最少使用（默认）
@@ -1098,24 +1340,54 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
 - **MyBatis与Spring集成详解**
   - **添加依赖**
     ```xml
+```
     <dependency>
+```
+```
         <groupId>org.mybatis</groupId>
+```
+```
         <artifactId>mybatis</artifactId>
+```
+```
         <version>3.5.13</version>
+```
+```
     </dependency>
+```
+```
     <dependency>
+```
+```
         <groupId>org.mybatis</groupId>
+```
+```
         <artifactId>mybatis-spring</artifactId>
+```
+```
         <version>2.1.0</version>
+```
+```
     </dependency>
+```
     ```
   - **Spring Boot集成**
     ```xml
+```
     <dependency>
+```
+```
         <groupId>org.mybatis.spring.boot</groupId>
+```
+```
         <artifactId>mybatis-spring-boot-starter</artifactId>
+```
+```
         <version>2.3.1</version>
+```
+```
     </dependency>
+```
     ```
   - **配置application.properties**
     ```properties
@@ -1135,7 +1407,9 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     @Mapper
     public interface UserMapper {
         User findById(Long id);
+```
         List<User> findAll();
+```
     }
     ```
   - **或使用@MapperScan**
@@ -1424,7 +1698,9 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
         @ExceptionHandler(MethodArgumentNotValidException.class)
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         public ErrorResponse handleValidation(MethodArgumentNotValidException ex) {
+```
             List<FieldError> errors = ex.getBindingResult().getFieldErrors();
+```
             return new ErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", errors);
         }
     }
@@ -1437,16 +1713,36 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
   - **Spring Boot集成Swagger**
     - 添加依赖：
       ```xml
+```
       <dependency>
+```
+```
           <groupId>io.springfox</groupId>
+```
+```
           <artifactId>springfox-swagger2</artifactId>
+```
+```
           <version>2.9.2</version>
+```
+```
       </dependency>
+```
+```
       <dependency>
+```
+```
           <groupId>io.springfox</groupId>
+```
+```
           <artifactId>springfox-swagger-ui</artifactId>
+```
+```
           <version>2.9.2</version>
+```
+```
       </dependency>
+```
       ```
     - 配置类：
       ```java
@@ -1579,9 +1875,15 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     
     // 多行
     const html = `
+```
       <div>
+```
+```
         <h1>Title</h1>
+```
+```
       </div>
+```
     `;
     ```
   - **解构赋值**
@@ -1879,17 +2181,37 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
   - **Vue 3示例**
     ```vue
     <!-- App.vue -->
+```
     <template>
+```
+```
       <div>
+```
+```
         <h1>{{ title }}</h1>
+```
+```
         <input v-model="message" placeholder="输入消息" />
+```
+```
         <p>你输入的是: {{ message }}</p>
+```
+```
         <button @click="increment">计数: {{ count }}</button>
+```
+```
         <UserList :users="users" />
+```
+```
       </div>
+```
+```
     </template>
+```
     
+```
     <script setup>
+```
     import { ref, reactive } from 'vue'
     import UserList from './components/UserList.vue'
     
@@ -1904,11 +2226,17 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     const increment = () => {
         count.value++
     }
+```
     </script>
+```
     
+```
     <style scoped>
+```
     h1 { color: #42b983; }
+```
     </style>
+```
     ```
   - **生命周期钩子**
     - onMounted
@@ -1953,19 +2281,35 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
         }
         
         return (
+```
             <div>
+```
+```
                 <h1>{title}</h1>
+```
+```
                 <input 
                     value={message} 
                     onChange={e => setMessage(e.target.value)}
+```
                     placeholder="输入消息"
                 />
+```
                 <p>你输入的是: {message}</p>
+```
+```
                 <button onClick={increment}>
+```
                     计数: {count}
+```
                 </button>
+```
+```
                 <UserList users={users} />
+```
+```
             </div>
+```
         )
     }
     
@@ -2002,15 +2346,33 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     @Component({
         selector: 'app-root',
         template: `
+```
             <div>
+```
+```
                 <h1>{{ title }}</h1>
+```
+```
                 <input [(ngModel)]="message" placeholder="输入消息" />
+```
+```
                 <p>你输入的是: {{ message }}</p>
+```
+```
                 <button (click)="increment()">计数: {{ count }}</button>
+```
+```
                 <ul>
+```
+```
                     <li *ngFor="let user of users">{{ user.name }}</li>
+```
+```
                 </ul>
+```
+```
             </div>
+```
         `
     })
     export class AppComponent implements OnInit {
@@ -2172,12 +2534,22 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
           const dispatch = useDispatch()
           
           return (
+```
               <div>
+```
+```
                   <span>{count}</span>
+```
+```
                   <button onClick={() => dispatch({ type: 'INCREMENT' })}>
+```
                       +
+```
                   </button>
+```
+```
               </div>
+```
           )
       }
       ```
@@ -2248,17 +2620,39 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
     
     function App() {
         return (
+```
             <BrowserRouter>
+```
+```
                 <nav>
+```
+```
                     <Link to="/">首页</Link>
+```
+```
                     <Link to="/about">关于</Link>
+```
+```
                 </nav>
+```
+```
                 <Routes>
+```
+```
                     <Route path="/" element={<Home />} />
+```
+```
                     <Route path="/about" element={<About />} />
+```
+```
                     <Route path="/user/:id" element={<User />} />
+```
+```
                 </Routes>
+```
+```
             </BrowserRouter>
+```
         )
     }
     
@@ -2268,10 +2662,18 @@ summary: "软件开发架构平台全课程详细学习指导，覆盖Spring IoC
         const navigate = useNavigate()
         
         return (
+```
             <div>
+```
+```
                 <h1>用户 {id}</h1>
+```
+```
                 <button onClick={() => navigate('/')}>返回</button>
+```
+```
             </div>
+```
         )
     }
     ```

@@ -246,7 +246,9 @@ List<String> result = list.stream()
 |------|----------|------|------|----------|
 | **继承 Thread** | `class MyThread extends Thread` | 简单直接 | 无法继承其他类 | 快速原型，简单任务 |
 | **实现 Runnable** | `class MyTask implements Runnable` | 可实现多个接口 | 无法获取返回值 | 推荐，解耦任务与线程 |
+```
 | **实现 Callable + FutureTask** | `class MyTask implements Callable<V>` | 有返回值、可抛异常 | 稍复杂 | 需要获取执行结果 |
+```
 | **线程池 ExecutorService** | `Executors.newFixedThreadPool(n)` | 复用线程、管理资源 | 需合理配置参数 | 生产环境推荐 |
 
 ### 4.2 线程池

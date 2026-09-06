@@ -13,7 +13,9 @@ summary: "算法设计与分析核心知识点速记，涵盖分治法、动态�
 | 算法特性 | 有穷性、确定性、可行性、输入、输出 |
 | 时间复杂度 | `O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!)` |
 | 递推方程 | T(n) = aT(n/b) + f(n) |
+```
 | 主定理 | `T(n) = aT(n/b) + O(nᵈ)`：d<logba→O(n^logba)；d=logba→O(nᵈlogn)；d>logba→O(nᵈ) |
+```
 
 ---
 

@@ -10,9 +10,13 @@ summary: "Web前端开发核心知识点速记，涵盖HTML5、CSS3、JavaScript
 
 | 知识点 | 核心 |
 |--------|------|
+```
 | 语义化标签 | `<header>` `<nav>` `<main>` `<article>` `<section>` `<footer>` |
+```
 | 表单增强 | `required` `pattern` `placeholder` `date/email/url` 类型 |
+```
 | 多媒体 | `<video>` `<audio>` `<canvas>` `<svg>` |
+```
 | 本地存储 | localStorage(永久)、sessionStorage(会话) |
 | 离线应用 | Service Worker、Application Cache |
 
@@ -74,8 +78,12 @@ summary: "Web前端开发核心知识点速记，涵盖HTML5、CSS3、JavaScript
 | 接口 | `interface User { name: string; age: number; }` |
 | 类型别名 | `type ID = string | number;` |
 | 联合类型 | `string | number` |
+```
 | 泛型 | `function id<T>(x: T): T { return x; }` |
+```
+```
 | 工具类型 | `Partial<T>` `Required<T>` `Pick<T,K>` `Omit<T,K>` |
+```
 
 ---
 

@@ -781,14 +781,22 @@ summary: "软件工程基础全课程详细学习指导，覆盖系统工程、�
     - Git常用命令：
       ```bash
       git init                    # 初始化仓库
+```
       git clone <url>             # 克隆远程仓库
+```
+```
       git add <file>              # 添加文件到暂存区
+```
       git commit -m "message"     # 提交
       git push                    # 推送到远程
       git pull                    # 拉取远程更新
       git branch                  # 查看分支
+```
       git checkout <branch>       # 切换分支
+```
+```
       git merge <branch>          # 合并分支
+```
       git log                     # 查看提交历史
       ```
   - **变更管理（Change Management）**

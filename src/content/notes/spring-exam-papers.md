@@ -494,7 +494,9 @@ public class UserController {
 
 问题：
 (1) `#{}`和`${}`有什么区别？
+```
 (2) `<where>`标签的作用是什么？
+```
 (3) 解释动态SQL在`searchUsers`中的应用。
 
 ### 4. JavaScript异步编程分析
@@ -902,7 +904,9 @@ A. 堆内存设置 B. 垃圾回收器选择 C. 线程池配置 D. 类加载优�
 3. **ORM框架选型**
     - 选择考量：项目复杂度、团队技能、性能要求。
     - MyBatis用户管理：UserMapper接口+XML配置。
+```
     - 动态SQL：<if>、<choose>、<where>等标签。
+```
 
 4. **前端框架选型**
     - React：虚拟DOM、JSX、生态丰富。
@@ -962,7 +966,9 @@ A. useEffect B. useState C. useContext D. useReducer
 A. computed B. watch C. methods D. data
 
 13. React Router中，用于导航的组件是（ ）
+```
 A. <Link> B. <NavLink> C. <Route> D. A和B
+```
 
 14. Vue Router中，用于编程式导航的方法是（ ）
 A. router.push() B. router.go() C. router.replace() D. 以上都是
@@ -1392,13 +1398,17 @@ C. Java Platform API D. Java Process API
 A. Repository B. CrudRepository C. PagingAndSortingRepository D. JpaRepository
 
 9. MyBatis中，用于映射复杂结果的标签是（ ）
+```
 A. <resultType> B. <resultMap> C. <resultSet> D. <result>
+```
 
 10. Hibernate中，对象的三种状态不包括（ ）
 A. Transient B. Persistent C. Detached D. Connected
 
 11. MyBatis中，动态SQL的标签不包括（ ）
+```
 A. <if> B. <where> C. <foreach> D. <loop>
+```
 
 12. JPA中，用于定义实体类的注解是（ ）
 A. @Entity B. @Table C. @Column D. @Id
@@ -1407,7 +1417,9 @@ A. @Entity B. @Table C. @Column D. @Id
 A. Like B. Contains C. StartingWith D. 以上都是
 
 14. MyBatis中，用于批量操作的标签是（ ）
+```
 A. <batch> B. <foreach> C. <bulk> D. <multi>
+```
 
 15. Hibernate中，用于管理实体的接口是（ ）
 A. Session B. EntityManager C. Transaction D. Query
@@ -1427,7 +1439,9 @@ A. ORM映射元数据 B. API接口 C. JPQL D. 事务管理
 A. 自动生成查询方法 B. 支持分页和排序 C. 支持自定义查询 D. 支持原生SQL
 
 5. MyBatis的动态SQL标签包括（ ）
+```
 A. <if> B. <choose> C. <where> D. <set>
+```
 
 ## 三、填空题（每空1分，共20分）
 
@@ -1645,7 +1659,9 @@ C. Java Platform API D. Java Process API
 A. 全自动 B. 半自动 C. 非ORM D. 轻量级
 
 21. MyBatis中，用于动态SQL的标签是（ ）
+```
 A. <if> B. <where> C. <foreach> D. 以上都是
+```
 
 22. Hibernate中，对象的三种状态不包括（ ）
 A. Transient B. Persistent C. Detached D. Connected
@@ -1725,7 +1741,9 @@ A. useState B. useEffect C. useContext D. useReducer
 A. ref() B. reactive() C. computed() D. watch()
 
 45. React Router中，用于导航的组件是（ ）
+```
 A. <Link> B. <Route> C. <Switch> D. 以上都是
+```
 
 46. Vue Router中，用于编程式导航的方法是（ ）
 A. router.push() B. router.replace() C. router.go() D. 以上都是
@@ -1842,7 +1860,9 @@ A. Join Point B. Advice C. Aspect D. Pointcut
 A. 自动配置 B. 代码生成 C. 内嵌容器 D. Starter依赖
 
 5. MyBatis中，用于映射结果集的标签是（ ）
+```
 A. <resultType> B. <resultMap> C. <select> D. <insert>
+```
 
 6. RESTful API中，用于更新资源的HTTP方法是（ ）
 A. POST B. PUT C. PATCH D. B和C

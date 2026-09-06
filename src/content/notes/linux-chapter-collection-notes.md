@@ -3624,12 +3624,16 @@ docker rm mynginx
 
 2. **MAINTAINER**：维护者信息（已弃用，用LABEL）
    ```dockerfile
+```
    MAINTAINER name <email>
+```
    ```
 
 3. **LABEL**：镜像元数据
    ```dockerfile
+```
    LABEL maintainer="name <email>"
+```
    LABEL version="1.0"
    LABEL description="My image"
    ```

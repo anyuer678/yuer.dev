@@ -161,7 +161,9 @@ public class Helloworld {
 #### 使用流程
 1. 导入Spring IoC相关依赖包（spring-context）
 2. 创建配置文件（applicationContext.xml）
+```
 3. 添加`<bean>`配置，定义类、依赖关系
+```
 4. 初始化容器，通过`getBean()`获取装配好的对象
 
 ### 2.5 Spring Bean配置详解
@@ -173,8 +175,12 @@ public class Helloworld {
 - `class`：类的完整限定名
 
 **依赖注入方式**：
+```
 - **构造注入**：`<constructor-arg>`标签
+```
+```
 - **Setter注入**：`<property>`标签
+```
 
 **Bean作用域（Scope）**：
 | 作用域 | 说明 |
@@ -441,7 +447,9 @@ OOP的局限性：
 | SqlSession | 用于执行SQL语句（线程非安全） |
 | Mapper.xml | SQL映射文件 |
 
+```
 **动态SQL标签**：`<if>`、`<where>`、`<foreach>`、`<choose>`、`<set>`等
+```
 
 ### 6.2 Hibernate
 
@@ -674,9 +682,15 @@ Repository
 | 命令 | 说明 |
 |-----|------|
 | `npm init` | 初始化项目，生成package.json |
+```
 | `npm install <package>` | 安装依赖 |
+```
+```
 | `npm install -D <package>` | 安装开发依赖 |
+```
+```
 | `npm install -g <package>` | 全局安装 |
+```
 
 **其他包管理工具**：
 - **Yarn**：Facebook推出，解决npm安装慢、版本一致性问题
@@ -845,17 +859,25 @@ Repository
 | 概念 | API |
 |-----|-----|
 | 创建路由 | `createBrowserRouter()` |
+```
 | 路由容器 | `<Routes>` / `<Route>` |
+```
 | 编程式导航 | `useNavigate()` |
+```
 | 声明式导航 | `<Link>` |
+```
 
 #### Vue路由（Vue Router）
 | 概念 | API |
 |-----|-----|
 | 创建路由 | `createRouter()` |
+```
 | 路由视图 | `<RouterView>` |
+```
 | 编程式跳转 | `router.push()` |
+```
 | 声明式导航 | `<router-link>` |
+```
 
 #### 路由高级用法
 1. **嵌套路由**：父路由内包含子路由

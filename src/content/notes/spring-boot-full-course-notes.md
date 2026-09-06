@@ -156,7 +156,9 @@ summary: "软件开发架构平台全课程完整版总结，覆盖CH01-CH12全�
 
 - 坐标（三要素）："groupId:artifactId:version"
 
+```
 - 依赖声明："<dependencies>"节点内每个"<dependency>"包含坐标。
+```
 
 4.4 Maven约定
 
@@ -278,7 +280,9 @@ summary: "软件开发架构平台全课程完整版总结，覆盖CH01-CH12全�
 
 - 第二步：创建配置文件（如"applicationContext.xml"）。
 
+```
 - 第三步：在配置文件中添加"<bean>"配置，定义类、依赖关系等。
+```
 
 - 第四步：初始化容器（如"ClassPathXmlApplicationContext"），通过"getBean()"获取装配好的对象。
 
@@ -296,9 +300,13 @@ summary: "软件开发架构平台全课程完整版总结，覆盖CH01-CH12全�
 
 2. 依赖注入的两种方式
 
+```
 - 构造注入：使用"<constructor-arg>"标签，通过构造函数参数传递依赖。
+```
 
+```
 - setter注入：使用"<property>"标签，通过setter方法设置属性。
+```
 
 - 其他注入：支持复杂数据类型（List、Set、Map）、p名称空间简化、SpEL表达式（"#{表达式}"）。
 
@@ -1012,7 +1020,9 @@ Spring MVC 基于前端控制器（DispatcherServlet）模式，处理流程如�
 
 6.3.3 核心组件
 
+```
 - Configuration.xml：包含数据库环境配置（"<environments>"）和映射器路径（"<mappers>"）。
+```
 
 - SqlSessionFactory：根据 Configuration.xml 创建，线程安全。
 
@@ -1020,7 +1030,9 @@ Spring MVC 基于前端控制器（DispatcherServlet）模式，处理流程如�
 
 - Mapper.xml：包含 SQL 映射语句，每个语句通过 "namespace" + "id" 唯一标识。
 
+```
    - 常用标签："<select>"、"<insert>"、"<update>"、"<delete>"。
+```
 
    - 属性："parameterType"（输入参数类型）、"resultType"（输出结果类型）。
 
@@ -1136,7 +1148,9 @@ ORM的实现方式演进
 
       * ResultMap：复杂结果映射，用于处理非标准映射关系（如字段名不一致、聚合查询等）。
 
+```
       * 动态SQL：通过"<if>"、"<choose>"、"<where>"、"<foreach>"等标签，根据条件动态拼接SQL语句，解决了传统JDBC中字符串拼接的繁琐和易错问题。
+```
 
       * 参数类型指定：解决Java类型和数据库字段类型不匹配的问题。
 
@@ -1504,7 +1518,9 @@ MyBatis生态与高级工具
 
 - 安全配置：允许"/auth/login"公开，其他API需认证；添加JWT过滤器。
 
+```
 - 受保护的API：前端需在请求头携带"Authorization: Bearer <token>"，否则返回401。
+```
 
 ***
 
@@ -1910,13 +1926,21 @@ POST请求："axios.post(url, data, config)"。
 
    - "npm init"：初始化项目，生成"package.json"。
 
+```
    - "npm install <package>"：安装依赖，默认放入"node_modules"，并记录到"dependencies"。
+```
 
+```
    - "npm install <package>@<version>"：安装指定版本。
+```
 
+```
    - "npm install -D <package>"：安装开发依赖（devDependencies），生产环境不包含。
+```
 
+```
    - "npm install -g <package>"：全局安装（常用于命令行工具）。
+```
 
 - 生成"package-lock.json"锁定版本。
 
@@ -1932,7 +1956,9 @@ POST请求："axios.post(url, data, config)"。
 
 1. 原始阶段
 
+```
 - 在HTML中通过多个"<script>"标签引入JS文件，每个文件代表一个模块。
+```
 
 - 问题：全局变量污染、依赖顺序难管理、需同步加载易卡死、HTTP请求多。
 
@@ -2282,11 +2308,15 @@ Vue 的状态管理思路与 React 类似，但写法更简洁、响应式更“
 
    - "createBrowserRouter()" 创建路由
 
+```
    - "<Routes>" / "<Route>" 路由容器与配置
+```
 
    - "useNavigate()" 编程式导航
 
+```
    - "<Link>" 声明式导航
+```
 
 3. Vue 路由（Vue Router）
 
@@ -2294,13 +2324,17 @@ Vue 的状态管理思路与 React 类似，但写法更简洁、响应式更“
 
 - 对应关系：
 
+```
    - "createRouter()" + "<RouterView>"
+```
 
    - "routes" 配置
 
    - "router.push()" 编程式跳转
 
+```
    - "<router-link>" 声明式导航
+```
 
 4. 路由管理的三个高级用法
 

@@ -101,10 +101,18 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 ### 2.5 Bean的配置
 1. **XML配置**：
    ```xml
+```
    <bean id="userService" class="com.example.UserService">
+```
+```
        <property name="userDao" ref="userDao"/>
+```
+```
    </bean>
+```
+```
    <bean id="userDao" class="com.example.UserDaoImpl"/>
+```
    ```
 
 2. **注解配置**：
@@ -182,14 +190,28 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 ### 3.4 Spring AOP的实现
 1. **基于XML配置**：
    ```xml
+```
    <aop:config>
+```
+```
        <aop:aspect id="logAspect" ref="logAspect">
+```
+```
            <aop:pointcut id="servicePointcut" 
                expression="execution(* com.example.service.*.*(..))"/>
+```
+```
            <aop:before pointcut-ref="servicePointcut" method="before"/>
+```
+```
            <aop:after-returning pointcut-ref="servicePointcut" method="afterReturning"/>
+```
+```
        </aop:aspect>
+```
+```
    </aop:config>
+```
    ```
 
 2. **基于注解配置**：
@@ -249,29 +271,67 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 ### 4.3 Spring MVC的配置
 1. **web.xml配置**：
    ```xml
+```
    <servlet>
+```
+```
        <servlet-name>dispatcher</servlet-name>
+```
+```
        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+```
+```
        <init-param>
+```
+```
            <param-name>contextConfigLocation</param-name>
+```
+```
            <param-value>/WEB-INF/spring-mvc.xml</param-value>
+```
+```
        </init-param>
+```
+```
        <load-on-startup>1</load-on-startup>
+```
+```
    </servlet>
+```
+```
    <servlet-mapping>
+```
+```
        <servlet-name>dispatcher</servlet-name>
+```
+```
        <url-pattern>/</url-pattern>
+```
+```
    </servlet-mapping>
+```
    ```
 
 2. **Spring MVC配置**：
    ```xml
+```
    <context:component-scan base-package="com.example.controller"/>
+```
+```
    <mvc:annotation-driven/>
+```
+```
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+```
+```
        <property name="prefix" value="/WEB-INF/views/"/>
+```
+```
        <property name="suffix" value=".jsp"/>
+```
+```
    </bean>
+```
    ```
 
 ### 4.4 Controller的开发
@@ -286,7 +346,9 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 
        @RequestMapping("/list")
        public String list(Model model) {
+```
            List<User> users = userService.findAll();
+```
            model.addAttribute("users", users);
            return "user/list";
        }
@@ -435,22 +497,54 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 ### 6.3 MyBatis的配置
 1. **mybatis-config.xml**：
    ```xml
+```
    <configuration>
+```
+```
        <environments default="development">
+```
+```
            <environment id="development">
+```
+```
                <transactionManager type="JDBC"/>
+```
+```
                <dataSource type="POOLED">
+```
+```
                    <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+```
+```
                    <property name="url" value="jdbc:mysql://localhost:3306/mydb"/>
+```
+```
                    <property name="username" value="root"/>
+```
+```
                    <property name="password" value="123456"/>
+```
+```
                </dataSource>
+```
+```
            </environment>
+```
+```
        </environments>
+```
+```
        <mappers>
+```
+```
            <mapper resource="com/example/mapper/UserMapper.xml"/>
+```
+```
        </mappers>
+```
+```
    </configuration>
+```
    ```
 
 2. **与Spring整合**：
@@ -472,7 +566,9 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
    ```java
    public interface UserMapper {
        User findById(Long id);
+```
        List<User> findAll();
+```
        void insert(User user);
        void update(User user);
        void delete(Long id);
@@ -481,86 +577,170 @@ summary: "软件开发架构平台全课程综合整理笔记，串联各章知�
 
 2. **XML映射文件**：
    ```xml
+```
    <mapper namespace="com.example.mapper.UserMapper">
+```
+```
        <select id="findById" resultType="com.example.entity.User">
+```
            SELECT * FROM user WHERE id = #{id}
+```
        </select>
+```
        
+```
        <select id="findAll" resultType="com.example.entity.User">
+```
            SELECT * FROM user
+```
        </select>
+```
        
+```
        <insert id="insert" parameterType="com.example.entity.User">
+```
            INSERT INTO user(username, password) VALUES(#{username}, #{password})
+```
        </insert>
+```
        
+```
        <update id="update" parameterType="com.example.entity.User">
+```
            UPDATE user SET username = #{username}, password = #{password} WHERE id = #{id}
+```
        </update>
+```
        
+```
        <delete id="delete" parameterType="java.lang.Long">
+```
            DELETE FROM user WHERE id = #{id}
+```
        </delete>
+```
+```
    </mapper>
+```
    ```
 
 ### 6.5 动态SQL
 1. **if**：
    ```xml
+```
    <select id="findByCondition" resultType="com.example.entity.User">
+```
        SELECT * FROM user
+```
        <where>
+```
+```
            <if test="username != null">
+```
                AND username LIKE #{username}
+```
            </if>
+```
+```
            <if test="email != null">
+```
                AND email = #{email}
+```
            </if>
+```
+```
        </where>
+```
+```
    </select>
+```
    ```
 
 2. **choose/when/otherwise**：
    ```xml
+```
    <select id="findByCondition" resultType="com.example.entity.User">
+```
        SELECT * FROM user
+```
        <where>
+```
+```
            <choose>
+```
+```
                <when test="username != null">
+```
                    AND username LIKE #{username}
+```
                </when>
+```
+```
                <when test="email != null">
+```
                    AND email = #{email}
+```
                </when>
+```
+```
                <otherwise>
+```
                    AND 1=1
+```
                </otherwise>
+```
+```
            </choose>
+```
+```
        </where>
+```
+```
    </select>
+```
    ```
 
 3. **trim/where/set**：
    ```xml
+```
    <update id="update" parameterType="com.example.entity.User">
+```
        UPDATE user
+```
        <set>
+```
+```
            <if test="username != null">username = #{username},</if>
+```
+```
            <if test="email != null">email = #{email},</if>
+```
+```
        </set>
+```
        WHERE id = #{id}
+```
    </update>
+```
    ```
 
 4. **foreach**：
    ```xml
+```
    <select id="findByIds" resultType="com.example.entity.User">
+```
        SELECT * FROM user
        WHERE id IN
+```
        <foreach collection="list" item="id" open="(" separator="," close=")">
+```
            #{id}
+```
        </foreach>
+```
+```
    </select>
+```
    ```
 
 ### 6.6 结果映射
@@ -682,17 +862,37 @@ public class UserController {
 
 2. **Vue组件示例**：
    ```vue
+```
    <template>
+```
+```
        <div>
+```
+```
            <h1>{{ title }}</h1>
+```
+```
            <ul>
+```
+```
                <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+```
+```
            </ul>
+```
+```
            <button @click="addItem">添加</button>
+```
+```
        </div>
+```
+```
    </template>
+```
 
+```
    <script>
+```
    export default {
        data() {
            return {
@@ -713,7 +913,9 @@ public class UserController {
                });
        }
    }
+```
    </script>
+```
    ```
 
 3. **Vue Router**：
@@ -791,15 +993,29 @@ public class UserController {
        };
 
        return (
+```
            <div>
+```
+```
                <h1>{title}</h1>
+```
+```
                <ul>
+```
                    {items.map(item => (
+```
                        <li key={item.id}>{item.name}</li>
+```
                    ))}
+```
                </ul>
+```
+```
                <button onClick={addItem}>添加</button>
+```
+```
            </div>
+```
        );
    }
 
@@ -814,12 +1030,24 @@ public class UserController {
 
    function App() {
        return (
+```
            <Router>
+```
+```
                <Routes>
+```
+```
                    <Route path="/" element={<Home />} />
+```
+```
                    <Route path="/user" element={<User />} />
+```
+```
                </Routes>
+```
+```
            </Router>
+```
        );
    }
    ```

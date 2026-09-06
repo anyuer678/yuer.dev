@@ -123,13 +123,27 @@ XML语法规定⼀个XML⽂档由两部分组成：声明和⽂档元素。
 文档元素由一个单根的树型自定义标记结构组成，类似HTML。
 
     <?xml version="1.0" encoding="UTF-8" ?>
+```
     <movies>
+```
+```
     <movie type="冒险片">
+```
+```
     <title> 空中监狱 </title>
+```
+```
     <actor> 尼古拉斯凯奇 </actor>
+```
+```
     <rating> 家长指引 </rating>
+```
+```
     </movie>
+```
+```
     </movies>
+```
 ## 2.2 编程内容
 ### 2.2.1 javax.servlet Servlet接口
 #### 2.2.1.1 init()
@@ -174,14 +188,22 @@ doGet、doPost等方法的重写
             // 获取输出流对象
             PrintWriter out = response.getWriter();
             // 输出HTML内容
+```
             out.println("<html><body>");
+```
+```
             out.println("<h1>这是一个GET请求</h1>");
+```
             // 获取请求参数
             String param = request.getParameter("paramName");
             if (param!= null) {
+```
                 out.println("<p>接收到的参数值为：" + param + "</p>");
+```
             }
+```
             out.println("</body></html>");
+```
         }
     }
 
@@ -195,14 +217,22 @@ doGet、doPost等方法的重写
             // 获取输出流对象
             PrintWriter out = response.getWriter();
             // 输出HTML内容
+```
             out.println("<html><body>");
+```
+```
             out.println("<h1>这是一个POST请求</h1>");
+```
             // 获取请求参数
             String param = request.getParameter("paramName");
             if (param!= null) {
+```
                 out.println("<p>接收到的参数值为：" + param + "</p>");
+```
             }
+```
             out.println("</body></html>");
+```
         }
     }
 #### 2.2.2.2 HttpServletRequest
@@ -263,12 +293,22 @@ URL重写的会话跟踪有如下限制：
 #### 3.1.2.2 使用隐藏域实现会话跟踪
 使用隐藏域的实现方式和重写URL方法类似，区别是将附加在URL中的token信息放置到form表单的隐藏域中。 
 
+```
     <body>
+```
+```
     <form action="login" method="post">
+```
+```
     <input type=“hidden” name=“id” value=“123”>
+```
     ......
+```
     </form>
+```
+```
     </body>
+```
 
 相对于URL重写⽅式：
 - 没有字符数限制
@@ -337,16 +377,28 @@ JSP表达式用于向页面中输出信息，其语法格式如下：
     <%="管理员："+manager %>		<!--输出结果为：管理员： mr -->
     <%= 7+6 %>					<!--输出结果为：13 -->
     <%String url="head01.jpg";%><!--定义保存文件名称的变量-->
-    <img src="images/<%url %>">	<!--输出结果为：<img src="images/head01.jpg">-->
+```
+    <img src="images/<%url % alt="">">	<!--输出结果为：<img src="images/head01.jpg" alt="">-->
+```
 #### 3.2.1.3 标准动作
 将使用JSP进行开发过程中常用的代码块（功能）用一个符号来表示，就是标准动作。
 
 JSP2.4规范中提供8个标准动作，其中常用的有：
+```
 - <jsp:include> 主要用来在请求处理阶段动态地包含一个静态或者动态的文件。
+```
+```
 - <jsp:forward> 用于将请求转发到Web应用的其他组件（如Servlet、Jsp或HTML文件等）处理。
+```
+```
 - <jsp:useBean> 使用useBean动作声明并初始化一个bean对象，并指定其名称和作用范围。
+```
+```
 - <jsp:setProperty>  用于设置标识Bean中的属性值。
+```
+```
 - <jsp:getProperty> 用于获取标识bean的属性值。
+```
 #### 3.2.1.4 注释
 JSP注释在JSP页面中使用，基本语法是 <%-- 注释内容 --%>
 
@@ -361,10 +413,16 @@ JSP注释在客户端页面中是无法看到的，只能在服务端页面中�
 
     <% 
         if(session.getAttribute("userName") != null){
+```
             out.print("<h1>欢迎：" + session.getAttribute("userName") + "，恭喜登录成功</h1>");
+```
         } else{
+```
             out.print("<h1>登录已过期，请重新登录</h1>");
+```
+```
             out.print("<a href='./Login.jsp'>重新登录</a>");
+```
         }
     %>
 
@@ -484,50 +542,91 @@ EL提供如下运算符操作：
 - 一个自定义标签由标签描述文件(.tld)和标签处理程序(.java)两个部分组成
 - SUN公司在JavaEE规范中提供一套较为通用的标签库：标准标签库(JSTL) 
 #### 5.2.1.4 JSTL语法和用法
+```
 **常用标签之<c:if>**
+```
 
 if标签用于条件判断，其基本语法为：
 
+```
     <c:if test=“条件表达式”>
+```
     body content
+```
     </c:if>
+```
 
 使用范例:
 
+```
     <c:if test=“${sessionScope.loginUser != null}”>
+```
     body content...
+```
     </c:set>
+```
 
+```
 **常用标签之<c:choose><c:when><c:otherwise>**
+```
 
 这一组标签可以实现条件嵌套和switch的功能，其基本语法为：
 
+```
     <c:choose>
+```
+```
         <c:when test=“条件表达式”>
+```
+```
         </c:when>
+```
+```
         <c:when test=“条件表达式”>
+```
+```
         </c:when>
+```
+```
         <c:otherwise>
+```
+```
         </c:otherwise>
+```
+```
     </c:choose>
+```
 
+```
 **常用标签之<c:forEach>**
+```
 
 forEach标签用于循环、遍历数组或集合对象，有两种形态，其基本语法为：
 
+```
     <c:forEach [var=“name”] begin=“begin” end=“end” step=“step”>
+```
         body content
+```
     </c:forEach>
+```
 
+```
     <c:forEach items=“数组或集合”
     [var=“name”] [begin=“begin”] [end=“end”] [step=“step”]>
+```
         body content
+```
     </c:forEach>
+```
     
+```
 **常用标签之<fmt:formatDate>**
+```
 
 formateDate标签用于对日期、时间、价格等进行格式化显示，其基本语法为：
 
+```
     <fmt:formatDate value=“date”
     [type=“{time|date|both}”]
     [dateStyle=“{default|short|medium|long|full}”]
@@ -537,6 +636,7 @@ formateDate标签用于对日期、时间、价格等进行格式化显示，其
     [var=“varName”]
     [scope=“{page|request|session|application}”]
     />
+```
 
 ### 5.2.2 过滤器
 实现过滤器的⽅法总体上和Servlet类似。
@@ -545,15 +645,33 @@ formateDate标签用于对日期、时间、价格等进行格式化显示，其
 
 配置:
 
+```
     <filter>
+```
+```
         <filter-name>XxxFilter</filter-name>
+```
+```
         <filter-class>servlet.XxxFilter</filter-class>
+```
+```
     </filter>
+```
+```
     <filter-mapping>
+```
+```
         <filter-name>XxxFilter</filter-name>
+```
+```
         <url-pattern>拦截的URL</url-pattern>
+```
+```
         <dispatcher>拦截的式</dispatcher>
+```
+```
     </filter-mapping>
+```
 
 过滤器的功能主要是通过doFilter()⽅法来实现的，⽅法原型为：
 
@@ -593,9 +711,15 @@ doFilter()⽅法，传递给过滤器链中的下⼀个过滤器，如果没有�
         //实现对应事件法
     }
     //web.xml
+```
         <listener>
+```
+```
         <listener-class> fully-qualified class </listener-class>
+```
+```
         </listener>
+```
 
 使用范例:
 
@@ -607,7 +731,9 @@ doFilter()⽅法，传递给过滤器链中的下⼀个过滤器，如果没有�
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             ServletContext servletContext = sce.getServletContext();
+```
             Map<String, String> countries = new HashMap<String, String>();
+```
             countries.put("ca", "Canada");
             countries.put("us", "United States”);
             servletContext.setAttribute("countries", countries);
@@ -681,11 +807,17 @@ JavaScript是目前广泛用于客户端开发的一种脚本语言，在“大�
 
 解释性脚本语言、多范式、事件驱动
 ### 7.1.3 JS使用方式
+```
 - 内联方式‌：直接在HTML标签的属性中使用JavaScript代码。例如，在`<button>`标签的onclick属性中写入JavaScript代码来实现点击事件。这种方式简单直观，但不利于代码的复用和维护‌
+```
 
+```
 - 嵌入式方式‌：在HTML文件中使用`<script>`标签来包含JavaScript代码。这种方式适合少量的脚本代码，但不利于大型项目的代码管理和复用‌
+```
 
+```
 - 外部文件方式‌：将JavaScript代码写在单独的.js文件中，并通过`<script src="path/to/file.js"></script>`引入。这种方式有利于代码的复用和维护，是推荐的使用方式‌
+```
 ## 7.2 编程部分
 ### 7.2.1 基本语法
 部分基础见JS文档
@@ -790,22 +922,34 @@ JavaScript事件处理分为三个步骤：选定元素、事件绑定、事件�
 
 #### 8.2.3.1 HTML绑定
 
+```
     <input type="button" onclick="clickBtn"/>    
+```
+```
     <script>
+```
         function clickBtn(){
             //content
         }
+```
     </script>
+```
 #### 8.2.3.2 传统DOM绑定
 
+```
     <input type="button" id="btn" onclick="clickBtn"/>    
+```
+```
     <script>
+```
         var elUser = document.getElementById("btn");
         elUser.onclick = clickBtn();
         function clickBtn() {
             //content
         }
+```
     </script>
+```
 #### 8.2.3.3 DOM监听器
 
     element.addEventListener("event",function,boolean);
@@ -900,9 +1044,13 @@ JavaScript中通过名为“JSON”的对象提供二者的相互转换。
 ### 10.2.1 JQuery使用方式
 在开发中使用jQuery框架很简单，只需将相应版本的对应的.js文件(jquery-3.4.1.js)引入到项目中即可(线上部署项目还可以使用CDN方式引用jQuery)。 
 
+```
     <script src=".../jquery.js">
+```
 
+```
     </script>
+```
 ### 10.2.2 JQuery语法
 #### 10.2.2.1 基础语法
 

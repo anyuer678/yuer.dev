@@ -1458,7 +1458,9 @@ Spring AOP的选择：
 - 如果目标对象没有实现接口，使用CGLIB代理
 - 可以强制使用CGLIB代理：
   ```xml
+```
   <aop:config proxy-target-class="true"/>
+```
   ```
   或者：
   ```java
@@ -3788,9 +3790,13 @@ Vue.js是一套用于构建用户界面的渐进式JavaScript框架。
 ### 1.2 Vue.js的核心特性
 1. **声明式渲染**
    ```html
+```
    <div id="app">
+```
      {{ message }}
+```
    </div>
+```
    ```
 
 2. **响应式数据**
