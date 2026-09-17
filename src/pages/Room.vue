@@ -108,11 +108,10 @@ function onSelect(data) {
   if (data.id === 'monitor') monitorOn.value = !monitorOn.value
   if (data.id === 'drawer') drawerOpen.value = !drawerOpen.value
 
-  // 书本：翻开动画 + 内容卡
+  // 书本：高亮 + 内容卡（不改 3D 姿态）
   if (data.kind === 'book') {
     easterOpen.value = false
     if (openBookId.value === data.id) {
-      // 再点 → 进入
       if (data.to) router.push(data.to)
       return
     }
@@ -141,23 +140,15 @@ function onSelect(data) {
 }
 
 function pickFromCatalog(item) {
-  if (item.catalogOnly) {
-    // 仅索引进入的笔记，不飞镜头
+  // 不飞镜头，只更新选中与浮卡
+  if (item.kind === 'book' && !item.catalogOnly) {
+    openBookId.value = item.id
+  } else {
     openBookId.value = ''
-    selected.value = item
-    easterOpen.value = false
-    return
   }
-  focusId.value = item.id
   if (item.id === 'lamp') lampOn.value = !lampOn.value
   if (item.id === 'monitor') monitorOn.value = !monitorOn.value
   if (item.id === 'drawer') drawerOpen.value = !drawerOpen.value
-  if (item.kind === 'book') {
-    openBookId.value = item.id
-    selected.value = item
-    easterOpen.value = false
-    return
-  }
   if (item.kind === 'easter') {
     selected.value = item
     easterOpen.value = true
