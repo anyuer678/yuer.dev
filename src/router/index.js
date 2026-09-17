@@ -86,8 +86,7 @@ const routes = [
     name: 'room',
     component: () => import('@/pages/Room.vue'),
     meta: {
-      nav: true,
-      label: 'Room',
+      nav: false, // 隐藏特别篇：入口在 Lab
       title: (s) => `工作室 · ${s.name}`,
       description: (s) => `走进 ${s.name} 的纸感工作室`,
     },

@@ -15,7 +15,7 @@ if (!existsSync(src)) {
 }
 
 // 固定路由（router 中无参数的路由 path，除 '/' 与兜底）
-const staticRoutes = ['about', 'projects', 'timeline', 'notes', 'lab', 'contact']
+const staticRoutes = ['about', 'projects', 'timeline', 'notes', 'lab', 'contact', 'room', 'dashboard']
 // 动态路由：content 目录 → 路由前缀
 const dynamicRoutes = [
   ['src/content/projects', 'projects'],

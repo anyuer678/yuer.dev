@@ -45,6 +45,16 @@ function applyStatus(next) {
   <div class="container">
     <PageHeader title="实验室" description="不成熟但真实的小项目" :count="sorted.length" />
 
+    <!-- 隐藏特别篇：纸感工作室（不进主导航，仅此处入口） -->
+    <RouterLink to="/room" class="lab-secret">
+      <span class="lab-secret__badge">特别篇</span>
+      <span class="lab-secret__body">
+        <span class="lab-secret__title">纸感工作室</span>
+        <span class="lab-secret__desc">点一点桌上的东西——书桌、书架与窗边，藏着项目与时间线。</span>
+      </span>
+      <span class="lab-secret__cta" aria-hidden="true">→</span>
+    </RouterLink>
+
     <div class="lab-filter">
       <label class="lab-filter__label" for="lab-status">状态</label>
       <select
@@ -74,6 +84,57 @@ function applyStatus(next) {
 </template>
 
 <style scoped>
+.lab-secret {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  padding: var(--space-5) var(--space-6);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    background var(--dur-fast) var(--ease-standard);
+}
+.lab-secret:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+.lab-secret__badge {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+.lab-secret__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.lab-secret__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--color-text);
+}
+.lab-secret__desc {
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+}
+.lab-secret__cta {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-size: var(--text-h3);
+}
 .lab-filter {
   display: flex;
   align-items: center;
