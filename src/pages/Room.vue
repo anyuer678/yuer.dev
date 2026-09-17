@@ -11,6 +11,7 @@ const router = useRouter()
 
 const stageReady = ref(false)
 const selected = ref(null)
+const openBookId = ref('')
 const hoverItem = ref(null)
 const easterOpen = ref(false)
 const lampOn = ref(true)
@@ -31,16 +32,17 @@ const KIND_LABEL = {
   desk: '物件',
   easter: '彩蛋',
   pulse: '动态',
+  book: '书本',
 }
 
 const catalog = computed(() => {
   const desk = (roomBooks.deskBooks || []).map((b) => ({
     id: 'book:' + b.mesh,
     label: b.title,
-    kind: 'notes',
+    kind: 'book',
     blurb: b.blurb,
-    cta: '打开笔记',
-    to: `/notes/${b.slug}`,
+    cta: '翻开书',
+    to: b.projectSlug ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
   }))
   const core = [
     { id: 'monitor', label: '显示器', kind: 'projects', blurb: 'Flagship 与全部项目。', cta: '打开项目', to: '/projects' },
@@ -82,6 +84,20 @@ function onSelect(data) {
   if (data.id === 'monitor') monitorOn.value = !monitorOn.value
   if (data.id === 'drawer') drawerOpen.value = !drawerOpen.value
 
+  // 书本：翻开动画 + 内容卡
+  if (data.kind === 'book') {
+    easterOpen.value = false
+    if (openBookId.value === data.id) {
+      // 再点 → 进入
+      if (data.to) router.push(data.to)
+      return
+    }
+    openBookId.value = data.id
+    selected.value = data
+    return
+  }
+
+  openBookId.value = ''
   if (data.kind === 'easter') {
     selected.value = data
     easterOpen.value = true
@@ -121,6 +137,7 @@ function pickFromCatalog(item) {
 function clearSelection() {
   selected.value = null
   easterOpen.value = false
+  openBookId.value = ''
 }
 
 function goSelected() {
@@ -163,6 +180,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
         :lamp-on="lampOn"
         :monitor-on="monitorOn"
         :drawer-open="drawerOpen"
+        :open-book-id="openBookId"
         @select="onSelect"
         @hover="onHover"
         @ready="stageReady = true"
@@ -212,13 +230,27 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 
       <!-- 检视卡 -->
       <Transition name="card">
-        <article v-if="selected && !easterOpen" :key="selected.id" class="card">
+        <article v-if="selected && !easterOpen" :key="selected.id" class="card" :class="{ 'card--book': selected.kind === 'book' }">
           <div class="card__eyebrow">
             <span>{{ KIND_LABEL[selected.kind] || selected.kind }}</span>
             <button type="button" class="card__x" aria-label="关闭" @click="clearSelection">×</button>
           </div>
           <h2 class="card__title">{{ selected.label }}</h2>
+          <p v-if="selected.dusty" class="dust">
+            <span class="dust__dot" aria-hidden="true" />
+            蒙尘 · 已 {{ selected.ageDays }} 天未推送
+          </p>
           <p class="card__blurb">{{ selected.blurb }}</p>
+
+          <!-- 打开的书：项目页 -->
+          <div v-if="selected.kind === 'book'" class="book">
+            <div class="book__page">
+              <p class="book__cap">书中写着</p>
+              <p class="book__project">{{ selected.projectTitle || selected.label }}</p>
+              <p v-if="selected.projectSubtitle" class="book__sub">{{ selected.projectSubtitle }}</p>
+              <p v-if="selected.noteSlug" class="book__note">相关笔记 · {{ selected.noteSlug }}</p>
+            </div>
+          </div>
 
           <div v-if="selected.id === 'monitor' && monitorOn" class="screen">
             <p class="screen__cap">显示器 · 在线</p>
@@ -576,6 +608,87 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 }
 .card--quote {
   background: linear-gradient(160deg, rgba(255, 244, 228, 0.98), rgba(248, 228, 200, 0.96));
+}
+.card--book {
+  border-color: rgba(176, 92, 58, 0.28);
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(176, 92, 58, 0.08) inset;
+}
+.dust {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(120, 100, 80, 0.12);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #7a6858;
+}
+.dust__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #b0a090;
+}
+.book {
+  margin: 0 0 12px;
+  padding: 2px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e8dcc8, #d4c4a8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.book__page {
+  padding: 14px 16px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #faf6ec 0px,
+      #faf6ec 26px,
+      #f0e8d8 26px,
+      #f0e8d8 27px
+    );
+  border: 1px solid rgba(120, 90, 60, 0.12);
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: rotateX(12deg) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.book__cap {
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a06040;
+}
+.book__project {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c241c;
+}
+.book__sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6a5a48;
+}
+.book__note {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #9a8878;
 }
 .card__eyebrow {
   display: flex;

@@ -6,11 +6,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import roomBooks from '@/content/room-books.json'
+import { githubData, getProject } from '@/utils/content.js'
 
 const props = defineProps({
   lampOn: { type: Boolean, default: true },
   monitorOn: { type: Boolean, default: false },
   drawerOpen: { type: Boolean, default: false },
+  openBookId: { type: String, default: '' },
 })
 const emit = defineEmits(['select', 'hover', 'ready'])
 
@@ -25,9 +27,41 @@ let deskLampLight, floorLampLight, screenMesh, drawerUpper, drawerLower
 const clickables = []
 const clock = new THREE.Clock()
 
+/** 书本开合动画状态 */
+const openBooks = new Map() // id -> { mesh, pages, t, target, home: {pos, rot} }
+
 const deskBookMap = Object.fromEntries((roomBooks.deskBooks || []).map((b) => [b.mesh, b]))
 const sideBook = roomBooks.sideBook
 const shelfNotes = roomBooks.shelfNotes || []
+
+/** 项目多久没推送算「蒙尘」 */
+const DUST_DAYS = 45
+
+function daysSince(iso) {
+  if (!iso) return 999
+  return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000)
+}
+
+function repoAgeDays(repo) {
+  if (!repo) return null
+  const r = githubData.repos?.[repo]
+  return r?.pushed_at ? daysSince(r.pushed_at) : null
+}
+
+/** 蒙尘：降饱和 + 灰白 + 粗糙 */
+function applyDust(mesh, ageDays) {
+  if (!mesh?.material || ageDays == null) return
+  const mat = mesh.material
+  if (!mat.color) return
+  const dust = Math.min(1, Math.max(0, (ageDays - DUST_DAYS) / 90))
+  if (dust <= 0) return
+  const hsl = {}
+  mat.color.getHSL(hsl)
+  mat.color.setHSL(hsl.h, hsl.s * (1 - dust * 0.75), Math.min(0.85, hsl.l + dust * 0.22))
+  if ('roughness' in mat) mat.roughness = Math.min(1, (mat.roughness ?? 0.8) + dust * 0.2)
+  mesh.userData.dusty = true
+  mesh.userData.dustDays = ageDays
+}
 
 /** 节点名 → 交互元数据（书类在加载后二次覆盖） */
 const INTERACTIVE = [
@@ -97,35 +131,55 @@ function bookDataFor(name) {
   if (!name) return null
   if (deskBookMap[name]) {
     const b = deskBookMap[name]
+    const age = repoAgeDays(b.repo)
+    const proj = b.projectSlug ? getProject(b.projectSlug) : null
     return {
       id: 'book:' + name,
       label: b.title,
-      kind: 'notes',
+      kind: 'book',
       blurb: b.blurb,
-      cta: '打开笔记',
-      to: `/notes/${b.slug}`,
+      cta: '翻开书',
+      to: proj ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
+      noteSlug: b.slug,
+      projectSlug: b.projectSlug || null,
+      repo: b.repo || null,
+      ageDays: age,
+      dusty: age != null && age > DUST_DAYS,
+      projectTitle: proj?.title || null,
+      projectSubtitle: proj?.subtitle || null,
     }
   }
   if (sideBook && name === sideBook.mesh) {
     return {
       id: 'book:' + name,
       label: sideBook.title,
-      kind: 'notes',
+      kind: 'book',
       blurb: sideBook.blurb,
-      cta: '打开笔记',
+      cta: '翻开书',
       to: `/notes/${sideBook.slug}`,
+      noteSlug: sideBook.slug,
+      projectSlug: null,
+      repo: null,
+      ageDays: null,
+      dusty: false,
     }
   }
   if (name.startsWith('BK') || name.startsWith('BS')) {
     const idx = Math.abs(hashCode(name)) % shelfNotes.length
     const n = shelfNotes[idx]
+    const age = repoAgeDays(n.repo)
     return {
       id: 'book:' + name,
       label: n.title,
-      kind: 'notes',
+      kind: 'book',
       blurb: `书架上的一本：${n.title}`,
-      cta: '打开笔记',
+      cta: '翻开书',
       to: `/notes/${n.slug}`,
+      noteSlug: n.slug,
+      projectSlug: null,
+      repo: n.repo || null,
+      ageDays: age,
+      dusty: age != null && age > DUST_DAYS,
     }
   }
   return null
@@ -170,7 +224,6 @@ async function decorateArt(root, base) {
 }
 
 function tagClickable(obj) {
-  const shelfPool = []
   obj.traverse((child) => {
     if (!child.isMesh) return
     const book = bookDataFor(child.name) || bookDataFor(child.parent?.name)
@@ -178,11 +231,112 @@ function tagClickable(obj) {
     if (!data) return
     child.userData = { ...child.userData, interactive: true, ...data, meshName: child.name }
     clickables.push(child)
-    if (child.name?.startsWith('BK') || child.name?.startsWith('BS')) shelfPool.push(child)
+    if (data.kind === 'book') {
+      applyDust(child, data.ageDays)
+      child.userData._home = {
+        pos: child.position.clone(),
+        rot: child.rotation.clone(),
+      }
+    }
   })
-  // 书架书按名稳定映射已在 bookDataFor 完成
-  return shelfPool
 }
+
+/** 打开书：升起 + 掀页 + 页面内容 */
+function openBook(mesh, data) {
+  closeAllBooks()
+  if (!mesh) return
+  const home = mesh.userData._home || { pos: mesh.position.clone(), rot: mesh.rotation.clone() }
+  mesh.userData._home = home
+
+  const pages = new THREE.Group()
+  const pageMat = new THREE.MeshStandardMaterial({
+    color: 0xf7f0e2,
+    roughness: 0.92,
+    metalness: 0,
+    side: THREE.DoubleSide,
+  })
+  // 左右页
+  const left = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), pageMat)
+  left.position.set(-0.105, 0.01, 0)
+  left.rotation.x = -Math.PI / 2
+  left.rotation.z = 0.08
+  const right = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), pageMat.clone())
+  right.position.set(0.105, 0.01, 0)
+  right.rotation.x = -Math.PI / 2
+  right.rotation.z = -0.08
+  // 封面掀开感：用两片薄盒
+  const coverMat = new THREE.MeshStandardMaterial({ color: 0x6b3a28, roughness: 0.75 })
+  const coverL = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.012, 0.29), coverMat)
+  coverL.position.set(-0.11, 0, 0)
+  const coverR = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.012, 0.29), coverMat.clone())
+  coverR.position.set(0.11, 0, 0)
+  pages.add(left, right, coverL, coverR)
+  pages.visible = false
+  mesh.add(pages)
+
+  openBooks.set(data.id, {
+    mesh,
+    pages,
+    t: 0,
+    target: 1,
+    home,
+  })
+}
+
+function closeAllBooks() {
+  for (const [, st] of openBooks) {
+    if (st.pages) {
+      st.mesh.remove(st.pages)
+      st.pages.traverse((c) => {
+        if (c.geometry) c.geometry.dispose()
+        if (c.material) c.material.dispose()
+      })
+    }
+    if (st.home) {
+      st.mesh.position.copy(st.home.pos)
+      st.mesh.rotation.copy(st.home.rot)
+    }
+  }
+  openBooks.clear()
+}
+
+function tickBooks(dt) {
+  for (const [, st] of openBooks) {
+    const speed = 3.2
+    st.t += (st.target - st.t) * Math.min(1, dt * speed)
+    const k = st.t
+    const home = st.home
+    st.mesh.position.y = home.pos.y + 0.08 * k
+    st.mesh.position.z = home.pos.z + 0.04 * k
+    st.mesh.rotation.x = home.rot.x + 0.35 * k
+    st.mesh.rotation.z = home.rot.z * (1 - k * 0.5)
+    if (st.pages) {
+      st.pages.visible = k > 0.15
+      st.pages.position.y = 0.02
+      // 封面外掀
+      const cl = st.pages.children[2]
+      const cr = st.pages.children[3]
+      if (cl) cl.rotation.z = 1.1 * k
+      if (cr) cr.rotation.z = -1.1 * k
+      const pl = st.pages.children[0]
+      const pr = st.pages.children[1]
+      if (pl) pl.rotation.z = 0.08 + 0.25 * k
+      if (pr) pr.rotation.z = -0.08 - 0.25 * k
+    }
+  }
+}
+
+watch(
+  () => props.openBookId,
+  (id) => {
+    if (!id) {
+      closeAllBooks()
+      return
+    }
+    const hit = clickables.find((c) => c.userData?.id === id)
+    if (hit) openBook(hit, hit.userData)
+  }
+)
 
 function findByName(root, names) {
   const found = {}
@@ -261,8 +415,10 @@ function onClick(e) {
 
 function animate() {
   frame = requestAnimationFrame(animate)
+  const dt = Math.min(0.05, clock.getDelta())
   const t = clock.getElapsedTime()
   controls?.update()
+  tickBooks(dt)
   if (deskLampLight && props.lampOn) {
     deskLampLight.intensity = 2.6 + Math.sin(t * 1.7) * 0.15
   }
@@ -404,6 +560,7 @@ watch(
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(frame)
+  closeAllBooks()
   window.removeEventListener('resize', resize)
   if (host.value) {
     host.value.removeEventListener('pointermove', onPointerMove)
