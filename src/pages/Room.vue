@@ -28,6 +28,20 @@ const parallax = ref({ x: 0, y: 0 })
 const selected = computed(() => hotspots.value.find((h) => h.id === selectedId.value) || null)
 const hover = computed(() => hotspots.value.find((h) => h.id === hoverId.value) || null)
 
+/** 聚焦光斑：跟随 hover/选中物件中心，压暗其余画面 */
+const veilStyle = computed(() => {
+  const item = selected.value || hover.value
+  if (!item) return {}
+  const cx = item.x + item.w / 2
+  const cy = item.y + item.h / 2
+  const rx = Math.max(item.w, item.h) * 0.95 + 8
+  return {
+    '--vx': `${cx}%`,
+    '--vy': `${cy}%`,
+    '--vr': `${rx}%`,
+  }
+})
+
 const states = ref({})
 watch(
   scenes,
@@ -116,7 +130,7 @@ function onMove(e) {
   const r = el.getBoundingClientRect()
   const nx = ((e.clientX - r.left) / r.width - 0.5) * 2
   const ny = ((e.clientY - r.top) / r.height - 0.5) * 2
-  parallax.value = { x: nx * 8, y: ny * 5 }
+  parallax.value = { x: nx * 14, y: ny * 9 }
 }
 
 function onLeave() {
@@ -197,7 +211,15 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
         </Transition>
       </div>
 
-      <!-- 热区层 -->
+      <!-- 聚焦压暗：hover/选中时其余区域退后，物件像被灯照亮 -->
+      <div
+        class="room__veil"
+        :class="{ 'room__veil--on': !!(hoverId || selectedId) }"
+        aria-hidden="true"
+        :style="veilStyle"
+      />
+
+      <!-- 热区层：无矩形框，仅中心柔光 -->
       <button
         v-for="h in hotspots"
         :key="`${activeScene}-${h.id}`"
@@ -206,7 +228,7 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
         :class="{
           'hit--hover': hoverId === h.id,
           'hit--on': selectedId === h.id,
-          'hit--dim': selectedId && selectedId !== h.id,
+          'hit--dim': (hoverId || selectedId) && hoverId !== h.id && selectedId !== h.id,
           'hit--awake': isOn(h),
         }"
         :style="{
@@ -221,8 +243,8 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
         @mouseenter="hoverId = h.id"
         @mouseleave="hoverId = null"
       >
-        <span class="hit__glow" aria-hidden="true" />
-        <span class="hit__pin" aria-hidden="true" />
+        <span class="hit__aura" aria-hidden="true" />
+        <span class="hit__core" aria-hidden="true" />
       </button>
 
       <!-- 选中浮卡：贴在房间上，而不是侧栏 -->
@@ -375,8 +397,8 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
 }
 .room__parallax {
   position: absolute;
-  inset: -12px;
-  transition: transform 0.35s var(--ease-out);
+  inset: -18px;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 .room__art {
@@ -389,14 +411,34 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
 }
 .room-swap-enter-active,
 .room-swap-leave-active {
-  transition: opacity 0.35s var(--ease-standard);
+  transition: opacity 0.4s var(--ease-standard);
 }
 .room-swap-enter-from,
 .room-swap-leave-to {
   opacity: 0;
 }
 
-/* 热区 */
+/* 聚焦压暗层：径向镂空，让物件像被灯打亮，而不是画方框 */
+.room__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-standard);
+  background: radial-gradient(
+    ellipse var(--vr, 28%) var(--vr, 28%) at var(--vx, 50%) var(--vy, 50%),
+    transparent 0%,
+    transparent 42%,
+    rgba(43, 32, 22, 0.18) 68%,
+    rgba(43, 32, 22, 0.38) 100%
+  );
+}
+.room__veil--on {
+  opacity: 1;
+}
+
+/* 热区：透明命中区 + 中心柔光，无矩形描边 */
 .hit {
   position: absolute;
   z-index: 2;
@@ -404,94 +446,122 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
   border: none;
   background: transparent;
   cursor: pointer;
-  border-radius: 14px;
+  border-radius: 40%;
 }
-.hit__glow {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1.5px solid transparent;
-  background: transparent;
-  transition:
-    border-color 0.18s var(--ease-standard),
-    background 0.18s var(--ease-standard),
-    box-shadow 0.18s var(--ease-standard);
-  pointer-events: none;
-}
-.hit__pin {
+.hit__aura {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
+  width: min(72%, 120px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.55);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #f0c4b0, var(--color-accent));
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
-    0 2px 6px rgba(0, 0, 0, 0.12);
-  opacity: 0.5;
+  background: radial-gradient(
+    circle,
+    rgba(176, 92, 58, 0.38) 0%,
+    rgba(176, 92, 58, 0.14) 42%,
+    transparent 72%
+  );
+  opacity: 0;
   pointer-events: none;
   transition:
-    opacity 0.18s,
-    transform 0.18s var(--ease-standard);
-  animation: pin-breathe 2.8s ease-in-out infinite;
+    opacity 0.28s var(--ease-standard),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: blur(2px);
 }
-@keyframes pin-breathe {
+.hit__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f3d2c0, var(--color-accent));
+  box-shadow:
+    0 0 0 2px rgba(255, 250, 245, 0.55),
+    0 0 12px rgba(176, 92, 58, 0.55);
+  opacity: 0.42;
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s;
+  animation: core-breathe 3s ease-in-out infinite;
+}
+@keyframes core-breathe {
   0%,
   100% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.18);
+    transform: scale(1.2);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hit__pin {
+  .hit__core {
     animation: none;
   }
   .room__parallax {
     transition: none;
   }
+  .room__veil {
+    transition: none;
+  }
 }
-.hit:hover .hit__glow,
-.hit--hover .hit__glow {
-  border-color: color-mix(in srgb, var(--color-accent) 70%, transparent);
-  background: color-mix(in srgb, var(--color-accent-soft) 35%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 25%, transparent);
-}
-.hit:hover .hit__pin,
-.hit--hover .hit__pin {
+
+.hit:hover .hit__aura,
+.hit--hover .hit__aura,
+.hit--on .hit__aura {
   opacity: 1;
-  transform: scale(1.25);
+  transform: translate(-50%, -50%) scale(1);
 }
-/* 选中：自然描边高亮 + 外发光 */
-.hit--on .hit__glow {
-  border-color: var(--color-accent);
-  border-width: 2px;
-  background: color-mix(in srgb, var(--color-accent-soft) 42%, transparent);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent),
-    0 0 24px color-mix(in srgb, var(--color-accent) 22%, transparent);
+.hit--on .hit__aura {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: radial-gradient(
+    circle,
+    rgba(176, 92, 58, 0.48) 0%,
+    rgba(176, 92, 58, 0.18) 48%,
+    transparent 74%
+  );
 }
-.hit--on .hit__pin {
+.hit:hover .hit__core,
+.hit--hover .hit__core {
   opacity: 1;
   transform: scale(1.35);
+  box-shadow:
+    0 0 0 2px rgba(255, 250, 245, 0.7),
+    0 0 18px rgba(176, 92, 58, 0.75);
   animation: none;
 }
-.hit--dim {
-  opacity: 0.45;
+.hit--on .hit__core {
+  opacity: 1;
+  transform: scale(1.55);
+  animation: none;
+  box-shadow:
+    0 0 0 2px rgba(255, 250, 245, 0.85),
+    0 0 28px rgba(176, 92, 58, 0.95),
+    0 0 48px rgba(176, 92, 58, 0.35);
 }
-.hit--awake .hit__glow {
-  border-style: dashed;
-  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+/* 被聚焦时，其余热区退后 */
+.hit--dim .hit__core {
+  opacity: 0.18;
+  transform: scale(0.85);
+}
+.hit--dim .hit__aura {
+  opacity: 0;
+}
+.hit--awake .hit__core {
+  box-shadow:
+    0 0 0 2px rgba(255, 250, 245, 0.5),
+    0 0 14px rgba(176, 92, 58, 0.45);
 }
 .hit:focus-visible {
   outline: none;
 }
-.hit:focus-visible .hit__glow {
+.hit:focus-visible .hit__core {
   outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 /* 浮卡 */
