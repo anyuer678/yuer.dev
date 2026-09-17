@@ -17,6 +17,7 @@ const activeScene = computed(() => {
 })
 const scene = computed(() => scenes.value.find((s) => s.id === activeScene.value))
 const hotspots = computed(() => scene.value?.hotspots ?? [])
+const layers = computed(() => scene.value?.layers ?? [])
 const sceneImage = computed(() => (scene.value?.image ? baseUrl + scene.value.image : ''))
 
 const selectedId = ref(null)
@@ -25,16 +26,26 @@ const easterOpen = ref(false)
 const stageEl = ref(null)
 const parallax = ref({ x: 0, y: 0 })
 
-const selected = computed(() => hotspots.value.find((h) => h.id === selectedId.value) || null)
-const hover = computed(() => hotspots.value.find((h) => h.id === hoverId.value) || null)
+/** 交互项 = 分层物件 + 扁平热区 */
+const interactives = computed(() => {
+  const fromLayers = layers.value.map((l) => ({
+    ...l,
+    // 分层物件用中心点近似 veil
+    h: l.w * 1.15,
+  }))
+  return [...fromLayers, ...hotspots.value]
+})
 
-/** 聚焦光斑：跟随 hover/选中物件中心，压暗其余画面 */
+const selected = computed(() => interactives.value.find((h) => h.id === selectedId.value) || null)
+const hover = computed(() => interactives.value.find((h) => h.id === hoverId.value) || null)
+
+/** 聚焦光斑：跟随 hover/选中物件中心 */
 const veilStyle = computed(() => {
   const item = selected.value || hover.value
   if (!item) return {}
-  const cx = item.x + item.w / 2
-  const cy = item.y + item.h / 2
-  const rx = Math.max(item.w, item.h) * 0.95 + 8
+  const cx = (item.x ?? 50) + (item.w ?? 10) / 2
+  const cy = (item.y ?? 50) + (item.h ?? item.w * 1.15) / 2
+  const rx = Math.max(item.w ?? 12, item.h ?? 12) * 0.95 + 8
   return {
     '--vx': `${cx}%`,
     '--vy': `${cy}%`,
@@ -48,7 +59,8 @@ watch(
   (list) => {
     const next = {}
     for (const s of list) {
-      for (const h of s.hotspots) {
+      const items = [...(s.layers || []), ...(s.hotspots || [])]
+      for (const h of items) {
         if (!h.stateful) continue
         const key = `${s.id}:${h.id}`
         next[key] = sessionStorage.getItem(`room:${key}`) || h.defaultState || 'closed'
@@ -151,7 +163,7 @@ const pulseRepos = computed(() =>
     .slice(0, 6)
 )
 
-const onLabels = computed(() => hotspots.value.filter(isOn).map((h) => h.label))
+const onLabels = computed(() => interactives.value.filter(isOn).map((h) => h.label))
 
 setTitle(`工作室 · ${site?.name || 'Yuer'}`)
 setDescription('走进纸感工作室：点一点屋里的东西。')
@@ -194,24 +206,55 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
     >
       <div
         class="room__parallax"
-        :style="{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.02)` }"
+        :style="{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.03)` }"
       >
         <Transition name="room-swap" mode="out-in">
           <img
             v-if="sceneImage"
-            :key="activeScene"
+            :key="`${activeScene}-bg`"
             class="room__art"
             :src="sceneImage"
             :alt="`${scene?.title || ''}场景`"
-            width="1803"
-            height="1037"
             decoding="async"
             draggable="false"
           />
         </Transition>
+
+        <!-- 分层物件：本体图，hover 浮起发光 -->
+        <button
+          v-for="l in layers"
+          :key="`${activeScene}-layer-${l.id}`"
+          type="button"
+          class="sprite"
+          :class="{
+            'sprite--hover': hoverId === l.id,
+            'sprite--on': selectedId === l.id,
+            'sprite--dim': (hoverId || selectedId) && hoverId !== l.id && selectedId !== l.id,
+            'sprite--awake': isOn(l),
+          }"
+          :style="{
+            left: l.x + '%',
+            top: l.y + '%',
+            width: l.w + '%',
+            zIndex: l.z || 4,
+          }"
+          :aria-label="l.label"
+          :aria-pressed="selectedId === l.id"
+          @click.stop="activate(l)"
+          @mouseenter="hoverId = l.id"
+          @mouseleave="hoverId = null"
+        >
+          <img
+            class="sprite__img"
+            :src="baseUrl + l.src"
+            :alt="l.label"
+            decoding="async"
+            draggable="false"
+          />
+        </button>
       </div>
 
-      <!-- 聚焦压暗：hover/选中时其余区域退后，物件像被灯照亮 -->
+      <!-- 聚焦压暗：无矩形框 -->
       <div
         class="room__veil"
         :class="{ 'room__veil--on': !!(hoverId || selectedId) }"
@@ -219,10 +262,10 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
         :style="veilStyle"
       />
 
-      <!-- 热区层：无矩形框，仅中心柔光 -->
+      <!-- 扁平热区（书架/窗等背景层）：中心柔光，无矩形 -->
       <button
         v-for="h in hotspots"
-        :key="`${activeScene}-${h.id}`"
+        :key="`${activeScene}-hit-${h.id}`"
         type="button"
         class="hit"
         :class="{
@@ -405,7 +448,7 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -416,6 +459,70 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
 .room-swap-enter-from,
 .room-swap-leave-to {
   opacity: 0;
+}
+
+/* 分层物件：本体图，hover 浮起 + 柔光（沿轮廓自然） */
+.sprite {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.35s var(--ease-standard),
+    opacity 0.3s;
+}
+.sprite__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 2px 4px rgba(60, 40, 20, 0.12));
+  transition:
+    filter 0.35s var(--ease-standard),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sprite:hover,
+.sprite--hover {
+  transform: translate(-50%, calc(-50% - 8px)) scale(1.04);
+  z-index: 20 !important;
+}
+.sprite:hover .sprite__img,
+.sprite--hover .sprite__img {
+  filter:
+    drop-shadow(0 14px 22px rgba(60, 40, 20, 0.28))
+    drop-shadow(0 0 18px rgba(176, 92, 58, 0.35));
+}
+.sprite--on {
+  transform: translate(-50%, calc(-50% - 12px)) scale(1.06);
+  z-index: 22 !important;
+}
+.sprite--on .sprite__img {
+  filter:
+    drop-shadow(0 18px 28px rgba(60, 40, 20, 0.32))
+    drop-shadow(0 0 28px rgba(176, 92, 58, 0.5));
+}
+.sprite--dim {
+  opacity: 0.35;
+  filter: grayscale(0.15);
+}
+.sprite--awake .sprite__img {
+  filter:
+    drop-shadow(0 4px 10px rgba(60, 40, 20, 0.18))
+    drop-shadow(0 0 12px rgba(176, 92, 58, 0.25));
+}
+.sprite:focus-visible {
+  outline: none;
+}
+.sprite:focus-visible .sprite__img {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+  border-radius: 4px;
 }
 
 /* 聚焦压暗层：径向镂空，让物件像被灯打亮，而不是画方框 */
