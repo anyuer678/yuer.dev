@@ -12,7 +12,7 @@ const props = defineProps({
   monitorOn: { type: Boolean, default: false },
   drawerOpen: { type: Boolean, default: false },
 })
-const emit = defineEmits(['select', 'hover'])
+const emit = defineEmits(['select', 'hover', 'ready'])
 
 const host = ref(null)
 const ready = ref(false)
@@ -378,6 +378,7 @@ onMounted(async () => {
     applyMonitor(props.monitorOn)
     applyDrawer(props.drawerOpen)
     ready.value = true
+    emit('ready')
   } catch (err) {
     console.error('[RoomStage3D] load failed', err)
   }
