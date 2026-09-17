@@ -142,6 +142,53 @@ function hashCode(s) {
   return h
 }
 
+async function decorateArt(root, base) {
+  const texLoader = new THREE.TextureLoader()
+  const load = async (path) => {
+    try {
+      const t = await texLoader.loadAsync(`${base}models/study_room/art/${path}`)
+      t.colorSpace = THREE.SRGBColorSpace
+      t.anisotropy = 4
+      return t
+    } catch {
+      return null
+    }
+  }
+  const [land, abstract, rug, plaster] = await Promise.all([
+    load('art-landscape.webp'),
+    load('art-abstract.webp'),
+    load('rug-pattern.webp'),
+    load('wall-plaster.webp'),
+  ])
+  const artTexes = [land, abstract].filter(Boolean)
+  let ai = 0
+  root.traverse((c) => {
+    if (!c.isMesh) return
+    const n = c.name || ''
+    if (/Frame|Picture|Canvas|Painting|Art/i.test(n) && artTexes.length) {
+      const t = artTexes[ai % artTexes.length]
+      ai++
+      c.material = new THREE.MeshStandardMaterial({ map: t, roughness: 0.88, metalness: 0 })
+      return
+    }
+    if (/Rug|Carpet/i.test(n) && rug) {
+      rug.wrapS = rug.wrapT = THREE.RepeatWrapping
+      c.material = new THREE.MeshStandardMaterial({ map: rug, roughness: 0.95, metalness: 0 })
+      return
+    }
+    if (/Wall/i.test(n) && plaster) {
+      plaster.wrapS = plaster.wrapT = THREE.RepeatWrapping
+      plaster.repeat.set(3, 2)
+      c.material = new THREE.MeshStandardMaterial({
+        map: plaster,
+        color: 0xf0e8dc,
+        roughness: 0.96,
+        metalness: 0,
+      })
+    }
+  })
+}
+
 function tagClickable(obj) {
   obj.traverse((child) => {
     if (!child.isMesh) return
@@ -456,6 +503,7 @@ onMounted(async () => {
     })
     scene.add(modelRoot)
     tagClickable(modelRoot)
+    await decorateArt(modelRoot, base)
 
     const named = findByName(modelRoot, ['Monitor_Screen', 'Desk_Drawer_Upper', 'Desk_Drawer_Lower', 'DeskLamp'])
     screenMesh = named.Monitor_Screen || null
