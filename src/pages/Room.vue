@@ -17,7 +17,7 @@ const activeScene = computed(() => {
 })
 const scene = computed(() => scenes.value.find((s) => s.id === activeScene.value))
 const hotspots = computed(() => scene.value?.hotspots ?? [])
-const layers = computed(() => scene.value?.layers ?? [])
+const layers = computed(() => [])
 const sceneImage = computed(() => (scene.value?.image ? baseUrl + scene.value.image : ''))
 
 const selectedId = ref(null)
@@ -142,7 +142,7 @@ function onMove(e) {
   const r = el.getBoundingClientRect()
   const nx = ((e.clientX - r.left) / r.width - 0.5) * 2
   const ny = ((e.clientY - r.top) / r.height - 0.5) * 2
-  parallax.value = { x: nx * 14, y: ny * 9 }
+  parallax.value = { x: nx * 6, y: ny * 4 }
 }
 
 function onLeave() {
@@ -206,7 +206,7 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
     >
       <div
         class="room__parallax"
-        :style="{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.03)` }"
+        :style="{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0)` }"
       >
         <Transition name="room-swap" mode="out-in">
           <img
@@ -220,75 +220,35 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
           />
         </Transition>
 
-        <!-- 分层物件：本体图，hover 浮起发光 -->
+        <!-- 热区与图同容器，百分比对齐画面 -->
+        <div class="room__veil" :class="{ 'room__veil--on': !!(hoverId || selectedId) }" aria-hidden="true" :style="veilStyle" />
         <button
-          v-for="l in layers"
-          :key="`${activeScene}-layer-${l.id}`"
+          v-for="h in hotspots"
+          :key="`${activeScene}-hit-${h.id}`"
           type="button"
-          class="sprite"
+          class="hit"
           :class="{
-            'sprite--hover': hoverId === l.id,
-            'sprite--on': selectedId === l.id,
-            'sprite--dim': (hoverId || selectedId) && hoverId !== l.id && selectedId !== l.id,
-            'sprite--awake': isOn(l),
+            'hit--hover': hoverId === h.id,
+            'hit--on': selectedId === h.id,
+            'hit--dim': (hoverId || selectedId) && hoverId !== h.id && selectedId !== h.id,
+            'hit--awake': isOn(h),
           }"
           :style="{
-            left: l.x + '%',
-            top: l.y + '%',
-            width: l.w + '%',
-            zIndex: l.z || 4,
+            left: h.x + '%',
+            top: h.y + '%',
+            width: h.w + '%',
+            height: h.h + '%',
           }"
-          :aria-label="l.label"
-          :aria-pressed="selectedId === l.id"
-          @click.stop="activate(l)"
-          @mouseenter="hoverId = l.id"
+          :aria-label="h.label"
+          :aria-pressed="selectedId === h.id"
+          @click.stop="activate(h)"
+          @mouseenter="hoverId = h.id"
           @mouseleave="hoverId = null"
         >
-          <img
-            class="sprite__img"
-            :src="baseUrl + l.src"
-            :alt="l.label"
-            decoding="async"
-            draggable="false"
-          />
+          <span class="hit__aura" aria-hidden="true" />
+          <span class="hit__core" aria-hidden="true" />
         </button>
       </div>
-
-      <!-- 聚焦压暗：无矩形框 -->
-      <div
-        class="room__veil"
-        :class="{ 'room__veil--on': !!(hoverId || selectedId) }"
-        aria-hidden="true"
-        :style="veilStyle"
-      />
-
-      <!-- 扁平热区（书架/窗等背景层）：中心柔光，无矩形 -->
-      <button
-        v-for="h in hotspots"
-        :key="`${activeScene}-hit-${h.id}`"
-        type="button"
-        class="hit"
-        :class="{
-          'hit--hover': hoverId === h.id,
-          'hit--on': selectedId === h.id,
-          'hit--dim': (hoverId || selectedId) && hoverId !== h.id && selectedId !== h.id,
-          'hit--awake': isOn(h),
-        }"
-        :style="{
-          left: h.x + '%',
-          top: h.y + '%',
-          width: h.w + '%',
-          height: h.h + '%',
-        }"
-        :aria-label="h.label"
-        :aria-pressed="selectedId === h.id"
-        @click.stop="activate(h)"
-        @mouseenter="hoverId = h.id"
-        @mouseleave="hoverId = null"
-      >
-        <span class="hit__aura" aria-hidden="true" />
-        <span class="hit__core" aria-hidden="true" />
-      </button>
 
       <!-- 选中浮卡：贴在房间上，而不是侧栏 -->
       <Transition name="room-card">
@@ -433,24 +393,37 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
 .room__stage {
   position: relative;
   flex: 1;
-  min-height: calc(100dvh - 140px);
+  min-height: calc(100dvh - 132px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   cursor: default;
-  background: #ebe8df;
+  /* 纸感衬底，图按 contain 居中，绝不拉伸变形 */
+  background:
+    radial-gradient(ellipse at 50% 40%, #f7f2ea 0%, #ebe6dc 55%, #e2dcd0 100%);
 }
 .room__parallax {
-  position: absolute;
-  inset: -18px;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  width: min(100%, calc((100dvh - 132px) * 1.74));
+  max-width: 100%;
+  aspect-ratio: 1844 / 1060;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 24px 60px rgba(70, 50, 30, 0.12);
 }
 .room__art {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  object-fit: contain;
+  object-position: center;
   user-select: none;
   -webkit-user-drag: none;
+  background: #f3eee4;
 }
 .room-swap-enter-active,
 .room-swap-leave-active {
@@ -525,20 +498,20 @@ setDescription('走进纸感工作室：点一点屋里的东西。')
   border-radius: 4px;
 }
 
-/* 聚焦压暗层：径向镂空，让物件像被灯打亮，而不是画方框 */
+/* 聚焦压暗层：径向镂空，柔光聚焦，无方框 */
 .room__veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.35s var(--ease-standard);
+  transition: opacity 0.4s var(--ease-standard);
   background: radial-gradient(
-    ellipse var(--vr, 28%) var(--vr, 28%) at var(--vx, 50%) var(--vy, 50%),
+    ellipse var(--vr, 26%) var(--vr, 26%) at var(--vx, 50%) var(--vy, 50%),
     transparent 0%,
-    transparent 42%,
-    rgba(43, 32, 22, 0.18) 68%,
-    rgba(43, 32, 22, 0.38) 100%
+    transparent 40%,
+    rgba(52, 38, 26, 0.14) 62%,
+    rgba(52, 38, 26, 0.32) 100%
   );
 }
 .room__veil--on {
