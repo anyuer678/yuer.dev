@@ -82,6 +82,17 @@ const routes = [
     },
   },
   {
+    path: '/room',
+    name: 'room',
+    component: () => import('@/pages/Room.vue'),
+    meta: {
+      nav: true,
+      label: 'Room',
+      title: (s) => `工作室 · ${s.name}`,
+      description: (s) => `走进 ${s.name} 的纸感工作室`,
+    },
+  },
+  {
     path: '/contact',
     name: 'contact',
     component: () => import('@/pages/Contact.vue'),

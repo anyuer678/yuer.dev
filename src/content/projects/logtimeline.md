@@ -3,6 +3,7 @@ slug: logtimeline
 title: 日志时间戳模糊查询器
 subtitle: LogTimeline
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, AI, LLM]

@@ -3,16 +3,28 @@
 // 主链接用 cover-link overlay 方案（14 §5.11）：<RouterLink class="cover"> 为空白
 // 覆盖层，::after 绝对定位覆盖整卡；卡内 GitHub/Demo 等独立链接 z-index 抬升
 // —— 禁止 a 嵌套 a
+import { computed } from 'vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import Tag from '@/components/ui/Tag.vue'
 import ExternalLink from '@/components/ui/ExternalLink.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 
-defineProps({
+const props = defineProps({
   project: { type: Object, required: true },
   featured: { type: Boolean, default: false },
   showCover: { type: Boolean, default: true },
+})
+
+/** 构建期 GitHub 摘要行（15 Wave 1.3） */
+const repoLine = computed(() => {
+  const s = props.project.repoStats
+  if (!s) return ''
+  const parts = []
+  if (s.language) parts.push(s.language)
+  if (s.release) parts.push(s.release)
+  if (s.stars != null && s.stars > 0) parts.push(`★ ${s.stars}`)
+  return parts.join(' · ')
 })
 </script>
 
@@ -40,9 +52,10 @@ defineProps({
     <div class="project-card__tech">
       <Tag v-for="t in project.tech" :key="t" :label="t" />
     </div>
+    <p v-if="repoLine" class="project-card__repo">{{ repoLine }}</p>
     <footer class="project-card__foot">
+      <ExternalLink v-if="project.demo" :href="project.demo">在线试用</ExternalLink>
       <ExternalLink v-if="project.github" :href="project.github">GitHub</ExternalLink>
-      <ExternalLink v-if="project.demo" :href="project.demo">Demo</ExternalLink>
     </footer>
   </article>
 </template>
@@ -125,6 +138,12 @@ defineProps({
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+}
+.project-card__repo {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
 }
 /* featured 变体：加大内距与字号（05 §3） */
 .project-card--featured {

@@ -3,6 +3,7 @@ slug: dsh-logtimeline
 title: DSH LogTimeline
 subtitle: DeepSeek Harness 日志查询插件
 status: completed
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, LLM, AI]

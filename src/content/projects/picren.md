@@ -3,6 +3,7 @@ slug: picren
 title: 图片批量 AI 重命名器
 subtitle: PicRen
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, AI, LLM]

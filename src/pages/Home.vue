@@ -1,6 +1,7 @@
-﻿<script setup>
+<script setup>
 // P2 完成：Hero + FeaturedProjects + RecentNotes（F02）
 import HeroSection from '@/components/features/HeroSection.vue'
+import HomePulse from '@/components/features/HomePulse.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import ProjectCard from '@/components/features/ProjectCard.vue'
 import NoteCard from '@/components/features/NoteCard.vue'
@@ -11,6 +12,7 @@ import { site, featuredProjects, recentNotes } from '@/utils/content.js'
 <template>
   <div class="home">
     <HeroSection :site="site" />
+    <HomePulse />
 
     <!-- Current Focus：当前在做的事（活人感；site.focus 由内容驱动） -->
     <section v-if="site.focus" class="home-section">

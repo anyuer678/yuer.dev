@@ -3,6 +3,7 @@ slug: polycodehub
 title: PolyCodeHub
 subtitle: 全栈在线判题平台
 status: development
+tier: flagship
 featured: false
 date: 2026-08
 tech: [TypeScript, JavaScript, Java, Spring Boot, Python, FastAPI, Node.js, Docker, Redis]

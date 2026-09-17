@@ -3,6 +3,7 @@ slug: cet6-vocabulary-eink
 title: CET-6 墨水屏版
 subtitle: CET-6 Vocabulary (E-Ink)
 status: completed
+tier: lab
 featured: false
 date: 2026-07
 tech: [JavaScript, Electron, Capacitor]

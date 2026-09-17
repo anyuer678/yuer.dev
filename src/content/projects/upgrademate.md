@@ -3,6 +3,7 @@ slug: upgrademate
 title: 旧代码升级器
 subtitle: UpgradeMate
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, LLM]

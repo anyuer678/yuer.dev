@@ -3,6 +3,7 @@ slug: key-tool
 title: Key Tool
 subtitle: API Key 多租户网关
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, FastAPI, OpenAI API]

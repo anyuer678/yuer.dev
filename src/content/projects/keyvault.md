@@ -3,6 +3,7 @@ slug: keyvault
 title: API 密钥保险箱
 subtitle: KeyVault
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python]

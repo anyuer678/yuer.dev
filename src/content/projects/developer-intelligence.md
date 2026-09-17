@@ -3,6 +3,7 @@ slug: developer-intelligence
 title: Developer Intelligence
 subtitle: 代码仓库智能分析平台
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, LLM, AI, SQLite, AST]

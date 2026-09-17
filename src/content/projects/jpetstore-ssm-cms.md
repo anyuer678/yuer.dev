@@ -3,6 +3,7 @@ slug: jpetstore-ssm-cms
 title: JPetStore SSM 重构
 subtitle: SSM PetStore CMS（团队项目）
 status: completed
+tier: lab
 featured: false
 date: 2026-05
 tech: [Java, Spring Boot, MySQL, MyBatis]

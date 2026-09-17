@@ -3,6 +3,7 @@ slug: cet6-vocabulary
 title: CET-6 词汇背诵系统
 subtitle: CET-6 词汇学习系统
 status: completed
+tier: product
 featured: false
 date: 2026-07
 tech: [JavaScript, HTML, CSS]

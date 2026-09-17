@@ -1,6 +1,6 @@
-﻿<script setup>
+<script setup>
 // ProjectDetail 详情页（F04）：懒加载原文 + markdown 渲染
-import { ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import Tag from '@/components/ui/Tag.vue'
@@ -17,6 +17,20 @@ const route = useRoute()
 const project = ref(getProject(route.params.slug))
 const html = ref('')
 const relatedNotes = ref([])
+
+const repoStats = computed(() => project.value?.repoStats)
+
+function timeAgo(iso) {
+  if (!iso) return ''
+  const diff = Date.now() - new Date(iso).getTime()
+  const days = Math.floor(diff / 86400000)
+  if (days <= 0) return '今天'
+  if (days === 1) return '昨天'
+  if (days < 30) return `${days} 天前`
+  const months = Math.floor(days / 30)
+  if (months < 12) return `${months} 个月前`
+  return `${Math.floor(months / 12)} 年前`
+}
 
 // 正文异步加载 + title/description 覆盖（14 §5.7）
 // 竞态防护：slug 快速切换时丢弃过期 promise 结果（onInvalidate 清理）
@@ -63,8 +77,8 @@ watchEffect(async (onInvalidate) => {
         </div>
         <div class="project-detail__meta">
           <time :datetime="project.date">{{ project.date }}</time>
+          <ExternalLink v-if="project.demo" :href="project.demo">在线试用</ExternalLink>
           <ExternalLink v-if="project.github" :href="project.github">GitHub</ExternalLink>
-          <ExternalLink v-if="project.demo" :href="project.demo">Demo</ExternalLink>
         </div>
       </header>
 
@@ -76,6 +90,33 @@ watchEffect(async (onInvalidate) => {
       />
 
       <hr class="project-detail__divider" />
+
+      <section v-if="repoStats" class="project-detail__repo" aria-label="仓库现场">
+        <div class="project-detail__repo-grid">
+          <div v-if="repoStats.language" class="project-detail__repo-item">
+            <span class="project-detail__repo-label">语言</span>
+            <span class="project-detail__repo-value">{{ repoStats.language }}</span>
+          </div>
+          <div v-if="repoStats.release" class="project-detail__repo-item">
+            <span class="project-detail__repo-label">最新 Release</span>
+            <span class="project-detail__repo-value">{{ repoStats.release }}</span>
+          </div>
+          <div v-if="repoStats.stars" class="project-detail__repo-item">
+            <span class="project-detail__repo-label">Stars</span>
+            <span class="project-detail__repo-value">{{ repoStats.stars }}</span>
+          </div>
+          <div v-if="repoStats.ci_status && repoStats.ci_status !== 'unknown'" class="project-detail__repo-item">
+            <span class="project-detail__repo-label">CI</span>
+            <span class="project-detail__repo-value project-detail__ci" :data-ci="repoStats.ci_status">
+              {{ { success: '通过', failure: '失败', pending: '进行中' }[repoStats.ci_status] || repoStats.ci_status }}
+            </span>
+          </div>
+          <div v-if="repoStats.pushed_at" class="project-detail__repo-item">
+            <span class="project-detail__repo-label">最后推送</span>
+            <span class="project-detail__repo-value">{{ timeAgo(repoStats.pushed_at) }}</span>
+          </div>
+        </div>
+      </section>
 
       <section v-if="project.journey?.length" class="project-detail__journey">
         <h2 class="project-detail__journey-title">开发历程</h2>
@@ -178,6 +219,39 @@ watchEffect(async (onInvalidate) => {
   margin: var(--space-8) 0;
   border: none;
   border-top: 1px solid var(--color-border);
+}
+.project-detail__repo {
+  margin-bottom: var(--space-8);
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+.project-detail__repo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-8);
+}
+.project-detail__repo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 88px;
+}
+.project-detail__repo-label {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+.project-detail__repo-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text);
+}
+.project-detail__ci[data-ci='success'] {
+  color: var(--status-done-text, #2f6b3a);
+}
+.project-detail__ci[data-ci='failure'] {
+  color: var(--status-archived-text, #a33);
 }
 .project-detail__journey {
   margin-bottom: var(--space-8);

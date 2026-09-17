@@ -3,6 +3,7 @@ slug: kb-ui
 title: KB UI
 subtitle: Vue 3 组件库与工程模板集
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Vue 3, TypeScript, Vite]

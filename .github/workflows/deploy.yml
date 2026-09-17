@@ -25,6 +25,10 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Sync GitHub repo metadata
+        run: npm run sync:github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run validate
       - run: npm run lint
       - run: npm run build

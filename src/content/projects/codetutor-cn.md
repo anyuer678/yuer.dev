@@ -3,6 +3,7 @@ slug: codetutor-cn
 title: 中文代码教学器
 subtitle: Code Tutor CN
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [JavaScript, AI, LLM]

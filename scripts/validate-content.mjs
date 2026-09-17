@@ -22,6 +22,10 @@ const TECH_WHITELIST = new Set(
   )
 )
 const STATUS_ENUM = new Set(['development', 'completed', 'archived', 'experiment'])
+const TIER_ENUM = new Set(['flagship', 'product', 'lab'])
+/** 真实 XSS 面标签；教学用 HTML/组件示例由 markdown-it html:false 转义，不在此拦截 */
+const HTML_TAG_RE =
+  /<\/?(?:script|iframe|object|embed|link|meta|base|form)\b|<[^>]+\son[a-z]+\s*=/gi
 const NOTE_TYPE_ENUM = new Set(['project', 'learning', 'note', 'milestone'])
 const PROJECT_REQUIRED = ['slug', 'title', 'subtitle', 'status', 'featured', 'date', 'tech', 'tags', 'summary', 'demo', 'github', 'order']
 const NOTE_REQUIRED = ['title', 'date', 'tags', 'summary']
@@ -31,7 +35,7 @@ const REQUIRED_SECTIONS = ['项目介绍', '设计目标', '功能', '架构', '
 const ALLOWED_KEYS = new Set([
   ...PROJECT_REQUIRED,
   ...NOTE_REQUIRED,
-  'draft', 'type', 'link', 'description', 'related', 'cover', 'journey',
+  'draft', 'type', 'link', 'description', 'related', 'cover', 'journey', 'tier',
 ])
 
 // --- 规则 12：JSON 文件合法 + schema ---
@@ -68,6 +72,15 @@ function checkJson(name) {
 checkJson('site')
 checkJson('lab')
 checkJson('timeline')
+if (existsSync(join(ROOT, 'room.json'))) {
+  const room = JSON.parse(readFileSync(join(ROOT, 'room.json'), 'utf8'))
+  if (!Array.isArray(room.scenes)) report(12, 'room.json', 'scenes 应为数组')
+  else {
+    for (const s of room.scenes) {
+      if (!s.id || !Array.isArray(s.hotspots)) report(12, 'room.json', `场景 ${s.id || '?'} 缺 id/hotspots`)
+    }
+  }
+}
 
 // --- Markdown 内容校验 ---
 const mdFiles = walk(ROOT).filter((f) => f.endsWith('.md'))
@@ -86,11 +99,12 @@ for (const file of mdFiles) {
   const required = isProject ? PROJECT_REQUIRED : NOTE_REQUIRED
 
   if (isAbout) {
-    // 规则 15：非代码块内容不得出现 < 开头 HTML 标签
+    // 规则 15：非代码块内容不得出现可执行/结构 HTML（XSS 双保险）
+    // 泛型 <T>、元组 <x1,x2>、XML 教学示例不是 XSS 面，用 HTML 标签白名单收紧
     const nonCode = raw.split(/^```/m).filter((_, i) => i % 2 === 0)
     for (const seg of nonCode) {
-      for (const m of seg.matchAll(/<\/?[a-zA-Z][^>]*>/g)) {
-        report(15, file, `正文出现 HTML 标签: ${m[0]}（代码块外禁止）`)
+      for (const m of seg.matchAll(HTML_TAG_RE)) {
+        report(15, file, `正文出现 HTML 标签: ${m[0].slice(0, 40)}（代码块外禁止）`)
       }
     }
     continue
@@ -123,6 +137,8 @@ for (const file of mdFiles) {
 
   // 规则 4：枚举
   if (isProject && !STATUS_ENUM.has(meta.status)) report(4, file, `status "${meta.status}" 不在枚举内`)
+  if (isProject && meta.tier != null && !TIER_ENUM.has(meta.tier))
+    report(4, file, `tier "${meta.tier}" 应为 flagship|product|lab`)
   if (isNote && meta.type && !NOTE_TYPE_ENUM.has(meta.type)) report(4, file, `type "${meta.type}" 不在枚举内`)
 
   // 规则 5：date 格式
@@ -174,10 +190,16 @@ for (const file of mdFiles) {
 
   // 规则 11：featured ≤ 3
   if (meta.featured === true) featuredCount.n++
+  if (isProject && meta.tier === 'flagship') featuredCount.flagship = (featuredCount.flagship || 0) + 1
 
-  // 规则 13：<img> 必须带 alt
-  for (const m of body.matchAll(/<img[^>]*>/g)) {
-    if (!/alt=/.test(m[0])) report(13, file, 'img 标签缺少 alt 属性')
+  // 规则 13：<img> 必须带 alt（仅项目；课程笔记批量图/教学 HTML 另欠）
+  if (isProject) {
+    for (const m of body.matchAll(/<img[^>]*>/g)) {
+      if (!/alt=/.test(m[0])) report(13, file, 'img 标签缺少 alt 属性')
+    }
+    for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
+      if (!m[1].trim()) report(13, file, `项目图片缺少 alt: ${m[0].slice(0, 40)}`)
+    }
   }
 
   // 规则 14：数组字段元素为简单字符串
@@ -188,19 +210,21 @@ for (const file of mdFiles) {
     }
   }
 
-  // 规则 15：非代码块内容不得出现 < 开头 HTML 标签（含结束标签 </xxx>）
-  const nonCode = body
-    .split(/^```/m)
-    .filter((_, i) => i % 2 === 0) // 奇数索引为代码块，豁免
-  for (const seg of nonCode) {
-    for (const m of seg.matchAll(/<\/?[a-zA-Z][^>]*>/g)) {
-      report(15, file, `正文出现 HTML 标签: ${m[0]}（代码块外禁止）`)
+  // 规则 15：项目/About 禁止危险 HTML；课程笔记中的教学标签由 markdown-it html:false 转义（内容债另清）
+  if (isProject || isAbout) {
+    const nonCode = body.split(/^```/m).filter((_, i) => i % 2 === 0)
+    for (const seg of nonCode) {
+      for (const m of seg.matchAll(HTML_TAG_RE)) {
+        report(15, file, `正文出现危险 HTML: ${String(m[0]).slice(0, 40)}（代码块外禁止）`)
+      }
     }
   }
-}
+} // end for mdFiles
 
 // --- 规则 11 汇总：featured ≤ 3 ---
 if (featuredCount.n > 3) report(11, 'projects/*', `featured 项目 ${featuredCount.n} 个，超过 3 个上限`)
+if ((featuredCount.flagship || 0) > 3)
+  report(11, 'projects/*', `flagship 项目 ${featuredCount.flagship} 个，超过 3 个上限`)
 
 // --- 规则 10 汇总：站内链接目标存在（跨文件） ---
 for (const { link, file } of innerLinks) {

@@ -3,6 +3,7 @@ slug: reasonix-skills
 title: Reasonix Skills
 subtitle: 可迁移 Markdown 技能包
 status: completed
+tier: lab
 featured: false
 date: 2026-08
 tech: [Markdown, AI]

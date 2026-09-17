@@ -3,6 +3,7 @@ slug: lumen
 title: Lumen
 subtitle: 个人 AI Agent Runtime
 status: development
+tier: flagship
 featured: true
 date: 2026-08
 tech: [Go, React, LLM, AI, Docker]

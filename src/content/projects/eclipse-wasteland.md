@@ -3,6 +3,7 @@ slug: eclipse-wasteland
 title: ECLIPSE 荒原防线
 subtitle: Browser FPS PVE Shooter
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [TypeScript, Vite, Three.js]

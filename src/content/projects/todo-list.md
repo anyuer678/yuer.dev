@@ -3,6 +3,7 @@ slug: todo-list
 title: Todo List
 subtitle: 轻量个人待办应用
 status: completed
+tier: lab
 featured: false
 date: 2026-07
 tech: [CSS, JavaScript]

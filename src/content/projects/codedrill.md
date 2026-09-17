@@ -3,6 +3,7 @@ slug: codedrill
 title: CodeDrill
 subtitle: 离线代码训练平台
 status: completed
+tier: product
 featured: true
 date: 2026-07
 tech: [Vue 3, Vite, Electron, JavaScript]

@@ -3,6 +3,7 @@ slug: stargrave
 title: Star 清理建议器
 subtitle: StarGrave
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, LLM, AI]

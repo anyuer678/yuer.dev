@@ -3,6 +3,7 @@ slug: desktoppet
 title: Desktoppet
 subtitle: 可扩展桌面宠物平台
 status: completed
+tier: product
 featured: false
 date: 2026-08
 tech: [Electron, React, TypeScript]

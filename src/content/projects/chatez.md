@@ -3,6 +3,7 @@ slug: chatez
 title: Chatez
 subtitle: 个人 AI 工作空间
 status: archived
+tier: product
 featured: false
 date: 2026-05
 tech: [React, TypeScript, Tauri, LLM]

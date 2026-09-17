@@ -3,6 +3,7 @@ slug: voiceconsole
 title: 语音指令控制台
 subtitle: Voice Command Console (MCP)
 status: development
+tier: product
 featured: false
 date: 2026-08
 tech: [Python, LLM, MCP, AI]
