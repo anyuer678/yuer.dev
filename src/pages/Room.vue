@@ -441,21 +441,10 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
   right: 0;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 18px;
-  background: linear-gradient(to bottom, rgba(20, 14, 8, 0.55), transparent);
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(to bottom, rgba(20, 14, 8, 0.4), transparent);
   color: #f5ead8;
-  animation: hud-in 0.6s 0.2s both;
-}
-@keyframes hud-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 .hud__brand {
   display: flex;
@@ -531,18 +520,17 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 .index {
   position: absolute;
   z-index: 10;
-  left: 16px;
-  top: 72px;
-  width: 200px;
-  max-height: calc(100dvh - 140px);
+  left: 12px;
+  top: 56px;
+  width: 176px;
+  max-height: calc(100dvh - 120px);
   overflow: auto;
-  padding: 14px 12px;
-  border-radius: 14px;
-  background: rgba(18, 12, 8, 0.55);
-  border: 1px solid rgba(245, 234, 216, 0.1);
-  backdrop-filter: blur(14px);
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: rgba(18, 12, 8, 0.48);
+  border: 1px solid rgba(245, 234, 216, 0.08);
+  backdrop-filter: blur(10px);
   color: #f5ead8;
-  animation: hud-in 0.55s 0.35s both;
 }
 .index__title {
   margin: 0 0 10px;

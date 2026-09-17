@@ -1,5 +1,5 @@
 <script setup>
-// RoomStage3D —— 加载程序化 study_room.glb，射线点选 + 轨道视角
+// RoomStage3D —— GLB 书房：性能优先（限 DPR、节流射线、轻量开书）
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -24,18 +24,16 @@ let renderer, scene, camera, controls, raycaster, pointer
 let frame = 0
 let modelRoot = null
 let deskLampLight, floorLampLight, screenMesh, drawerUpper, drawerLower
+let pmrem = null
 const clickables = []
 const clock = new THREE.Clock()
 
-/** 书本开合动画状态 */
-const openBooks = new Map() // id -> { mesh, pages, t, target, home: {pos, rot} }
+const openBooks = new Map()
+const DUST_DAYS = 45
 
 const deskBookMap = Object.fromEntries((roomBooks.deskBooks || []).map((b) => [b.mesh, b]))
 const sideBook = roomBooks.sideBook
 const shelfNotes = roomBooks.shelfNotes || []
-
-/** 项目多久没推送算「蒙尘」 */
-const DUST_DAYS = 45
 
 function daysSince(iso) {
   if (!iso) return 999
@@ -48,82 +46,35 @@ function repoAgeDays(repo) {
   return r?.pushed_at ? daysSince(r.pushed_at) : null
 }
 
-/** 蒙尘：降饱和 + 灰白 + 粗糙 */
 function applyDust(mesh, ageDays) {
-  if (!mesh?.material || ageDays == null) return
-  const mat = mesh.material
-  if (!mat.color) return
+  if (!mesh?.material?.color || ageDays == null) return
   const dust = Math.min(1, Math.max(0, (ageDays - DUST_DAYS) / 90))
   if (dust <= 0) return
   const hsl = {}
-  mat.color.getHSL(hsl)
-  mat.color.setHSL(hsl.h, hsl.s * (1 - dust * 0.75), Math.min(0.85, hsl.l + dust * 0.22))
-  if ('roughness' in mat) mat.roughness = Math.min(1, (mat.roughness ?? 0.8) + dust * 0.2)
-  mesh.userData.dusty = true
-  mesh.userData.dustDays = ageDays
+  mesh.material.color.getHSL(hsl)
+  mesh.material.color.setHSL(hsl.h, hsl.s * (1 - dust * 0.7), Math.min(0.82, hsl.l + dust * 0.2))
+  mesh.material.roughness = Math.min(1, (mesh.material.roughness ?? 0.8) + dust * 0.15)
 }
 
-/** 节点名 → 交互元数据（书类在加载后二次覆盖） */
 const INTERACTIVE = [
-  {
-    test: (n) => n === 'Monitor_Screen' || n.startsWith('Monitor'),
-    data: { id: 'monitor', label: '显示器', kind: 'projects', blurb: '屏幕亮起：项目列表。', cta: '打开项目', to: '/projects' },
-  },
-  {
-    test: (n) => n.startsWith('DeskLamp') || n.includes('lamp_shade'),
-    data: { id: 'lamp', label: '书桌台灯', kind: 'timeline', blurb: '开关台灯，照亮工作台。', cta: '时间线', to: '/timeline' },
-  },
-  {
-    test: (n) => n.startsWith('Desk_Drawer'),
-    data: { id: 'drawer', label: '桌下抽屉', kind: 'lab', blurb: '拉开：实验与课程项目。', cta: '实验室', to: '/lab' },
-  },
-  {
-    test: (n) => n.startsWith('Bookcase_Globe'),
-    data: { id: 'globe', label: '地球仪', kind: 'lab', blurb: '走得更远：基础设施与实验。', cta: '实验室', to: '/lab' },
-  },
-  {
-    test: (n) => n.startsWith('Bookcase') && !n.startsWith('BK') && !n.startsWith('BS'),
-    data: { id: 'bookcase', label: '书架', kind: 'flagship', blurb: '满墙书脊：Flagship 与产品档案。', cta: '查看项目', to: '/projects' },
-  },
-  {
-    test: (n) => n.includes('Desk_Papers'),
-    data: { id: 'papers', label: '桌面文稿', kind: 'notes', blurb: '最近写的。', cta: '笔记', to: '/notes' },
-  },
-  {
-    test: (n) => n.includes('Desk_Plant') || n.includes('Plant'),
-    data: { id: 'plant', label: '绿植', kind: 'about', blurb: '关于我。', cta: '关于', to: '/about' },
-  },
-  {
-    test: (n) => n.includes('Mug'),
-    data: { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品，而是在不断使用和改进中成长的系统。」' },
-  },
-  {
-    test: (n) => n.startsWith('FloorLamp'),
-    data: { id: 'floorlamp', label: '落地灯', kind: 'timeline', blurb: '角落里的光。', cta: '时间线', to: '/timeline' },
-  },
-  {
-    test: (n) => n.startsWith('WallClock'),
-    data: { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库发生了什么。' },
-  },
-  {
-    test: (n) => n.startsWith('Armchair') || n.startsWith('OfficeChair'),
-    data: { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊？', cta: '联系', to: '/contact' },
-  },
-  {
-    test: (n) => n.startsWith('Desktop_') || n === 'Desk_Pad',
-    data: { id: 'desk', label: '橡木书桌', kind: 'desk', blurb: '工作台面。' },
-  },
-  {
-    test: (n) => n.includes('Window') || n.includes('Curtain') || n.includes('Sill'),
-    data: { id: 'window', label: '窗', kind: 'contact', blurb: '窗外有光。有事写信。', cta: '联系', to: '/contact' },
-  },
+  { test: (n) => n === 'Monitor_Screen' || n.startsWith('Monitor'), data: { id: 'monitor', label: '显示器', kind: 'projects', blurb: '屏幕亮起：项目列表。', cta: '打开项目', to: '/projects' } },
+  { test: (n) => n.startsWith('DeskLamp') || n.includes('lamp_shade'), data: { id: 'lamp', label: '书桌台灯', kind: 'timeline', blurb: '开关台灯。', cta: '时间线', to: '/timeline' } },
+  { test: (n) => n.startsWith('Desk_Drawer'), data: { id: 'drawer', label: '桌下抽屉', kind: 'lab', blurb: '拉开：实验与课程。', cta: '实验室', to: '/lab' } },
+  { test: (n) => n.startsWith('Bookcase_Globe'), data: { id: 'globe', label: '地球仪', kind: 'lab', blurb: '基础设施实验。', cta: '实验室', to: '/lab' } },
+  { test: (n) => n.startsWith('Bookcase') && !n.startsWith('BK') && !n.startsWith('BS'), data: { id: 'bookcase', label: '书架', kind: 'flagship', blurb: '满墙书脊。', cta: '项目', to: '/projects' } },
+  { test: (n) => n.includes('Desk_Papers'), data: { id: 'papers', label: '桌面文稿', kind: 'notes', blurb: '最近写的。', cta: '笔记', to: '/notes' } },
+  { test: (n) => n.includes('Plant'), data: { id: 'plant', label: '绿植', kind: 'about', blurb: '关于我。', cta: '关于', to: '/about' } },
+  { test: (n) => n.includes('Mug'), data: { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' } },
+  { test: (n) => n.startsWith('FloorLamp'), data: { id: 'floorlamp', label: '落地灯', kind: 'timeline', blurb: '角落的光。', cta: '时间线', to: '/timeline' } },
+  { test: (n) => n.startsWith('WallClock'), data: { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' } },
+  { test: (n) => n.startsWith('Armchair') || n.startsWith('OfficeChair'), data: { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊。', cta: '联系', to: '/contact' } },
+  { test: (n) => n.startsWith('Desktop_') || n === 'Desk_Pad', data: { id: 'desk', label: '橡木书桌', kind: 'desk', blurb: '工作台面。' } },
+  { test: (n) => n.includes('Window') || n.includes('Curtain') || n.includes('Sill'), data: { id: 'window', label: '窗', kind: 'contact', blurb: '有事写信。', cta: '联系', to: '/contact' } },
 ]
 
 function matchInteractive(name) {
   if (!name) return null
-  for (const rule of INTERACTIVE) {
-    if (rule.test(name)) return { ...rule.data }
-  }
+  for (const rule of INTERACTIVE) if (rule.test(name)) return { ...rule.data }
   return null
 }
 
@@ -142,7 +93,6 @@ function bookDataFor(name) {
       to: proj ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
       noteSlug: b.slug,
       projectSlug: b.projectSlug || null,
-      repo: b.repo || null,
       ageDays: age,
       dusty: age != null && age > DUST_DAYS,
       projectTitle: proj?.title || null,
@@ -158,8 +108,6 @@ function bookDataFor(name) {
       cta: '翻开书',
       to: `/notes/${sideBook.slug}`,
       noteSlug: sideBook.slug,
-      projectSlug: null,
-      repo: null,
       ageDays: null,
       dusty: false,
     }
@@ -172,12 +120,10 @@ function bookDataFor(name) {
       id: 'book:' + name,
       label: n.title,
       kind: 'book',
-      blurb: `书架上的一本：${n.title}`,
+      blurb: `书架：${n.title}`,
       cta: '翻开书',
       to: `/notes/${n.slug}`,
       noteSlug: n.slug,
-      projectSlug: null,
-      repo: n.repo || null,
       ageDays: age,
       dusty: age != null && age > DUST_DAYS,
     }
@@ -191,41 +137,12 @@ function hashCode(s) {
   return h
 }
 
-async function decorateArt(root, base) {
-  const texLoader = new THREE.TextureLoader()
-  const urls = [`${base}models/study_room/art/art1.webp`, `${base}models/study_room/art/art2.webp`]
-  const texes = []
-  for (const u of urls) {
-    try {
-      const t = await texLoader.loadAsync(u)
-      t.colorSpace = THREE.SRGBColorSpace
-      texes.push(t)
-    } catch {
-      /* skip */
-    }
-  }
-  if (!texes.length) return
-  let i = 0
-  root.traverse((c) => {
-    if (!c.isMesh) return
-    const n = c.name || ''
-    const isArt =
-      /art|Frame|Picture|Canvas|Painting/i.test(n) ||
-      (c.material?.map && /art[123]/i.test(c.material.map.name || ''))
-    if (!isArt) return
-    const t = texes[i % texes.length]
-    i++
-    c.material = new THREE.MeshStandardMaterial({
-      map: t,
-      roughness: 0.85,
-      metalness: 0,
-    })
-  })
-}
-
 function tagClickable(obj) {
   obj.traverse((child) => {
     if (!child.isMesh) return
+    // 性能：小物件不投影
+    child.castShadow = false
+    child.receiveShadow = false
     const book = bookDataFor(child.name) || bookDataFor(child.parent?.name)
     const data = book || matchInteractive(child.name) || matchInteractive(child.parent?.name)
     if (!data) return
@@ -233,164 +150,53 @@ function tagClickable(obj) {
     clickables.push(child)
     if (data.kind === 'book') {
       applyDust(child, data.ageDays)
-      child.userData._home = {
-        pos: child.position.clone(),
-        rot: child.rotation.clone(),
-      }
+      child.userData._home = { y: child.position.y, x: child.rotation.x, z: child.rotation.z }
     }
   })
+  // 地板接影即可
+  const floor = obj.getObjectByName('Floor') || obj.children.find((c) => c.isMesh && c.geometry?.type === 'PlaneGeometry')
+  if (floor) floor.receiveShadow = true
 }
 
-/** 打开书：升起 + 掀页 + 页面内容 */
-function openBook(mesh, data) {
+/** 轻量开书：只抬起 + 轻转，不拆子网格（避免变形） */
+function openBook(mesh) {
   closeAllBooks()
   if (!mesh) return
-  const home = mesh.userData._home || { pos: mesh.position.clone(), rot: mesh.rotation.clone() }
+  const home = mesh.userData._home || { y: mesh.position.y, x: mesh.rotation.x, z: mesh.rotation.z }
   mesh.userData._home = home
-
-  const pages = new THREE.Group()
-  const pageMat = new THREE.MeshStandardMaterial({
-    color: 0xf7f0e2,
-    roughness: 0.92,
-    metalness: 0,
-    side: THREE.DoubleSide,
-  })
-  // 左右页
-  const left = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), pageMat)
-  left.position.set(-0.105, 0.01, 0)
-  left.rotation.x = -Math.PI / 2
-  left.rotation.z = 0.08
-  const right = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), pageMat.clone())
-  right.position.set(0.105, 0.01, 0)
-  right.rotation.x = -Math.PI / 2
-  right.rotation.z = -0.08
-  // 封面掀开感：用两片薄盒
-  const coverMat = new THREE.MeshStandardMaterial({ color: 0x6b3a28, roughness: 0.75 })
-  const coverL = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.012, 0.29), coverMat)
-  coverL.position.set(-0.11, 0, 0)
-  const coverR = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.012, 0.29), coverMat.clone())
-  coverR.position.set(0.11, 0, 0)
-  pages.add(left, right, coverL, coverR)
-  pages.visible = false
-  mesh.add(pages)
-
-  openBooks.set(data.id, {
-    mesh,
-    pages,
-    t: 0,
-    target: 1,
-    home,
-  })
+  openBooks.set(mesh.userData.id, { mesh, t: 0, home })
 }
 
 function closeAllBooks() {
   for (const [, st] of openBooks) {
-    if (st.pages) {
-      st.mesh.remove(st.pages)
-      st.pages.traverse((c) => {
-        if (c.geometry) c.geometry.dispose()
-        if (c.material) c.material.dispose()
-      })
-    }
-    if (st.home) {
-      st.mesh.position.copy(st.home.pos)
-      st.mesh.rotation.copy(st.home.rot)
-    }
+    st.mesh.position.y = st.home.y
+    st.mesh.rotation.x = st.home.x
+    st.mesh.rotation.z = st.home.z
   }
   openBooks.clear()
 }
 
 function tickBooks(dt) {
   for (const [, st] of openBooks) {
-    const speed = 3.2
-    st.t += (st.target - st.t) * Math.min(1, dt * speed)
+    st.t += (1 - st.t) * Math.min(1, dt * 4.5)
     const k = st.t
-    const home = st.home
-    st.mesh.position.y = home.pos.y + 0.08 * k
-    st.mesh.position.z = home.pos.z + 0.04 * k
-    st.mesh.rotation.x = home.rot.x + 0.35 * k
-    st.mesh.rotation.z = home.rot.z * (1 - k * 0.5)
-    if (st.pages) {
-      st.pages.visible = k > 0.15
-      st.pages.position.y = 0.02
-      // 封面外掀
-      const cl = st.pages.children[2]
-      const cr = st.pages.children[3]
-      if (cl) cl.rotation.z = 1.1 * k
-      if (cr) cr.rotation.z = -1.1 * k
-      const pl = st.pages.children[0]
-      const pr = st.pages.children[1]
-      if (pl) pl.rotation.z = 0.08 + 0.25 * k
-      if (pr) pr.rotation.z = -0.08 - 0.25 * k
-    }
+    st.mesh.position.y = st.home.y + 0.06 * k
+    st.mesh.rotation.x = st.home.x + 0.12 * k
+    st.mesh.rotation.z = st.home.z * (1 - k * 0.3)
   }
 }
 
-watch(
-  () => props.openBookId,
-  (id) => {
-    if (!id) {
-      closeAllBooks()
-      return
-    }
-    const hit = clickables.find((c) => c.userData?.id === id)
-    if (hit) openBook(hit, hit.userData)
-  }
-)
+let lastRay = 0
+let pendingMove = null
 
-function findByName(root, names) {
-  const found = {}
-  root.traverse((c) => {
-    for (const n of names) {
-      if (c.name === n || c.name.startsWith(n)) found[n] = found[n] || c
-    }
-  })
-  return found
-}
-
-function applyLamp(on) {
-  if (deskLampLight) {
-    deskLampLight.intensity = on ? 2.8 : 0.2
-    deskLampLight.visible = true
-  }
-  if (floorLampLight) floorLampLight.intensity = on ? 1.2 : 0.15
-  scene?.traverse((c) => {
-    if (c.isMesh && c.material && c.name.includes('lamp')) {
-      // 保持材质；亮度靠灯光
-    }
-  })
-}
-
-function applyMonitor(on) {
-  if (!screenMesh?.material) return
-  const m = screenMesh.material
-  if (on) {
-    m.emissive = new THREE.Color(0x1a3d2e)
-    m.emissiveIntensity = 0.85
-    m.color = new THREE.Color(0x0d1512)
-  } else {
-    m.emissive = new THREE.Color(0x000000)
-    m.emissiveIntensity = 0
-    m.color = new THREE.Color(0x111111)
-  }
-  m.needsUpdate = true
-}
-
-function applyDrawer(open) {
-  const d = drawerUpper || drawerLower
-  if (!d) return
-  // 抽屉沿 Z 拉出（模型局部）
-  const z = open ? 0.12 : 0
-  if (drawerUpper) drawerUpper.position.z = (drawerUpper.userData._z0 ?? drawerUpper.position.z) + z
-  if (drawerLower) drawerLower.position.z = (drawerLower.userData._z0 ?? drawerLower.position.z) + z * 0.7
-}
-
-function onPointerMove(e) {
+function doRaycast(clientX, clientY) {
   if (!renderer || !camera || !host.value) return
   const rect = host.value.getBoundingClientRect()
-  pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
-  pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
+  pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1
+  pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1
   raycaster.setFromCamera(pointer, camera)
+  // 只测可点列表，且限距离
+  raycaster.far = 8
   const hits = raycaster.intersectObjects(clickables, false)
   const hit = hits[0]?.object
   if (hit?.userData?.interactive) {
@@ -402,8 +208,17 @@ function onPointerMove(e) {
   }
 }
 
+function onPointerMove(e) {
+  pendingMove = { x: e.clientX, y: e.clientY }
+  const now = performance.now()
+  if (now - lastRay < 48) return // ~20fps 节流
+  lastRay = now
+  doRaycast(e.clientX, e.clientY)
+}
+
 function onClick(e) {
   if (!renderer || !camera || !host.value) return
+  doRaycast(e.clientX, e.clientY)
   const rect = host.value.getBoundingClientRect()
   pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
   pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
@@ -413,14 +228,44 @@ function onClick(e) {
   if (hit?.userData?.interactive) emit('select', { ...hit.userData })
 }
 
+function applyLamp(on) {
+  if (deskLampLight) deskLampLight.intensity = on ? 2.4 : 0.25
+  if (floorLampLight) floorLampLight.intensity = on ? 0.9 : 0.12
+}
+
+function applyMonitor(on) {
+  if (!screenMesh?.material) return
+  const m = screenMesh.material
+  if (on) {
+    m.emissive = new THREE.Color(0x1a3d2e)
+    m.emissiveIntensity = 0.8
+    m.color = new THREE.Color(0x0d1512)
+  } else {
+    m.emissive = new THREE.Color(0x000000)
+    m.emissiveIntensity = 0
+    m.color = new THREE.Color(0x111111)
+  }
+}
+
+function applyDrawer(open) {
+  const z = open ? 0.1 : 0
+  if (drawerUpper) drawerUpper.position.z = (drawerUpper.userData._z0 ?? 0) + z
+  if (drawerLower) drawerLower.position.z = (drawerLower.userData._z0 ?? 0) + z * 0.65
+}
+
 function animate() {
   frame = requestAnimationFrame(animate)
   const dt = Math.min(0.05, clock.getDelta())
-  const t = clock.getElapsedTime()
   controls?.update()
   tickBooks(dt)
-  if (deskLampLight && props.lampOn) {
-    deskLampLight.intensity = 2.6 + Math.sin(t * 1.7) * 0.15
+  // 补一帧节流的 raycast
+  if (pendingMove) {
+    const now = performance.now()
+    if (now - lastRay >= 48) {
+      lastRay = now
+      doRaycast(pendingMove.x, pendingMove.y)
+      pendingMove = null
+    }
   }
   renderer?.render(scene, camera)
 }
@@ -434,6 +279,16 @@ function resize() {
   renderer.setSize(w, h, false)
 }
 
+function findByName(root, names) {
+  const found = {}
+  root.traverse((c) => {
+    for (const n of names) {
+      if (c.name === n || c.name.startsWith(n)) found[n] = found[n] || c
+    }
+  })
+  return found
+}
+
 onMounted(async () => {
   const el = host.value
   if (!el) return
@@ -441,53 +296,47 @@ onMounted(async () => {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0x2a2218)
 
-  camera = new THREE.PerspectiveCamera(40, el.clientWidth / el.clientHeight, 0.05, 40)
-  camera.position.set(2.6, 1.85, 2.4)
+  camera = new THREE.PerspectiveCamera(42, el.clientWidth / el.clientHeight, 0.08, 30)
+  camera.position.set(2.4, 1.7, 2.6)
 
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' })
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25))
   renderer.setSize(el.clientWidth, el.clientHeight, false)
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  renderer.shadowMap.enabled = false // 关阴影，显著降卡顿
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.25
+  renderer.toneMappingExposure = 1.2
   renderer.outputColorSpace = THREE.SRGBColorSpace
   el.appendChild(renderer.domElement)
 
-  // 环境反射，避免塑料感
-  const pmrem = new THREE.PMREMGenerator(renderer)
+  pmrem = new THREE.PMREMGenerator(renderer)
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
 
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
-  controls.dampingFactor = 0.07
-  controls.minDistance = 1.6
-  controls.maxDistance = 6.0
-  controls.minPolarAngle = 0.55
-  controls.maxPolarAngle = 1.48
-  controls.minAzimuthAngle = -1.2
-  controls.maxAzimuthAngle = 1.2
-  controls.target.set(0, 0.9, -0.4)
+  controls.dampingFactor = 0.08
+  controls.minDistance = 1.8
+  controls.maxDistance = 5.5
+  controls.minPolarAngle = 0.7
+  controls.maxPolarAngle = 1.42
+  controls.minAzimuthAngle = -1.0
+  controls.maxAzimuthAngle = 1.0
+  controls.target.set(0, 0.85, -0.5)
   controls.enablePan = false
+  controls.rotateSpeed = 0.65
+  controls.zoomSpeed = 0.7
 
-  scene.add(new THREE.AmbientLight(0xffe6cc, 0.55))
-  const hemi = new THREE.HemisphereLight(0xb8c8d8, 0x3a2a18, 0.5)
-  scene.add(hemi)
-  const sun = new THREE.DirectionalLight(0xffd8a8, 1.1)
-  sun.position.set(3.5, 5, 2.5)
-  sun.castShadow = true
-  sun.shadow.mapSize.set(1024, 1024)
-  sun.shadow.camera.near = 0.5
-  sun.shadow.camera.far = 20
+  scene.add(new THREE.AmbientLight(0xffe8d4, 0.7))
+  scene.add(new THREE.HemisphereLight(0xc8d4e0, 0x3a2a18, 0.55))
+  const sun = new THREE.DirectionalLight(0xffd8b0, 1.0)
+  sun.position.set(3, 4.5, 2)
   scene.add(sun)
 
-  deskLampLight = new THREE.PointLight(0xffc078, 2.6, 3.2, 2)
-  deskLampLight.position.set(0.62, 1.35, -2.05)
-  deskLampLight.castShadow = true
+  deskLampLight = new THREE.PointLight(0xffc078, 2.2, 2.8, 2)
+  deskLampLight.position.set(0.55, 1.25, -2.0)
   scene.add(deskLampLight)
 
-  floorLampLight = new THREE.PointLight(0xffd0a0, 1.0, 4, 2)
-  floorLampLight.position.set(1.78, 1.4, 1.28)
+  floorLampLight = new THREE.PointLight(0xffd0a0, 0.8, 3.5, 2)
+  floorLampLight.position.set(1.7, 1.3, 1.2)
   scene.add(floorLampLight)
 
   raycaster = new THREE.Raycaster()
@@ -500,34 +349,26 @@ onMounted(async () => {
       if (e.total) loadPct.value = Math.round((e.loaded / e.total) * 100)
     })
     modelRoot = gltf.scene
+    // 材质：关阴影相关，统一 roughness 上限
     modelRoot.traverse((c) => {
-      if (c.isMesh) {
-        c.castShadow = true
-        c.receiveShadow = true
-      }
+      if (!c.isMesh) return
+      c.castShadow = false
+      c.receiveShadow = false
+      if (c.material && 'envMapIntensity' in c.material) c.material.envMapIntensity = 0.55
     })
     scene.add(modelRoot)
     tagClickable(modelRoot)
-    await decorateArt(modelRoot, base)
 
-    const named = findByName(modelRoot, [
-      'Monitor_Screen',
-      'Desk_Drawer_Upper',
-      'Desk_Drawer_Lower',
-      'DeskLamp',
-      'FloorLamp',
-    ])
-    screenMesh = named['Monitor_Screen'] || null
-    drawerUpper = named['Desk_Drawer_Upper'] || null
-    drawerLower = named['Desk_Drawer_Lower'] || null
+    const named = findByName(modelRoot, ['Monitor_Screen', 'Desk_Drawer_Upper', 'Desk_Drawer_Lower', 'DeskLamp'])
+    screenMesh = named.Monitor_Screen || null
+    drawerUpper = named.Desk_Drawer_Upper || null
+    drawerLower = named.Desk_Drawer_Lower || null
     if (drawerUpper) drawerUpper.userData._z0 = drawerUpper.position.z
     if (drawerLower) drawerLower.userData._z0 = drawerLower.position.z
-
-    // 若模型自带灯节点，对齐点光位置
-    if (named['DeskLamp']) {
+    if (named.DeskLamp) {
       const p = new THREE.Vector3()
-      named['DeskLamp'].getWorldPosition(p)
-      deskLampLight.position.set(p.x, p.y + 0.35, p.z)
+      named.DeskLamp.getWorldPosition(p)
+      deskLampLight.position.set(p.x, p.y + 0.3, p.z)
     }
 
     applyLamp(props.lampOn)
@@ -539,23 +380,25 @@ onMounted(async () => {
     console.error('[RoomStage3D] load failed', err)
   }
 
-  el.addEventListener('pointermove', onPointerMove)
+  el.addEventListener('pointermove', onPointerMove, { passive: true })
   el.addEventListener('click', onClick)
   window.addEventListener('resize', resize)
   animate()
 })
 
+watch(() => props.lampOn, (v) => applyLamp(v))
+watch(() => props.monitorOn, (v) => applyMonitor(v))
+watch(() => props.drawerOpen, (v) => applyDrawer(v))
 watch(
-  () => props.lampOn,
-  (v) => applyLamp(v)
-)
-watch(
-  () => props.monitorOn,
-  (v) => applyMonitor(v)
-)
-watch(
-  () => props.drawerOpen,
-  (v) => applyDrawer(v)
+  () => props.openBookId,
+  (id) => {
+    if (!id) {
+      closeAllBooks()
+      return
+    }
+    const hit = clickables.find((c) => c.userData?.id === id)
+    if (hit) openBook(hit)
+  }
 )
 
 onBeforeUnmount(() => {
@@ -567,6 +410,7 @@ onBeforeUnmount(() => {
     host.value.removeEventListener('click', onClick)
   }
   controls?.dispose()
+  pmrem?.dispose()
   renderer?.dispose()
   if (renderer?.domElement?.parentNode) {
     renderer.domElement.parentNode.removeChild(renderer.domElement)
@@ -589,7 +433,7 @@ onBeforeUnmount(() => {
   inset: 0;
   background: #2a2218;
   opacity: 0;
-  transition: opacity 0.55s var(--ease-standard);
+  transition: opacity 0.5s var(--ease-standard);
   touch-action: none;
 }
 .room3d--ready {
@@ -604,7 +448,6 @@ onBeforeUnmount(() => {
   font-family: var(--font-mono);
   font-size: 13px;
   color: #e8d8c0;
-  letter-spacing: 0.06em;
 }
 .room3d :deep(canvas) {
   display: block;
