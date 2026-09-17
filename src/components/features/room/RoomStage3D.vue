@@ -26,6 +26,10 @@ let frame = 0
 let modelRoot = null
 let deskLampLight, floorLampLight, screenMesh, drawerUpper, drawerLower
 let pmrem = null
+let dustPoints = null
+let clockHands = null
+let windowGlass = null
+let sunLight = null
 const clickables = []
 const clock = new THREE.Clock()
 
@@ -74,7 +78,10 @@ const INTERACTIVE = [
   { test: (n) => n.startsWith('WallClock'), data: { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' } },
   { test: (n) => n.startsWith('Armchair') || n.startsWith('OfficeChair'), data: { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊。', cta: '联系', to: '/contact' } },
   { test: (n) => n.startsWith('Desktop_') || n === 'Desk_Pad', data: { id: 'desk', label: '橡木书桌', kind: 'desk', blurb: '工作台面。' } },
-  { test: (n) => n.includes('Window') || n.includes('Curtain') || n.includes('Sill'), data: { id: 'window', label: '窗', kind: 'contact', blurb: '有事写信。', cta: '联系', to: '/contact' } },
+  { test: (n) => n === 'Keyboard' || n.includes('Keyboard'), data: { id: 'keyboard', label: '键盘', kind: 'projects', blurb: '手感不错——适合敲项目。', cta: '打开项目', to: '/projects' } },
+  { test: (n) => n.startsWith('Sill_Book') || n.startsWith('Sill_Plant'), data: { id: 'sill', label: '窗台', kind: 'notes', blurb: '窗边读一会儿。', cta: '笔记', to: '/notes' } },
+  { test: (n) => n.includes('Window_Glass') || n === 'Window', data: { id: 'window', label: '窗', kind: 'contact', blurb: '窗外的光会随时间变化。有事写信。', cta: '联系', to: '/contact' } },
+  { test: (n) => n.includes('Window') || n.includes('Curtain'), data: { id: 'curtain', label: '窗帘', kind: 'desk', blurb: '半掩的纱帘。' } },
 ]
 
 function matchInteractive(name) {
@@ -397,9 +404,13 @@ function applyDrawer(open) {
 function animate() {
   frame = requestAnimationFrame(animate)
   const dt = Math.min(0.05, clock.getDelta())
+  const t = clock.elapsedTime
   controls?.update()
   tickBooks(dt)
   tickCamera(dt)
+  tickDust(t)
+  tickClock()
+  tickWindowLight()
   if (pendingMove) {
     const now = performance.now()
     if (now - lastRay >= 48) {
@@ -428,6 +439,101 @@ function findByName(root, names) {
     }
   })
   return found
+}
+
+/** 浮尘粒子：光束里的微尘，极轻 */
+function addDust() {
+  const count = 180
+  const pos = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    pos[i * 3] = -1.5 + Math.random() * 3.2
+    pos[i * 3 + 1] = 0.3 + Math.random() * 2.0
+    pos[i * 3 + 2] = -2.4 + Math.random() * 3.5
+  }
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+  const mat = new THREE.PointsMaterial({
+    color: 0xffe0b0,
+    size: 0.012,
+    transparent: true,
+    opacity: 0.35,
+    depthWrite: false,
+    sizeAttenuation: true,
+  })
+  dustPoints = new THREE.Points(geo, mat)
+  scene.add(dustPoints)
+}
+
+function tickDust(t) {
+  if (!dustPoints) return
+  const arr = dustPoints.geometry.attributes.position.array
+  for (let i = 0; i < arr.length; i += 3) {
+    arr[i + 1] += Math.sin(t * 0.4 + i) * 0.00025
+    arr[i] += Math.cos(t * 0.25 + i * 0.1) * 0.00015
+    if (arr[i + 1] > 2.4) arr[i + 1] = 0.3
+  }
+  dustPoints.geometry.attributes.position.needsUpdate = true
+}
+
+/** 挂钟指针 + 窗光随真实时间 */
+function setupClockAndWindow(root) {
+  const named = findByName(root, ['WallClock', 'Window_Glass', 'Window'])
+  windowGlass = named.Window_Glass || null
+
+  // 在钟前生成时针/分针（简化：两根细盒）
+  const clockMesh = named.WallClock
+  if (clockMesh) {
+    const group = new THREE.Group()
+    const handMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 })
+    const hour = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.07, 0.008), handMat)
+    hour.position.y = 0.035
+    const min = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.1, 0.006), handMat.clone())
+    min.position.y = 0.05
+    group.add(hour, min)
+    // 挂在钟的世界位置略前
+    const wp = new THREE.Vector3()
+    clockMesh.getWorldPosition(wp)
+    group.position.copy(wp)
+    group.position.x += 0.01
+    scene.add(group)
+    clockHands = { group, hour, min }
+  }
+}
+
+function tickClock() {
+  if (!clockHands) return
+  const d = new Date()
+  const m = d.getMinutes() + d.getSeconds() / 60
+  const h = (d.getHours() % 12) + m / 60
+  clockHands.min.rotation.z = -m * (Math.PI * 2) / 60
+  clockHands.hour.rotation.z = -h * (Math.PI * 2) / 12
+}
+
+function tickWindowLight() {
+  if (!windowGlass?.material) return
+  const hr = new Date().getHours() + new Date().getMinutes() / 60
+  // 白天偏亮蓝，黄昏偏暖，夜里偏深蓝
+  let col, em
+  if (hr >= 7 && hr < 17) {
+    col = 0x9ec0d8
+    em = 0.35
+  } else if (hr >= 17 && hr < 20) {
+    col = 0xd8a878
+    em = 0.45
+  } else {
+    col = 0x2a3848
+    em = 0.12
+  }
+  if (windowGlass.material.color) windowGlass.material.color.setHex(col)
+  if (windowGlass.material.emissive) {
+    windowGlass.material.emissive.setHex(col)
+    windowGlass.material.emissiveIntensity = em
+  }
+  if (sunLight) {
+    const day = hr >= 7 && hr < 18
+    sunLight.intensity = day ? 0.95 : 0.35
+    sunLight.color.setHex(hr >= 17 && hr < 20 ? 0xffc090 : day ? 0xffd8b0 : 0x8090b0)
+  }
 }
 
 onMounted(async () => {
@@ -470,6 +576,7 @@ onMounted(async () => {
   scene.add(new THREE.HemisphereLight(0xc8d4e0, 0x3a2a18, 0.45))
   const sun = new THREE.DirectionalLight(0xffd8b0, 0.95)
   sun.position.set(3, 4.5, 2)
+  sunLight = sun
   scene.add(sun)
   // 补一盏冷侧光，拉开层次
   const fill = new THREE.DirectionalLight(0xa8c0d8, 0.28)
@@ -504,6 +611,8 @@ onMounted(async () => {
     scene.add(modelRoot)
     tagClickable(modelRoot)
     await decorateArt(modelRoot, base)
+    addDust()
+    setupClockAndWindow(modelRoot)
 
     const named = findByName(modelRoot, ['Monitor_Screen', 'Desk_Drawer_Upper', 'Desk_Drawer_Lower', 'DeskLamp'])
     screenMesh = named.Monitor_Screen || null

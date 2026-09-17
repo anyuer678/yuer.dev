@@ -57,15 +57,28 @@ const catalog = computed(() => {
   })
   const core = [
     { id: 'monitor', label: '显示器', kind: 'projects', blurb: 'Flagship 与全部项目。', cta: '打开项目', to: '/projects' },
+    { id: 'keyboard', label: '键盘', kind: 'projects', blurb: '敲出下一个想法。', cta: '项目', to: '/projects' },
     { id: 'lamp', label: '台灯', kind: 'timeline', blurb: '开关灯。', cta: '时间线', to: '/timeline' },
     { id: 'drawer', label: '抽屉', kind: 'lab', blurb: '实验室与课程。', cta: '实验室', to: '/lab' },
     { id: 'bookcase', label: '书架', kind: 'flagship', blurb: '满墙书脊。', cta: '项目', to: '/projects' },
     { id: 'globe', label: '地球仪', kind: 'lab', blurb: '基础设施实验。', cta: '实验室', to: '/lab' },
-    { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' },
+    { id: 'window', label: '窗', kind: 'contact', blurb: '光随时间变化。', cta: '联系', to: '/contact' },
     { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' },
+    { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' },
     { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊。', cta: '联系', to: '/contact' },
   ]
-  return [...core, ...desk]
+  // 书架前几本可点笔记
+  const shelf = (roomBooks.shelfNotes || []).slice(0, 6).map((n, i) => ({
+    id: `shelf-book-${i}`,
+    label: n.title,
+    kind: 'book',
+    blurb: `书架：${n.title}`,
+    cta: '打开笔记',
+    to: `/notes/${n.slug}`,
+    // 没有 3D id 时仅索引进入
+    catalogOnly: true,
+  }))
+  return [...core, ...desk, ...shelf]
 })
 
 const pulseRepos = computed(() =>
@@ -128,6 +141,13 @@ function onSelect(data) {
 }
 
 function pickFromCatalog(item) {
+  if (item.catalogOnly) {
+    // 仅索引进入的笔记，不飞镜头
+    openBookId.value = ''
+    selected.value = item
+    easterOpen.value = false
+    return
+  }
   focusId.value = item.id
   if (item.id === 'lamp') lampOn.value = !lampOn.value
   if (item.id === 'monitor') monitorOn.value = !monitorOn.value
