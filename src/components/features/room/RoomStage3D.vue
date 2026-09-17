@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import roomBooks from '@/content/room-books.json'
 
 const props = defineProps({
   lampOn: { type: Boolean, default: true },
@@ -24,7 +25,11 @@ let deskLampLight, floorLampLight, screenMesh, drawerUpper, drawerLower
 const clickables = []
 const clock = new THREE.Clock()
 
-/** 节点名 → 交互元数据 */
+const deskBookMap = Object.fromEntries((roomBooks.deskBooks || []).map((b) => [b.mesh, b]))
+const sideBook = roomBooks.sideBook
+const shelfNotes = roomBooks.shelfNotes || []
+
+/** 节点名 → 交互元数据（书类在加载后二次覆盖） */
 const INTERACTIVE = [
   {
     test: (n) => n === 'Monitor_Screen' || n.startsWith('Monitor'),
@@ -43,15 +48,11 @@ const INTERACTIVE = [
     data: { id: 'globe', label: '地球仪', kind: 'lab', blurb: '走得更远：基础设施与实验。', cta: '实验室', to: '/lab' },
   },
   {
-    test: (n) => n.startsWith('Bookcase'),
+    test: (n) => n.startsWith('Bookcase') && !n.startsWith('BK') && !n.startsWith('BS'),
     data: { id: 'bookcase', label: '书架', kind: 'flagship', blurb: '满墙书脊：Flagship 与产品档案。', cta: '查看项目', to: '/projects' },
   },
   {
-    test: (n) => n.startsWith('Desk_Book') || n.startsWith('BK'),
-    data: { id: 'books', label: '书与笔记', kind: 'notes', blurb: '60+ 篇开发笔记。', cta: '浏览笔记', to: '/notes' },
-  },
-  {
-    test: (n) => n.startsWith('DeskLamp') === false && n.includes('Desk_Papers'),
+    test: (n) => n.includes('Desk_Papers'),
     data: { id: 'papers', label: '桌面文稿', kind: 'notes', blurb: '最近写的。', cta: '笔记', to: '/notes' },
   },
   {
@@ -87,19 +88,100 @@ const INTERACTIVE = [
 function matchInteractive(name) {
   if (!name) return null
   for (const rule of INTERACTIVE) {
-    if (rule.test(name)) return rule.data
+    if (rule.test(name)) return { ...rule.data }
   }
   return null
 }
 
+function bookDataFor(name) {
+  if (!name) return null
+  if (deskBookMap[name]) {
+    const b = deskBookMap[name]
+    return {
+      id: 'book:' + name,
+      label: b.title,
+      kind: 'notes',
+      blurb: b.blurb,
+      cta: '打开笔记',
+      to: `/notes/${b.slug}`,
+    }
+  }
+  if (sideBook && name === sideBook.mesh) {
+    return {
+      id: 'book:' + name,
+      label: sideBook.title,
+      kind: 'notes',
+      blurb: sideBook.blurb,
+      cta: '打开笔记',
+      to: `/notes/${sideBook.slug}`,
+    }
+  }
+  if (name.startsWith('BK') || name.startsWith('BS')) {
+    const idx = Math.abs(hashCode(name)) % shelfNotes.length
+    const n = shelfNotes[idx]
+    return {
+      id: 'book:' + name,
+      label: n.title,
+      kind: 'notes',
+      blurb: `书架上的一本：${n.title}`,
+      cta: '打开笔记',
+      to: `/notes/${n.slug}`,
+    }
+  }
+  return null
+}
+
+function hashCode(s) {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0
+  return h
+}
+
+async function decorateArt(root, base) {
+  const texLoader = new THREE.TextureLoader()
+  const urls = [`${base}models/study_room/art/art1.webp`, `${base}models/study_room/art/art2.webp`]
+  const texes = []
+  for (const u of urls) {
+    try {
+      const t = await texLoader.loadAsync(u)
+      t.colorSpace = THREE.SRGBColorSpace
+      texes.push(t)
+    } catch {
+      /* skip */
+    }
+  }
+  if (!texes.length) return
+  let i = 0
+  root.traverse((c) => {
+    if (!c.isMesh) return
+    const n = c.name || ''
+    const isArt =
+      /art|Frame|Picture|Canvas|Painting/i.test(n) ||
+      (c.material?.map && /art[123]/i.test(c.material.map.name || ''))
+    if (!isArt) return
+    const t = texes[i % texes.length]
+    i++
+    c.material = new THREE.MeshStandardMaterial({
+      map: t,
+      roughness: 0.85,
+      metalness: 0,
+    })
+  })
+}
+
 function tagClickable(obj) {
+  const shelfPool = []
   obj.traverse((child) => {
     if (!child.isMesh) return
-    const data = matchInteractive(child.name) || matchInteractive(child.parent?.name)
+    const book = bookDataFor(child.name) || bookDataFor(child.parent?.name)
+    const data = book || matchInteractive(child.name) || matchInteractive(child.parent?.name)
     if (!data) return
     child.userData = { ...child.userData, interactive: true, ...data, meshName: child.name }
     clickables.push(child)
+    if (child.name?.startsWith('BK') || child.name?.startsWith('BS')) shelfPool.push(child)
   })
+  // 书架书按名稳定映射已在 bookDataFor 完成
+  return shelfPool
 }
 
 function findByName(root, names) {
@@ -212,7 +294,7 @@ onMounted(async () => {
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.05
+  renderer.toneMappingExposure = 1.25
   renderer.outputColorSpace = THREE.SRGBColorSpace
   el.appendChild(renderer.domElement)
 
@@ -270,6 +352,7 @@ onMounted(async () => {
     })
     scene.add(modelRoot)
     tagClickable(modelRoot)
+    await decorateArt(modelRoot, base)
 
     const named = findByName(modelRoot, [
       'Monitor_Screen',

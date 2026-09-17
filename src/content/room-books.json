@@ -1,0 +1,48 @@
+{
+  "deskBooks": [
+    {
+      "mesh": "Desk_Book_1",
+      "slug": "lumen-notes",
+      "title": "Lumen 架构笔记",
+      "blurb": "个人 AI Agent Runtime 的设计与实现记录。"
+    },
+    {
+      "mesh": "Desk_Book_2",
+      "slug": "polycodehub-architecture",
+      "title": "PolyCodeHub 架构",
+      "blurb": "全栈 OJ：题库、沙箱与判题链路。"
+    },
+    {
+      "mesh": "Desk_Book_3",
+      "slug": "evocode-architecture",
+      "title": "EvoCode 架构设计",
+      "blurb": "AI 软件体检与演化平台。"
+    }
+  ],
+  "sideBook": {
+    "mesh": "SideTable_Book",
+    "slug": "n100-server",
+    "title": "N100 家用服务器",
+    "blurb": "Debian + Docker + frp 内网穿透。"
+  },
+  "shelfNotes": [
+    { "slug": "lumen-notes", "title": "Lumen 笔记" },
+    { "slug": "polycodehub-architecture", "title": "PolyCodeHub" },
+    { "slug": "evocode-architecture", "title": "EvoCode" },
+    { "slug": "dsh-logtimeline-notes", "title": "DSH LogTimeline" },
+    { "slug": "keyvault-notes", "title": "KeyVault" },
+    { "slug": "stargrave-notes", "title": "StarGrave" },
+    { "slug": "upgrademate-notes", "title": "UpgradeMate" },
+    { "slug": "voice-console-mcp-notes", "title": "Voice Console" },
+    { "slug": "picrename-ai-notes", "title": "PicRen" },
+    { "slug": "developer-intelligence-notes", "title": "Dev Intelligence" },
+    { "slug": "database-notes", "title": "数据库速记" },
+    { "slug": "os-notes", "title": "操作系统速记" },
+    { "slug": "compiler-notes", "title": "编译原理速记" },
+    { "slug": "network-notes", "title": "计算机网络速记" },
+    { "slug": "algorithm-notes", "title": "算法速记" },
+    { "slug": "design-patterns-notes", "title": "设计模式" },
+    { "slug": "spring-boot-notes", "title": "Spring Boot" },
+    { "slug": "java-notes", "title": "Java 速记" }
+  ]
+}
