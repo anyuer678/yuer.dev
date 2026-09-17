@@ -398,7 +398,7 @@ onMounted(async () => {
   renderer.setSize(el.clientWidth, el.clientHeight, false)
   renderer.shadowMap.enabled = false // 关阴影，显著降卡顿
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.15
+  renderer.toneMappingExposure = 1.08
   renderer.outputColorSpace = THREE.SRGBColorSpace
   el.appendChild(renderer.domElement)
 
