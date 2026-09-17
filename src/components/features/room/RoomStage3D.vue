@@ -13,6 +13,7 @@ const props = defineProps({
   monitorOn: { type: Boolean, default: false },
   drawerOpen: { type: Boolean, default: false },
   openBookId: { type: String, default: '' },
+  focusId: { type: String, default: '' },
 })
 const emit = defineEmits(['select', 'hover', 'ready'])
 
@@ -30,6 +31,10 @@ const clock = new THREE.Clock()
 
 const openBooks = new Map()
 const DUST_DAYS = 45
+let bookGlow = null
+let camFly = null // { from, to, tFrom, tTo, lookFrom, lookTo, t, dur }
+let hoverMesh = null
+const hoverBase = new WeakMap()
 
 const deskBookMap = Object.fromEntries((roomBooks.deskBooks || []).map((b) => [b.mesh, b]))
 const sideBook = roomBooks.sideBook
@@ -158,13 +163,23 @@ function tagClickable(obj) {
   if (floor) floor.receiveShadow = true
 }
 
-/** 轻量开书：只抬起 + 轻转，不拆子网格（避免变形） */
+/** 轻量开书：抬起 + 微倾 + 暖光，easing 更顺 */
 function openBook(mesh) {
   closeAllBooks()
   if (!mesh) return
   const home = mesh.userData._home || { y: mesh.position.y, x: mesh.rotation.x, z: mesh.rotation.z }
   mesh.userData._home = home
   openBooks.set(mesh.userData.id, { mesh, t: 0, home })
+
+  if (!bookGlow) {
+    bookGlow = new THREE.PointLight(0xffc890, 0, 1.2, 2)
+    scene.add(bookGlow)
+  }
+  const wp = new THREE.Vector3()
+  mesh.getWorldPosition(wp)
+  bookGlow.position.copy(wp)
+  bookGlow.intensity = 0
+  flyToMesh(mesh)
 }
 
 function closeAllBooks() {
@@ -172,18 +187,96 @@ function closeAllBooks() {
     st.mesh.position.y = st.home.y
     st.mesh.rotation.x = st.home.x
     st.mesh.rotation.z = st.home.z
+    st.mesh.scale.setScalar(1)
+    if (st.mesh.material?.emissive) {
+      st.mesh.material.emissive.setHex(0x000000)
+      st.mesh.material.emissiveIntensity = 0
+    }
   }
   openBooks.clear()
+  if (bookGlow) bookGlow.intensity = 0
+}
+
+function easeOutCubic(x) {
+  return 1 - Math.pow(1 - x, 3)
 }
 
 function tickBooks(dt) {
   for (const [, st] of openBooks) {
-    st.t += (1 - st.t) * Math.min(1, dt * 4.5)
-    const k = st.t
-    st.mesh.position.y = st.home.y + 0.06 * k
-    st.mesh.rotation.x = st.home.x + 0.12 * k
-    st.mesh.rotation.z = st.home.z * (1 - k * 0.3)
+    // 更精致：到位约 0.55s，带轻微回弹感
+    st.t = Math.min(1, st.t + dt / 0.55)
+    const k = easeOutCubic(st.t)
+    const bounce = Math.sin(st.t * Math.PI) * 0.012
+    st.mesh.position.y = st.home.y + 0.07 * k + bounce
+    st.mesh.rotation.x = st.home.x + 0.1 * k
+    st.mesh.rotation.z = st.home.z * (1 - k * 0.25)
+    st.mesh.scale.setScalar(1 + 0.06 * k)
+    if (st.mesh.material?.emissive) {
+      st.mesh.material.emissive.setHex(0x3a2818)
+      st.mesh.material.emissiveIntensity = 0.35 * k
+    }
   }
+  if (bookGlow && openBooks.size) {
+    const any = openBooks.values().next().value
+    if (any) {
+      const wp = new THREE.Vector3()
+      any.mesh.getWorldPosition(wp)
+      bookGlow.position.copy(wp).add(new THREE.Vector3(0, 0.12, 0.05))
+      bookGlow.intensity = 1.4 * easeOutCubic(any.t)
+    }
+  }
+}
+
+/** 相机飞向物件 */
+function flyToMesh(mesh) {
+  if (!mesh || !camera || !controls) return
+  const target = new THREE.Vector3()
+  mesh.getWorldPosition(target)
+  const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize()
+  const dist = Math.max(1.35, Math.min(2.2, camera.position.distanceTo(controls.target) * 0.72))
+  const camTo = target.clone().add(dir.multiplyScalar(dist))
+  camTo.y = Math.max(camTo.y, target.y + 0.25)
+  camFly = {
+    from: camera.position.clone(),
+    to: camTo,
+    lookFrom: controls.target.clone(),
+    lookTo: target,
+    t: 0,
+    dur: 0.75,
+  }
+}
+
+function tickCamera(dt) {
+  if (!camFly || !camera || !controls) return
+  camFly.t = Math.min(1, camFly.t + dt / camFly.dur)
+  const k = easeOutCubic(camFly.t)
+  camera.position.lerpVectors(camFly.from, camFly.to, k)
+  controls.target.lerpVectors(camFly.lookFrom, camFly.lookTo, k)
+  if (camFly.t >= 1) camFly = null
+}
+
+function setHoverMesh(mesh) {
+  if (hoverMesh === mesh) return
+  // 还原上一个
+  if (hoverMesh?.material?.emissive) {
+    const base = hoverBase.get(hoverMesh)
+    if (base) {
+      hoverMesh.material.emissive.copy(base.emissive)
+      hoverMesh.material.emissiveIntensity = base.intensity
+    }
+  }
+  hoverMesh = mesh
+  if (!mesh?.material?.emissive) return
+  if (!hoverBase.has(mesh)) {
+    hoverBase.set(mesh, {
+      emissive: mesh.material.emissive.clone(),
+      intensity: mesh.material.emissiveIntensity ?? 0,
+    })
+  }
+  // 书类暖高亮，其它物件淡高亮
+  const isBook = mesh.userData?.kind === 'book'
+  mesh.material.emissive.setHex(isBook ? 0x4a3020 : 0x2a2018)
+  mesh.material.emissiveIntensity = isBook ? 0.45 : 0.2
 }
 
 let lastRay = 0
@@ -199,6 +292,7 @@ function doRaycast(clientX, clientY) {
   raycaster.far = 8
   const hits = raycaster.intersectObjects(clickables, false)
   const hit = hits[0]?.object
+  setHoverMesh(hit?.userData?.interactive ? hit : null)
   if (hit?.userData?.interactive) {
     host.value.style.cursor = 'pointer'
     emit('hover', hit.userData)
@@ -258,7 +352,7 @@ function animate() {
   const dt = Math.min(0.05, clock.getDelta())
   controls?.update()
   tickBooks(dt)
-  // 补一帧节流的 raycast
+  tickCamera(dt)
   if (pendingMove) {
     const now = performance.now()
     if (now - lastRay >= 48) {
@@ -304,7 +398,7 @@ onMounted(async () => {
   renderer.setSize(el.clientWidth, el.clientHeight, false)
   renderer.shadowMap.enabled = false // 关阴影，显著降卡顿
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.2
+  renderer.toneMappingExposure = 1.15
   renderer.outputColorSpace = THREE.SRGBColorSpace
   el.appendChild(renderer.domElement)
 
@@ -325,11 +419,15 @@ onMounted(async () => {
   controls.rotateSpeed = 0.65
   controls.zoomSpeed = 0.7
 
-  scene.add(new THREE.AmbientLight(0xffe8d4, 0.7))
-  scene.add(new THREE.HemisphereLight(0xc8d4e0, 0x3a2a18, 0.55))
-  const sun = new THREE.DirectionalLight(0xffd8b0, 1.0)
+  scene.add(new THREE.AmbientLight(0xffe8d4, 0.55))
+  scene.add(new THREE.HemisphereLight(0xc8d4e0, 0x3a2a18, 0.45))
+  const sun = new THREE.DirectionalLight(0xffd8b0, 0.95)
   sun.position.set(3, 4.5, 2)
   scene.add(sun)
+  // 补一盏冷侧光，拉开层次
+  const fill = new THREE.DirectionalLight(0xa8c0d8, 0.28)
+  fill.position.set(-3, 2, 1)
+  scene.add(fill)
 
   deskLampLight = new THREE.PointLight(0xffc078, 2.2, 2.8, 2)
   deskLampLight.position.set(0.55, 1.25, -2.0)
@@ -398,6 +496,15 @@ watch(
     }
     const hit = clickables.find((c) => c.userData?.id === id)
     if (hit) openBook(hit)
+  }
+)
+
+watch(
+  () => props.focusId,
+  (id) => {
+    if (!id) return
+    const hit = clickables.find((c) => c.userData?.id === id)
+    if (hit) flyToMesh(hit)
   }
 )
 

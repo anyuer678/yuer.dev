@@ -12,6 +12,7 @@ const router = useRouter()
 const stageReady = ref(false)
 const selected = ref(null)
 const openBookId = ref('')
+const focusId = ref('')
 const hoverItem = ref(null)
 const easterOpen = ref(false)
 const lampOn = ref(true)
@@ -36,14 +37,24 @@ const KIND_LABEL = {
 }
 
 const catalog = computed(() => {
-  const desk = (roomBooks.deskBooks || []).map((b) => ({
-    id: 'book:' + b.mesh,
-    label: b.title,
-    kind: 'book',
-    blurb: b.blurb,
-    cta: '翻开书',
-    to: b.projectSlug ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
-  }))
+  const ageOf = (repo) => {
+    const r = githubData.repos?.[repo]
+    if (!r?.pushed_at) return null
+    return Math.floor((Date.now() - new Date(r.pushed_at).getTime()) / 86400000)
+  }
+  const desk = (roomBooks.deskBooks || []).map((b) => {
+    const age = ageOf(b.repo)
+    return {
+      id: 'book:' + b.mesh,
+      label: b.title,
+      kind: 'book',
+      blurb: b.blurb,
+      cta: '翻开书',
+      to: b.projectSlug ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
+      ageDays: age,
+      dusty: age != null && age > 45,
+    }
+  })
   const core = [
     { id: 'monitor', label: '显示器', kind: 'projects', blurb: 'Flagship 与全部项目。', cta: '打开项目', to: '/projects' },
     { id: 'lamp', label: '台灯', kind: 'timeline', blurb: '开关灯。', cta: '时间线', to: '/timeline' },
@@ -117,9 +128,16 @@ function onSelect(data) {
 }
 
 function pickFromCatalog(item) {
+  focusId.value = item.id
   if (item.id === 'lamp') lampOn.value = !lampOn.value
   if (item.id === 'monitor') monitorOn.value = !monitorOn.value
   if (item.id === 'drawer') drawerOpen.value = !drawerOpen.value
+  if (item.kind === 'book') {
+    openBookId.value = item.id
+    selected.value = item
+    easterOpen.value = false
+    return
+  }
   if (item.kind === 'easter') {
     selected.value = item
     easterOpen.value = true
@@ -181,6 +199,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
         :monitor-on="monitorOn"
         :drawer-open="drawerOpen"
         :open-book-id="openBookId"
+        :focus-id="focusId"
         @select="onSelect"
         @hover="onHover"
         @ready="stageReady = true"
@@ -218,11 +237,14 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
             <button
               type="button"
               class="index__item"
-              :class="{ 'index__item--on': selected?.id === item.id }"
+              :class="{ 'index__item--on': selected?.id === item.id, 'index__item--dusty': item.dusty }"
               @click="pickFromCatalog(item)"
             >
               <span class="index__kind">{{ KIND_LABEL[item.kind] || item.kind }}</span>
-              <span class="index__label">{{ item.label }}</span>
+              <span class="index__label">
+                {{ item.label }}
+                <em v-if="item.dusty" class="index__dust">蒙尘</em>
+              </span>
             </button>
           </li>
         </ul>
@@ -576,6 +598,21 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 }
 .index__label {
   font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.index__dust {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(180, 160, 140, 0.2);
+  color: #c0b0a0;
+}
+.index__item--dusty .index__label {
+  color: #c8b8a8;
 }
 
 /* 检视卡 */
