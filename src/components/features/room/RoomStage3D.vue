@@ -73,7 +73,7 @@ const INTERACTIVE = [
   { test: (n) => n.startsWith('Bookcase') && !n.startsWith('BK') && !n.startsWith('BS'), data: { id: 'bookcase', label: '书架', kind: 'flagship', blurb: '满墙书脊。', cta: '项目', to: '/projects' } },
   { test: (n) => n.includes('Desk_Papers'), data: { id: 'papers', label: '桌面文稿', kind: 'notes', blurb: '最近写的。', cta: '笔记', to: '/notes' } },
   { test: (n) => n.includes('Plant'), data: { id: 'plant', label: '绿植', kind: 'about', blurb: '关于我。', cta: '关于', to: '/about' } },
-  { test: (n) => n.includes('Mug'), data: { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' } },
+  { test: (n) => n.includes('Mug') || n.includes('CoffeeMug'), data: { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' } },
   { test: (n) => n.startsWith('FloorLamp'), data: { id: 'floorlamp', label: '落地灯', kind: 'timeline', blurb: '角落的光。', cta: '时间线', to: '/timeline' } },
   { test: (n) => n.startsWith('WallClock'), data: { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' } },
   { test: (n) => n.startsWith('Armchair') || n.startsWith('OfficeChair'), data: { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊。', cta: '联系', to: '/contact' } },
@@ -172,28 +172,46 @@ async function decorateArt(root, base) {
   root.traverse((c) => {
     if (!c.isMesh) return
     const n = c.name || ''
-    if (/Frame|Picture|Canvas|Painting|Art/i.test(n) && artTexes.length) {
+    // 画芯 Canvas（不要贴到 Frame/Mat）
+    if (/Canvas/i.test(n) && artTexes.length) {
       const t = artTexes[ai % artTexes.length]
       ai++
-      c.material = new THREE.MeshStandardMaterial({ map: t, roughness: 0.88, metalness: 0 })
+      c.material = new THREE.MeshStandardMaterial({ map: t, roughness: 0.9, metalness: 0 })
       return
     }
-    if (/Rug|Carpet/i.test(n) && rug) {
+    if (n === 'Rug' && rug) {
       rug.wrapS = rug.wrapT = THREE.RepeatWrapping
-      c.material = new THREE.MeshStandardMaterial({ map: rug, roughness: 0.95, metalness: 0 })
+      c.material = new THREE.MeshStandardMaterial({ map: rug, roughness: 0.96, metalness: 0 })
       return
     }
-    if (/Wall/i.test(n) && plaster) {
+    // 墙：Wall_Left / Wall_Back_* 等
+    if (/^Wall_(Left|Right|Back)/i.test(n) && plaster) {
       plaster.wrapS = plaster.wrapT = THREE.RepeatWrapping
-      plaster.repeat.set(3, 2)
+      plaster.repeat.set(4, 2)
       c.material = new THREE.MeshStandardMaterial({
         map: plaster,
-        color: 0xf0e8dc,
-        roughness: 0.96,
+        color: 0xf3ebe0,
+        roughness: 0.97,
         metalness: 0,
       })
     }
   })
+}
+
+/** 拨动模型自带钟针 */
+function setupClockAndWindow(root) {
+  const named = findByName(root, [
+    'WallClock_Hand_Hour',
+    'WallClock_Hand_Minute',
+    'Window_Glass',
+    'CoffeeMug',
+  ])
+  windowGlass = named.Window_Glass || null
+  clockHands = {
+    hour: named.WallClock_Hand_Hour || null,
+    min: named.WallClock_Hand_Minute || null,
+    group: null,
+  }
 }
 
 function tagClickable(obj) {
@@ -475,38 +493,22 @@ function tickDust(t) {
   dustPoints.geometry.attributes.position.needsUpdate = true
 }
 
-/** 挂钟指针 + 窗光随真实时间 */
-function setupClockAndWindow(root) {
-  const named = findByName(root, ['WallClock', 'Window_Glass', 'Window'])
-  windowGlass = named.Window_Glass || null
-
-  // 在钟前生成时针/分针（简化：两根细盒）
-  const clockMesh = named.WallClock
-  if (clockMesh) {
-    const group = new THREE.Group()
-    const handMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 })
-    const hour = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.07, 0.008), handMat)
-    hour.position.y = 0.035
-    const min = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.1, 0.006), handMat.clone())
-    min.position.y = 0.05
-    group.add(hour, min)
-    // 挂在钟的世界位置略前
-    const wp = new THREE.Vector3()
-    clockMesh.getWorldPosition(wp)
-    group.position.copy(wp)
-    group.position.x += 0.01
-    scene.add(group)
-    clockHands = { group, hour, min }
-  }
-}
-
 function tickClock() {
   if (!clockHands) return
   const d = new Date()
   const m = d.getMinutes() + d.getSeconds() / 60
   const h = (d.getHours() % 12) + m / 60
-  clockHands.min.rotation.z = -m * (Math.PI * 2) / 60
-  clockHands.hour.rotation.z = -h * (Math.PI * 2) / 12
+  // 模型自带指针：绕自身轴旋转（先存初始值）
+  if (clockHands.min) {
+    if (clockHands.min.userData._r0 == null) clockHands.min.userData._r0 = clockHands.min.rotation.clone()
+    const r0 = clockHands.min.userData._r0
+    clockHands.min.rotation.set(r0.x, r0.y, r0.z - (m * Math.PI * 2) / 60)
+  }
+  if (clockHands.hour) {
+    if (clockHands.hour.userData._r0 == null) clockHands.hour.userData._r0 = clockHands.hour.rotation.clone()
+    const r0 = clockHands.hour.userData._r0
+    clockHands.hour.rotation.set(r0.x, r0.y, r0.z - (h * Math.PI * 2) / 12)
+  }
 }
 
 function tickWindowLight() {
@@ -551,7 +553,7 @@ onMounted(async () => {
   renderer.setSize(el.clientWidth, el.clientHeight, false)
   renderer.shadowMap.enabled = false // 关阴影，显著降卡顿
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.08
+  renderer.toneMappingExposure = 1.22
   renderer.outputColorSpace = THREE.SRGBColorSpace
   el.appendChild(renderer.domElement)
 
@@ -572,16 +574,19 @@ onMounted(async () => {
   controls.rotateSpeed = 0.65
   controls.zoomSpeed = 0.7
 
-  scene.add(new THREE.AmbientLight(0xffe8d4, 0.55))
-  scene.add(new THREE.HemisphereLight(0xc8d4e0, 0x3a2a18, 0.45))
-  const sun = new THREE.DirectionalLight(0xffd8b0, 0.95)
+  scene.add(new THREE.AmbientLight(0xffe8d4, 0.48))
+  scene.add(new THREE.HemisphereLight(0xb8c8d8, 0x3a2a18, 0.4))
+  const sun = new THREE.DirectionalLight(0xffd8b0, 1.15)
   sun.position.set(3, 4.5, 2)
   sunLight = sun
   scene.add(sun)
-  // 补一盏冷侧光，拉开层次
-  const fill = new THREE.DirectionalLight(0xa8c0d8, 0.28)
-  fill.position.set(-3, 2, 1)
+  const fill = new THREE.DirectionalLight(0x88a8c8, 0.4)
+  fill.position.set(-3.5, 2.2, 1.5)
   scene.add(fill)
+  // 暖顶光，让桌面更亮
+  const top = new THREE.PointLight(0xffe0b8, 0.55, 6, 2)
+  top.position.set(0, 3.2, -0.5)
+  scene.add(top)
 
   deskLampLight = new THREE.PointLight(0xffc078, 2.2, 2.8, 2)
   deskLampLight.position.set(0.55, 1.25, -2.0)
