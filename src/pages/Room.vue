@@ -43,13 +43,18 @@ function onSelect(data) {
   markSeen(data.id)
 
   // 物件物理状态
-  if (data.id === 'lamp') lampOn.value = !lampOn.value
-  if (data.id === 'laptop') laptopOn.value = !laptopOn.value
+  if (data.id === 'lamp' || data.id === 'floorlamp') lampOn.value = !lampOn.value
+  if (data.id === 'monitor' || data.id === 'laptop') laptopOn.value = !laptopOn.value
   if (data.id === 'drawer') drawerOpen.value = !drawerOpen.value
 
   if (data.kind === 'easter') {
     selected.value = data
     easterOpen.value = true
+    return
+  }
+  if (data.kind === 'pulse' || data.id === 'clock') {
+    easterOpen.value = false
+    selected.value = { ...data, overlay: 'pulse' }
     return
   }
 
@@ -124,7 +129,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件。')
     <main class="stage" @click.self="clearSelection">
       <RoomStage3D
         :lamp-on="lampOn"
-        :laptop-on="laptopOn"
+        :monitor-on="laptopOn"
         :drawer-open="drawerOpen"
         @select="onSelect"
         @hover="onHover"
@@ -138,7 +143,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件。')
           </header>
           <h2 class="card__title">{{ selected.label }}</h2>
           <p class="card__blurb">{{ selected.blurb }}</p>
-          <div v-if="selected.id === 'laptop' && laptopOn" class="card__screen">
+          <div v-if="selected.id === 'monitor' && laptopOn" class="card__screen">
             <p class="card__screen-label">屏幕上</p>
             <RouterLink v-for="p in featuredProjects" :key="p.slug" :to="`/projects/${p.slug}`" class="card__screen-row">
               <span>{{ p.title }}</span>
