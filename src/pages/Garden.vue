@@ -1,6 +1,6 @@
 <script setup>
-// /garden 花庭 — 同画幅三层：院景底 + 门 + 梅枝（素材为独立生成，非成图裁切）
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+// /garden 花庭 — 原图 garden-bg 单幅（不再用生成素材覆盖原设计）
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import PetalField from '@/components/features/garden/PetalField.vue'
 import PaperTransition from '@/components/features/garden/PaperTransition.vue'
@@ -12,24 +12,8 @@ const router = useRouter()
 const worlds = portalWorlds()
 const fx = ref(null)
 const leaving = ref(false)
-const stage = ref(null)
 const base = import.meta.env.BASE_URL
-const L = {
-  court: `${base}images/garden/garden-court.webp`,
-  door: `${base}images/garden/garden-door.png`,
-  branch: `${base}images/garden/garden-branch.png`,
-}
-
-const px = ref(0)
-const py = ref(0)
-let reduced = false
-
-function onPointer(e) {
-  if (reduced || !stage.value) return
-  const r = stage.value.getBoundingClientRect()
-  px.value = ((e.clientX - r.left) / r.width - 0.5) * 2
-  py.value = ((e.clientY - r.top) / r.height - 0.5) * 2
-}
+const bgUrl = `${base}images/garden/garden-bg.webp`
 
 function leave(to) {
   if (leaving.value) return
@@ -46,43 +30,15 @@ function onFxDone(dest) {
 }
 
 onMounted(() => {
-  reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
   setTitle(`花庭 · ${site?.brand || 'Yuer Studio'}`)
   setDescription('风里偶尔有一朵不一样的花——从花庭遇见项目、笔记与书房。')
-  stage.value?.addEventListener('pointermove', onPointer, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  stage.value?.removeEventListener('pointermove', onPointer)
 })
 </script>
 
 <template>
   <div class="garden">
-    <div ref="stage" class="garden__stage">
-      <!-- 三层同为 2048×1152，同一 cover 盒内叠放 → 对齐 -->
-      <img
-        class="garden__layer garden__layer--court"
-        :src="L.court"
-        alt=""
-        aria-hidden="true"
-        :style="{ transform: `translate3d(${px * -8}px, ${py * -5}px, 0)` }"
-      />
-      <img
-        class="garden__layer garden__layer--door"
-        :src="L.door"
-        alt=""
-        aria-hidden="true"
-        :style="{ transform: `translate3d(${px * -4}px, ${py * -2}px, 0)` }"
-      />
-      <img
-        class="garden__layer garden__layer--branch"
-        :src="L.branch"
-        alt=""
-        aria-hidden="true"
-        :style="{ transform: `translate3d(${px * 18}px, ${py * 12}px, 0)` }"
-      />
-      <div class="garden__vignette" aria-hidden="true" />
+    <div class="garden__stage">
+      <div class="garden__bg" :style="{ backgroundImage: `url(${bgUrl})` }" aria-hidden="true" />
       <div class="garden__grain" aria-hidden="true" />
 
       <div class="brand" aria-hidden="true">
@@ -93,7 +49,6 @@ onBeforeUnmount(() => {
         <PetalField :worlds="worlds" @enter="onEnter" />
       </div>
 
-      <!-- 门热区：对齐素材中门的大致位置（右侧墙面） -->
       <button type="button" class="study-gate" aria-label="进入书房" @click="leave('/room')">
         <span>书房</span>
       </button>
@@ -117,42 +72,22 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #efe8dc;
+  background: #f0ebe2;
 }
-.garden__layer {
+.garden__bg {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   pointer-events: none;
-  user-select: none;
-  will-change: transform;
-  transition: transform 0.45s cubic-bezier(0, 0, 0.2, 1);
-}
-.garden__layer--court {
-  z-index: 0;
-}
-.garden__layer--door {
-  z-index: 1;
-}
-.garden__layer--branch {
-  z-index: 2;
-}
-.garden__vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  box-shadow: inset 0 0 90px rgba(45, 32, 20, 0.12);
 }
 .garden__grain {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.22;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
   background-size: 140px;
   mix-blend-mode: multiply;
@@ -160,7 +95,7 @@ onBeforeUnmount(() => {
 .garden__overlay {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 3;
   pointer-events: none;
 }
 .garden__overlay :deep(canvas) {
@@ -170,7 +105,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 22px;
   left: 24px;
-  z-index: 6;
+  z-index: 4;
   writing-mode: vertical-rl;
   font-family: var(--font-display);
   font-size: 18px;
@@ -192,7 +127,7 @@ onBeforeUnmount(() => {
   left: 50%;
   bottom: 22px;
   transform: translateX(-50%);
-  z-index: 6;
+  z-index: 4;
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-secondary);
@@ -201,14 +136,13 @@ onBeforeUnmount(() => {
   text-align: center;
   max-width: min(90vw, 420px);
 }
-/* 对齐门层：右侧墙面 */
 .study-gate {
   position: absolute;
-  right: 8%;
-  bottom: 16%;
-  z-index: 6;
-  width: min(200px, 26vw);
-  height: min(42vh, 360px);
+  right: 6%;
+  bottom: 18%;
+  z-index: 4;
+  width: min(160px, 22vw);
+  height: min(220px, 32vh);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -220,7 +154,7 @@ onBeforeUnmount(() => {
 .study-gate span {
   position: absolute;
   left: 50%;
-  top: 48%;
+  top: 38%;
   transform: translate(-50%, -50%);
   font-family: var(--font-mono);
   font-size: 13px;
@@ -242,9 +176,6 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
   .garden__grain {
     opacity: 0.1;
-  }
-  .garden__layer {
-    transition: none;
   }
 }
 </style>
