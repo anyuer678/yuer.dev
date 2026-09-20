@@ -13,6 +13,8 @@ const route = useRoute()
 const world = computed(() => getWorld(String(route.params.world || '')))
 const picks = computed(() => (world.value ? getWorldPicks(world.value.id) : []))
 const allHref = computed(() => (world.value ? listHref(world.value) : null))
+// 世界气质：诗境更静、学习更条理，不共用一套「卡片说明书」
+const mood = computed(() => world.value?.id || 'works')
 
 function applyMeta() {
   const w = world.value
@@ -26,7 +28,7 @@ watch(() => route.params.world, applyMeta)
 </script>
 
 <template>
-  <div v-if="world" class="container container--narrow gate">
+  <div v-if="world" class="container container--narrow gate" :class="`gate--${mood}`">
     <PageHeader :title="world.label" :description="world.feel" />
 
     <p class="gate__blurb">{{ world.blurb }}</p>
@@ -34,7 +36,7 @@ watch(() => route.params.world, applyMeta)
     <section class="gate__picks" aria-label="精选">
       <article v-for="(item, i) in picks" :key="`${item.to}-${i}`" class="pick">
         <div class="pick__head">
-          <span class="pick__kind">{{ item.kind }}</span>
+          <span v-if="mood !== 'poetry'" class="pick__kind">{{ item.kind }}</span>
           <span v-if="item.subtitle && !item.title.includes(item.subtitle)" class="pick__sub">
             {{ item.subtitle }}
           </span>
@@ -43,7 +45,7 @@ watch(() => route.params.world, applyMeta)
           <RouterLink :to="item.to">{{ item.title }}</RouterLink>
         </h2>
         <p v-if="item.blurb" class="pick__blurb">{{ item.blurb }}</p>
-        <ul v-if="item.meta?.length" class="pick__meta">
+        <ul v-if="item.meta?.length && mood !== 'poetry'" class="pick__meta">
           <li v-for="m in item.meta" :key="m">{{ m }}</li>
         </ul>
       </article>
@@ -179,5 +181,94 @@ watch(() => route.params.world, applyMeta)
 }
 .gate__nav a:hover {
   color: var(--color-accent);
+}
+
+/* —— 世界气质 —— */
+/* 诗境：更静的纸面阅读，去掉徽章/标签噪音 */
+.gate--poetry {
+  max-width: 40rem;
+}
+.gate--poetry .gate__blurb {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 28ch;
+}
+.gate--poetry .pick {
+  padding: var(--space-8) 0;
+  border-bottom: none;
+}
+.gate--poetry .gate__picks {
+  border-top: none;
+  gap: var(--space-2);
+}
+.gate--poetry .pick__title {
+  font-size: var(--text-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: 0.02em;
+}
+.gate--poetry .pick__sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-small);
+}
+.gate--poetry .pick__blurb {
+  font-family: var(--font-display);
+  max-width: 36ch;
+  color: var(--color-text-secondary);
+}
+.gate--poetry .gate__all,
+.gate--poetry .gate__nav {
+  font-family: var(--font-display);
+}
+
+/* 学习：条理感——细分隔、等宽元信息、弱面板 */
+.gate--learn .pick__title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.gate--learn .pick {
+  background: linear-gradient(90deg, var(--color-surface-muted), transparent 70%);
+  padding-inline: var(--space-4);
+  margin-inline: calc(var(--space-4) * -1);
+  border-radius: var(--radius-md);
+}
+.gate--learn .pick__kind {
+  color: var(--color-text-secondary);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+}
+.gate--learn .pick__meta li {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--color-surface);
+  border: var(--border-default);
+}
+
+/* 作品：案头气质，强调「能落地」 */
+.gate--works .pick__title {
+  font-size: var(--text-h2);
+}
+.gate--works .pick__kind {
+  background: var(--color-accent-soft);
+  border-color: transparent;
+}
+
+/* 实验：允许未完成——虚线框 */
+.gate--lab .pick {
+  border-bottom-style: dashed;
+}
+.gate--lab .pick__kind {
+  border-style: dashed;
+}
+
+/* 关于：更少装饰 */
+.gate--about .pick__kind {
+  border: none;
+  padding-left: 0;
+  color: var(--color-text-tertiary);
 }
 </style>
