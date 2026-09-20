@@ -1,6 +1,6 @@
 <script setup>
 // /w/:world — 两种读法，不是五套皮肤
-// essay：慢读（诗境 / 关于）；catalog：扫读（作品 / 学习 / 实验）
+// essay：慢读（关于）；catalog：扫读（作品 / 学习 / 实验）
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import EmptyState from '@/components/ui/EmptyState.vue'
@@ -13,7 +13,7 @@ const world = computed(() => getWorld(String(route.params.world || '')))
 const picks = computed(() => (world.value ? getWorldPicks(world.value.id) : []))
 const allHref = computed(() => (world.value ? listHref(world.value) : null))
 const id = computed(() => world.value?.id || 'works')
-const mode = computed(() => (id.value === 'poetry' || id.value === 'about' ? 'essay' : 'catalog'))
+const mode = computed(() => (id.value === 'about' ? 'essay' : 'catalog'))
 
 function applyMeta() {
   const w = world.value
