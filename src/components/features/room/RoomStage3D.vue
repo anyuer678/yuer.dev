@@ -16,12 +16,14 @@ const props = defineProps({
   openBookId: { type: String, default: '' },
   focusId: { type: String, default: '' },
 })
-const emit = defineEmits(['select', 'hover', 'ready', 'shelfmap', 'viewchange', 'failed'])
+const emit = defineEmits(['select', 'hover', 'ready', 'shelfmap', 'viewchange', 'failed', 'clock'])
 
 const host = ref(null)
 const ready = ref(false)
 const loadPct = ref(0)
 const failed = ref(false)
+// 本地时段（窗外/光照）；给 HUD 显示
+const clockLabel = ref('')
 
 let renderer, scene, camera, controls, raycaster, pointer
 let frame = 0
@@ -875,42 +877,49 @@ function findByName(root, names) {
   return found
 }
 
-/** 窗外远景：程序化生成「暮色天色 + 层叠远山」，与参考图的窗外一致 */
-function makeSkyTexture() {
+/** 窗外远景：按本地时段参数程序化绘制天空 + 远山 */
+function makeSkyTexture(st) {
+  const s = st || dayState(12)
   const c = document.createElement('canvas')
   c.width = 1024
   c.height = 640
   const g = c.getContext('2d')
   const H = c.height
-  const hz = H * 0.58   // 地平线（天上 58%）
+  const hz = H * 0.58
+  const cols = s.skyCols || ['#c3cfd8', '#dfe0d6', '#f2e2c6']
   const grad = g.createLinearGradient(0, 0, 0, hz)
-  grad.addColorStop(0, '#c3cfd8')
-  grad.addColorStop(0.55, '#dfe0d6')
-  grad.addColorStop(0.82, '#f2e2c6')
-  grad.addColorStop(1, '#f6dcb4')
+  grad.addColorStop(0, cols[0])
+  grad.addColorStop(0.55, cols[1])
+  grad.addColorStop(0.82, cols[2])
+  grad.addColorStop(1, cols[2])
   g.fillStyle = grad
   g.fillRect(0, 0, c.width, hz + 2)
-  // 地平线以下必须先铺一层雾色底：canvas 透明区会被渲染成深色带
+  // 夜空星点
+  if ((s.stars || 0) > 0.02) {
+    g.fillStyle = `rgba(255,250,230,${s.stars})`
+    for (let i = 0; i < 60; i++) {
+      const x = (i * 97) % c.width
+      const y = (i * 53) % (hz * 0.85)
+      g.fillRect(x, y, 1.5, 1.5)
+    }
+  }
   const ground = g.createLinearGradient(0, hz, 0, H)
-  ground.addColorStop(0, '#f2e3c4')
-  ground.addColorStop(0.35, '#dfd9b8')
-  ground.addColorStop(1, '#cdcbaa')
+  ground.addColorStop(0, s.ground)
+  ground.addColorStop(1, s.ground)
   g.fillStyle = ground
   g.fillRect(0, hz, c.width, H - hz)
-  // 地平线处的雾带在画完山脊后再叠：形成空气透视，远山才会"远"
-  // 云层：几道横向的柔和亮带
   for (let i = 0; i < 7; i++) {
     const y = hz * (0.16 + i * 0.09)
-    g.fillStyle = `rgba(255,248,236,${0.16 - i * 0.015})`
+    g.fillStyle = `rgba(255,248,236,${Math.max(0.04, 0.14 - i * 0.012)})`
     g.beginPath()
     g.ellipse(c.width * (0.2 + (i * 0.23) % 0.7), y, c.width * 0.3, 9 + i * 1.6, 0, 0, Math.PI * 2)
     g.fill()
   }
-  // 远山：越远越淡（先远后近），山脊用固定相位的正弦叠加，保证每次一致
+  const night = (s.stars || 0) > 0.2
   const layers = [
-    { y: 0.615, amp: 14, col: 'rgba(186,192,184,0.55)', k: [1, 2.3, 4.7] },
-    { y: 0.672, amp: 20, col: 'rgba(150,160,142,0.65)', k: [0.7, 1.7, 3.9] },
-    { y: 0.752, amp: 25, col: 'rgba(112,124,98,0.8)', k: [0.5, 1.3, 2.7] },
+    { y: 0.615, amp: 14, col: night ? 'rgba(40,48,68,0.7)' : 'rgba(186,192,184,0.55)', k: [1, 2.3, 4.7] },
+    { y: 0.672, amp: 20, col: night ? 'rgba(28,36,52,0.8)' : 'rgba(150,160,142,0.65)', k: [0.7, 1.7, 3.9] },
+    { y: 0.752, amp: 25, col: night ? 'rgba(16,22,36,0.9)' : 'rgba(112,124,98,0.8)', k: [0.5, 1.3, 2.7] },
   ]
   for (const L of layers) {
     const base = H * L.y
@@ -927,10 +936,9 @@ function makeSkyTexture() {
     g.closePath()
     g.fill()
   }
-  // 最后整体叠一层地平线雾：形成空气透视，远山才会"远"
   const haze = g.createLinearGradient(0, hz - 10, 0, hz + 110)
-  haze.addColorStop(0, 'rgba(255,247,232,0.82)')
-  haze.addColorStop(0.45, 'rgba(255,247,232,0.34)')
+  haze.addColorStop(0, s.haze || 'rgba(255,247,232,0.82)')
+  haze.addColorStop(0.45, s.haze || 'rgba(255,247,232,0.34)')
   haze.addColorStop(1, 'rgba(255,247,232,0)')
   g.fillStyle = haze
   g.fillRect(0, hz - 10, c.width, 120)
@@ -956,15 +964,17 @@ function addBackdrop() {
   scene.add(ceil)
   ceilingMesh = ceil
 
-  // 窗外远景（正对窗户的远处面片，尺寸按「窗口可见范围 ≈ 画面 55%」定）
+  // 窗外远景（正对窗户的远处面片）——贴图随时段由 makeSkyTexture 重建
+  const st0 = dayState(new Date().getHours() + new Date().getMinutes() / 60)
   const sky = new THREE.Mesh(
     new THREE.PlaneGeometry(6.0, 3.6),
-    new THREE.MeshBasicMaterial({ map: makeSkyTexture() })
+    new THREE.MeshBasicMaterial({ map: makeSkyTexture(st0) })
   )
   sky.position.set(0, 1.84, -6.5)
   sky.name = 'Sky_Backdrop'
   scene.add(sky)
   skyMat = sky.material
+  skyPhaseKey = `${st0.name}|${Math.floor(st0.hr)}`
 }
 
 /** 浮尘粒子：光束里的微尘，极轻 */
@@ -1000,12 +1010,77 @@ function tickDust(t) {  if (!dustPoints) return
   dustPoints.geometry.attributes.position.needsUpdate = true
 }
 
+/**
+ * 窗外 / 室内光：绑定本地墙钟时间，关键帧连续插值。
+ * 不是「三档开关」，而是随 getHours()+minutes 滑动。
+ */
+const DAY_KEYS = [
+  { h: 0, name: '深夜', glass: 0x151c28, em: 0.05, sky: 0x1a2233, sunI: 0.16, sunCol: 0x6a7a96, ceil: 0.55, skyCols: ['#070b14', '#101828', '#182238'], ground: '#121820', haze: 'rgba(30,40,60,0.35)', stars: 0.55 },
+  { h: 5, name: '破晓', glass: 0x3a4a5c, em: 0.08, sky: 0x4a5870, sunI: 0.28, sunCol: 0xc0a090, ceil: 0.7, skyCols: ['#2a3548', '#5a5a68', '#c4a090'], ground: '#3a4048', haze: 'rgba(200,160,140,0.25)', stars: 0.15 },
+  { h: 7, name: '清晨', glass: 0x9ec0d8, em: 0.14, sky: 0xffe9d2, sunI: 0.55, sunCol: 0xfff0dc, ceil: 0.95, skyCols: ['#a8c4d8', '#d8e4e8', '#f0e2c8'], ground: '#c8d0b8', haze: 'rgba(255,247,232,0.55)', stars: 0 },
+  { h: 11, name: '上午', glass: 0xa8c8dc, em: 0.16, sky: 0xffe9d2, sunI: 0.68, sunCol: 0xfff5e8, ceil: 1.0, skyCols: ['#9ec4dc', '#c8dce8', '#e8e8d8'], ground: '#c0c8b0', haze: 'rgba(255,250,240,0.7)', stars: 0 },
+  { h: 14, name: '午后', glass: 0x9ec0d8, em: 0.16, sky: 0xffe9d2, sunI: 0.64, sunCol: 0xfff0dc, ceil: 1.0, skyCols: ['#98bcd4', '#c4d4d8', '#e4d8c0'], ground: '#b8c0a8', haze: 'rgba(255,248,236,0.65)', stars: 0 },
+  { h: 17, name: '傍晚', glass: 0xd8a878, em: 0.22, sky: 0xffcfa0, sunI: 0.82, sunCol: 0xffb878, ceil: 0.95, skyCols: ['#8aa0b8', '#d8b898', '#f0c090'], ground: '#b8a888', haze: 'rgba(255,200,140,0.55)', stars: 0 },
+  { h: 19, name: '黄昏', glass: 0xc08860, em: 0.2, sky: 0xe8a880, sunI: 0.55, sunCol: 0xffa070, ceil: 0.85, skyCols: ['#5a6888', '#c09080', '#e0a070'], ground: '#8a8070', haze: 'rgba(220,140,100,0.4)', stars: 0.05 },
+  { h: 20.5, name: '入夜', glass: 0x3a4858, em: 0.1, sky: 0x33405c, sunI: 0.3, sunCol: 0x8fa4c0, ceil: 0.7, skyCols: ['#1a2438', '#2a3850', '#4a5068'], ground: '#2a3038', haze: 'rgba(40,50,80,0.4)', stars: 0.35 },
+  { h: 24, name: '深夜', glass: 0x151c28, em: 0.05, sky: 0x1a2233, sunI: 0.16, sunCol: 0x6a7a96, ceil: 0.55, skyCols: ['#070b14', '#101828', '#182238'], ground: '#121820', haze: 'rgba(30,40,60,0.35)', stars: 0.55 },
+]
+
+function lerpHex(a, b, t) {
+  const ca = new THREE.Color(a)
+  const cb = new THREE.Color(b)
+  return ca.lerp(cb, t).getHex()
+}
+
+function lerpCss(a, b, t) {
+  const pa = parseInt(a.slice(1), 16)
+  const pb = parseInt(b.slice(1), 16)
+  const r = Math.round(((pa >> 16) & 255) + (((pb >> 16) & 255) - ((pa >> 16) & 255)) * t)
+  const g = Math.round(((pa >> 8) & 255) + (((pb >> 8) & 255) - ((pa >> 8) & 255)) * t)
+  const bl = Math.round((pa & 255) + ((pb & 255) - (pa & 255)) * t)
+  return `#${((1 << 24) | (r << 16) | (g << 8) | bl).toString(16).slice(1)}`
+}
+
+function dayState(hr) {
+  const h = ((hr % 24) + 24) % 24
+  let i = 0
+  while (i < DAY_KEYS.length - 2 && DAY_KEYS[i + 1].h <= h) i++
+  const a = DAY_KEYS[i]
+  const b = DAY_KEYS[i + 1] || DAY_KEYS[0]
+  const span = b.h - a.h || 1
+  const t = Math.min(1, Math.max(0, (h - a.h) / span))
+  return {
+    hr: h,
+    name: t < 0.5 ? a.name : b.name,
+    glass: lerpHex(a.glass, b.glass, t),
+    em: a.em + (b.em - a.em) * t,
+    sky: lerpHex(a.sky, b.sky, t),
+    sunI: a.sunI + (b.sunI - a.sunI) * t,
+    sunCol: lerpHex(a.sunCol, b.sunCol, t),
+    ceil: a.ceil + (b.ceil - a.ceil) * t,
+    skyCols: a.skyCols.map((c, k) => lerpCss(c, b.skyCols[k] || c, t)),
+    ground: lerpCss(a.ground, b.ground, t),
+    haze: t < 0.5 ? a.haze : b.haze,
+    stars: a.stars + (b.stars - a.stars) * t,
+  }
+}
+
+function formatClock(d) {
+  const hh = String(d.getHours()).padStart(2, '0')
+  const mm = String(d.getMinutes()).padStart(2, '0')
+  return `${hh}:${mm}`
+}
+
 function tickClock() {
-  if (!clockHands) return
   const d = new Date()
+  const label = `${formatClock(d)} · ${dayState(d.getHours() + d.getMinutes() / 60).name}`
+  if (clockLabel.value !== label) {
+    clockLabel.value = label
+    emit('clock', { label, hhmm: formatClock(d), phase: dayState(d.getHours() + d.getMinutes() / 60).name })
+  }
+  if (!clockHands) return
   const m = d.getMinutes() + d.getSeconds() / 60
   const h = (d.getHours() % 12) + m / 60
-  // 模型自带指针：绕自身轴旋转（先存初始值）
   if (clockHands.min) {
     if (clockHands.min.userData._r0 == null) clockHands.min.userData._r0 = clockHands.min.rotation.clone()
     const r0 = clockHands.min.userData._r0
@@ -1018,44 +1093,39 @@ function tickClock() {
   }
 }
 
-function tickWindowLight() {
-  if (!windowGlass?.material) return
-  const hr = new Date().getHours() + new Date().getMinutes() / 60
-  // 白天偏亮蓝，黄昏偏暖，夜里偏深蓝
-  let col, em, skyTint, sunI, sunCol
-  if (hr >= 7 && hr < 17) {
-    col = 0x9ec0d8
-    em = 0.16
-    skyTint = 0xffe9d2
-    sunI = 0.62
-    sunCol = 0xfff0dc
-  } else if (hr >= 17 && hr < 20) {
-    // 黄昏：对齐参考图的金色时段
-    col = 0xd8a878
-    em = 0.22
-    skyTint = 0xffcfa0
-    sunI = 0.80
-    sunCol = 0xffb878
-  } else {
-    col = 0x2a3848
-    em = 0.08
-    skyTint = 0x33405c
-    sunI = 0.25
-    sunCol = 0x8fa4c0
+let skyPhaseKey = ''
+
+function applyDayState(st) {
+  if (windowGlass?.material) {
+    if (windowGlass.material.color) windowGlass.material.color.setHex(st.glass)
+    if (windowGlass.material.emissive) {
+      windowGlass.material.emissive.setHex(st.glass)
+      windowGlass.material.emissiveIntensity = st.em
+    }
   }
-  if (windowGlass.material.color) windowGlass.material.color.setHex(col)
-  if (windowGlass.material.emissive) {
-    windowGlass.material.emissive.setHex(col)
-    windowGlass.material.emissiveIntensity = em
-  }
-  // 窗外远景跟着一起变：白天清亮、黄昏暖金、夜里深蓝
-  if (skyMat) skyMat.color.setHex(skyTint)
-  // 天花板不接受窗外直射，靠自发光保持可见度，因此也需随时段微调
-  if (ceilingMesh?.material) ceilingMesh.material.emissiveIntensity = hr >= 7 && hr < 20 ? 1.0 : 0.7
+  if (ceilingMesh?.material) ceilingMesh.material.emissiveIntensity = st.ceil
   if (sunLight) {
-    sunLight.intensity = sunI
-    sunLight.color.setHex(sunCol)
+    sunLight.intensity = st.sunI
+    sunLight.color.setHex(st.sunCol)
   }
+  // 天空：按小时键重绘（不是每帧），键 = 时段名+小时取整
+  const key = `${st.name}|${Math.floor(st.hr)}`
+  if (skyMat && key !== skyPhaseKey) {
+    skyPhaseKey = key
+    const tex = makeSkyTexture(st)
+    if (skyMat.map) skyMat.map.dispose()
+    skyMat.map = tex
+    skyMat.color.setHex(0xffffff)
+    skyMat.needsUpdate = true
+  } else if (skyMat) {
+    skyMat.color.setHex(st.sky)
+  }
+}
+
+function tickWindowLight() {
+  const d = new Date()
+  const st = dayState(d.getHours() + d.getMinutes() / 60)
+  applyDayState(st)
 }
 
 onMounted(async () => {

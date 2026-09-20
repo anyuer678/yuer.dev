@@ -24,6 +24,7 @@ const hintDone = ref(sessionStorage.getItem('room:hint2') === '1')
 const hintAuto = ref(false)
 const seen = ref(new Set(JSON.parse(sessionStorage.getItem('room:seen') || '[]')))
 const catalogOpen = ref(true)
+const clockLabel = ref('')
 // 书架 18 本「真书」的锚点由 3D 侧算好后回传（shelfmap），两边不各写一份映射
 const shelfAnchors = ref([])
 const shelfExpanded = ref(false)
@@ -513,6 +514,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
         @viewchange="shelfView = $event === 'shelf'"
         @ready="onStageReady"
         @failed="onStageFailed"
+        @clock="clockLabel = $event.label || ''"
       />
       <div v-if="!stageFailed" class="stage__vignette" aria-hidden="true" />
       <div v-if="!stageFailed" class="stage__grain" aria-hidden="true" />
@@ -528,6 +530,7 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
           <span aria-hidden="true">←</span> 返回
         </button>
         <div class="hud__actions">
+          <span v-if="clockLabel" class="hud__clock" :title="`窗外随本地时间变化`">{{ clockLabel }}</span>
           <RouterLink class="hud__btn hud__btn--link" to="/garden">花庭</RouterLink>
           <button
             v-if="shelfView"
@@ -1040,6 +1043,15 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.hud__clock {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #d4c4a8;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  opacity: 0.85;
+  white-space: nowrap;
 }
 .hud__btn {
   font-family: var(--font-mono);
