@@ -29,6 +29,10 @@ function cnNum(i) {
 
 <template>
   <div v-if="world" class="gate" :class="`gate--${id}`">
+    <!-- 背景分层：非照片装饰层（纸感/光晕/网格），各世界不同 -->
+    <div class="gate__wash" aria-hidden="true" />
+    <div class="gate__texture" aria-hidden="true" />
+
     <!-- —— 诗境：居中纸页，无列表壳 —— -->
     <template v-if="id === 'poetry'">
       <header class="p-head">
@@ -170,9 +174,97 @@ function cnNum(i) {
 
 <style scoped>
 .gate {
+  position: relative;
   min-height: 100%;
   padding: var(--space-8) clamp(16px, 4vw, 32px) var(--space-16);
+  overflow: hidden;
 }
+.gate > :not(.gate__wash):not(.gate__texture) {
+  position: relative;
+  z-index: 1;
+}
+/* wash / texture：每世界一套，靠 .gate--id 覆盖 */
+.gate__wash,
+.gate__texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.gate__wash {
+  background: transparent;
+}
+.gate__texture {
+  opacity: 0.5;
+  background: transparent;
+}
+
+/* 诗境：暖纸 + 极淡横向纹理（像笺） */
+.gate--poetry .gate__wash {
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 0%, rgba(246, 233, 225, 0.75), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(232, 220, 200, 0.35), transparent 70%),
+    linear-gradient(180deg, #faf6ef 0%, var(--color-bg) 100%);
+}
+.gate--poetry .gate__texture {
+  opacity: 0.35;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 27px,
+    rgba(90, 74, 58, 0.045) 27px,
+    rgba(90, 74, 58, 0.045) 28px
+  );
+}
+
+/* 学习：冷静桌垫 + 细网格 */
+.gate--learn .gate__wash {
+  background:
+    linear-gradient(180deg, #ebe8e0 0%, var(--color-surface-muted) 40%, #e4e2da 100%);
+}
+.gate--learn .gate__texture {
+  opacity: 0.45;
+  background-image:
+    linear-gradient(rgba(90, 90, 80, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 90, 80, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* 作品：展陈纸 + 顶光 */
+.gate--works .gate__wash {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(246, 233, 225, 0.55), transparent 60%),
+    linear-gradient(180deg, #f7f3eb 0%, var(--color-bg) 55%);
+}
+.gate--works .gate__texture {
+  opacity: 0.25;
+  background-image: radial-gradient(circle at 20% 30%, rgba(176, 92, 58, 0.06) 0 1px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+/* 实验：工位台面 + 斜线 */
+.gate--lab .gate__wash {
+  background:
+    linear-gradient(160deg, #e8e4da 0%, #dcd8ce 50%, #d4d0c6 100%);
+}
+.gate--lab .gate__texture {
+  opacity: 0.55;
+  background-image: repeating-linear-gradient(
+    -12deg,
+    transparent,
+    transparent 10px,
+    rgba(90, 80, 60, 0.05) 10px,
+    rgba(90, 80, 60, 0.05) 11px
+  );
+}
+
+/* 关于：静室微光 */
+.gate--about .gate__wash {
+  background:
+    radial-gradient(ellipse 70% 50% at 70% 20%, rgba(246, 233, 225, 0.4), transparent 55%),
+    var(--color-bg);
+}
+
 .gate__foot {
   margin-top: var(--space-12);
   display: flex;
@@ -212,8 +304,9 @@ function cnNum(i) {
   max-width: 36rem;
   margin: 0 auto;
   text-align: center;
-  background:
-    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(246, 233, 225, 0.45), transparent 70%);
+}
+.gate--poetry {
+  /* 气质底在 wash 层；此处只约束阅读栏宽 */
 }
 .p-head {
   padding: var(--space-12) 0 var(--space-8);
@@ -288,10 +381,17 @@ function cnNum(i) {
 
 /* ========== 学习 ========== */
 .gate--learn {
+  max-width: none;
+  margin: 0;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+.gate--learn .l-head,
+.gate--learn .l-blurb,
+.gate--learn .l-grid,
+.gate--learn .gate__foot {
   max-width: var(--container);
-  margin: 0 auto;
-  background: var(--color-surface-muted);
-  border-bottom: var(--border-default);
+  margin-left: auto;
+  margin-right: auto;
 }
 .l-head {
   display: flex;
@@ -498,13 +598,6 @@ function cnNum(i) {
 .gate--lab {
   max-width: 640px;
   margin: 0 auto;
-  background-image: repeating-linear-gradient(
-    -12deg,
-    transparent,
-    transparent 12px,
-    rgba(176, 92, 58, 0.03) 12px,
-    rgba(176, 92, 58, 0.03) 13px
-  );
 }
 .b-head {
   padding: var(--space-8) 0 var(--space-5, 20px);

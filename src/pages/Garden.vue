@@ -119,6 +119,26 @@ onBeforeUnmount(() => {
   will-change: transform;
   transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
 }
+/* 天光：左上偏暖，与照片内容无关的空气层 */
+.garden__light {
+  position: absolute;
+  inset: -8%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 12%, rgba(255, 248, 232, 0.28), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 20%, rgba(255, 236, 210, 0.12), transparent 50%),
+    linear-gradient(180deg, rgba(250, 246, 238, 0.08) 0%, transparent 40%);
+  mix-blend-mode: soft-light;
+  transition: transform 0.55s cubic-bezier(0, 0, 0.2, 1);
+}
+.garden__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 50%, rgba(40, 30, 20, 0.14) 100%);
+}
 .garden__grain {
   position: absolute;
   inset: 0;
@@ -214,7 +234,8 @@ onBeforeUnmount(() => {
   .garden__grain {
     opacity: 0.12;
   }
-  .garden__bg {
+  .garden__bg,
+  .garden__light {
     transition: none;
   }
 }
