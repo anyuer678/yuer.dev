@@ -24,17 +24,17 @@ let nextAt = 0
 let busy = false
 let reduced = false
 
-// 手感参数：出现更勤、花更大、靠近悬停不逃、停留更短即可点
+// 手感：入口花出现更勤、更好跟、好点；外观与普通花接近，不做偏红/花心/光晕
 const CFG = {
   firstDelayMs: 400,
   respawnMinMs: 600,
   respawnJitterMs: 900,
-  dwellNameMs: 320,
-  nearDist: 90,
-  keepNamedDist: 150,
-  clickDist: 56,
-  portalRMin: 14,
-  portalRMax: 18,
+  dwellNameMs: 450,
+  nearDist: 80,
+  keepNamedDist: 140,
+  clickDist: 48,
+  portalRMin: 9,
+  portalRMax: 12,
 }
 
 function shuffle(a) {
@@ -121,33 +121,18 @@ function resize() {
   H = c.height = window.innerHeight
 }
 
-function petalPath(p, now) {
+function petalPath(p) {
   ctx.save()
   ctx.translate(p.x, p.y)
   ctx.rotate(p.rot)
   const k = p.r
-  if (p.portal) {
-    // 入口花：更大、更实、微光晕，和装饰花拉开辨识度
-    const pulse = p.named || p.near ? 0.95 + Math.sin(now * 0.008) * 0.05 : 0.92
-    ctx.shadowColor = 'rgba(176, 92, 58, 0.55)'
-    ctx.shadowBlur = p.near || p.named ? 16 : 10
-    ctx.fillStyle = `rgba(212, 92, 78, ${pulse})`
-  } else {
-    ctx.fillStyle = 'rgba(235, 200, 196, 0.5)'
-  }
+  // 入口花仅比普通花略实一点（同色系），无偏红、无花心、无光晕
+  ctx.fillStyle = p.portal ? 'rgba(232, 170, 168, 0.88)' : 'rgba(235, 200, 196, 0.5)'
   ctx.beginPath()
   ctx.moveTo(0, -k * 0.7)
   ctx.bezierCurveTo(k * 0.55, -k * 0.45, k * 0.45, k * 0.45, 0, k * 0.65)
   ctx.bezierCurveTo(-k * 0.45, k * 0.45, -k * 0.55, -k * 0.45, 0, -k * 0.7)
   ctx.fill()
-  if (p.portal) {
-    ctx.shadowBlur = 0
-    // 花心一点陶土色，增强「不一样」
-    ctx.fillStyle = 'rgba(176, 92, 58, 0.55)'
-    ctx.beginPath()
-    ctx.arc(0, k * 0.05, k * 0.16, 0, 6.28)
-    ctx.fill()
-  }
   ctx.restore()
 }
 
@@ -258,7 +243,7 @@ function frame(now) {
       }
       continue
     }
-    petalPath(p, now)
+    petalPath(p)
   }
 }
 
@@ -283,7 +268,7 @@ function tryEnter(clientX, clientY) {
   const d = Math.hypot(portal.x - clientX, portal.y - clientY)
   const hit = Math.max(CFG.clickDist, portal.r + 28)
   // 靠近、已显名，或已在花附近停留过：都可进入
-  if (d < hit && (portal.named || portal.near || dwell > 80)) {
+  if (d < hit && (portal.named || portal.near || dwell > 120)) {
     busy = true
     emit('enter', portal.world)
   }

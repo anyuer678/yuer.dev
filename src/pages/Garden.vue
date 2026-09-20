@@ -50,7 +50,7 @@ onMounted(() => {
         <PetalField :worlds="worlds" @enter="onEnter" />
       </div>
 
-      <!-- 墙上门 → 书房（常驻旁路；入口花仍会再送一程） -->
+      <!-- 墙上门 → 书房 -->
       <button
         type="button"
         class="study-gate"
@@ -60,15 +60,7 @@ onMounted(() => {
         <span>书房</span>
       </button>
 
-      <RouterLink class="list-link" to="/projects">列表浏览 →</RouterLink>
-      <RouterLink class="home-link" to="/">首页</RouterLink>
-      <p class="hint">偏红较大的花是入口 · 靠近稍候显名，再点一下进入</p>
-
-      <!-- 无障碍旁路：键盘/读屏不依赖落花命中，直达各世界门槛 -->
-      <nav class="sr-worlds" aria-label="世界入口">
-        <span>世界：</span>
-        <RouterLink v-for="w in worlds" :key="w.id" :to="w.to">{{ w.label }}</RouterLink>
-      </nav>
+      <p class="hint">风里偶尔有一朵不一样的花 · 靠近停一停</p>
 
       <PaperTransition ref="fx" @done="onFxDone" />
     </div>
@@ -131,31 +123,6 @@ onMounted(() => {
   opacity: 0.75;
   margin-top: 8px;
 }
-.list-link,
-.home-link {
-  position: absolute;
-  z-index: 4;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text-secondary);
-  letter-spacing: 0.12em;
-  text-decoration: none;
-  padding: 6px 10px;
-  background: rgba(255, 252, 246, 0.72);
-  border-radius: 999px;
-}
-.list-link {
-  left: 24px;
-  bottom: 22px;
-}
-.home-link {
-  left: 24px;
-  bottom: 48px;
-}
-.list-link:hover,
-.home-link:hover {
-  color: var(--color-accent);
-}
 .hint {
   position: absolute;
   left: 50%;
@@ -164,14 +131,11 @@ onMounted(() => {
   z-index: 4;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--color-text);
-  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.14em;
   pointer-events: none;
   text-align: center;
-  max-width: min(92vw, 460px);
-  padding: 6px 12px;
-  background: rgba(255, 252, 246, 0.78);
-  border-radius: 999px;
+  max-width: min(90vw, 420px);
 }
 .study-gate {
   position: absolute;
@@ -208,56 +172,11 @@ onMounted(() => {
 @media (max-width: 639px) {
   .hint {
     font-size: 11px;
-    bottom: 56px;
-  }
-  .list-link {
-    bottom: 16px;
-  }
-  .home-link {
-    bottom: 40px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .garden__grain {
     opacity: 0.12;
   }
-}
-/* 读屏/键盘可达；视觉默认隐藏，聚焦时显现 */
-.sr-worlds {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  z-index: 5;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  max-width: 1px;
-  max-height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: 12px;
-}
-.sr-worlds:focus-within {
-  max-width: none;
-  max-height: none;
-  clip-path: none;
-  overflow: visible;
-  padding: 10px 12px;
-  background: rgba(255, 252, 246, 0.92);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-}
-.sr-worlds a {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-.sr-worlds a:hover {
-  text-decoration: underline;
-}
-.sr-worlds:focus-within {
-  left: 24px;
-  top: 80px;
 }
 </style>
