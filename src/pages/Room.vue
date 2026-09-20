@@ -17,7 +17,9 @@ const selected = ref(null)
 const openBookId = ref('')
 const focusId = ref('')
 const easterOpen = ref(false)
-const lampOn = ref(true)
+// 台灯默认跟本地昼夜：傍晚/夜间亮，白天灭（进屋可手动改）
+const initHour = typeof window !== 'undefined' ? new Date().getHours() : 12
+const lampOn = ref(initHour < 7 || initHour >= 17.5)
 const monitorOn = ref(false)
 const drawerOpen = ref(false)
 const hintDone = ref(sessionStorage.getItem('room:hint2') === '1')
@@ -126,7 +128,9 @@ const catalog = computed(() => {
       id: 'lamp',
       label: '台灯',
       kind: 'timeline',
-      blurb: '开关灯；灯亮着说明还在写。',
+      blurb: lampOn.value
+        ? '灯亮着——窗外若是白天，屋里仍留一点夜读的光。'
+        : '灯灭着——窗外够亮时不必点灯。',
       cta: '时间线',
       to: '/timeline',
     },
@@ -158,11 +162,16 @@ const catalog = computed(() => {
       id: 'window',
       label: '窗',
       kind: 'contact',
-      blurb: '光随时间变化。门外是花庭。',
+      blurb: '光随本地时间变化。门外是花庭。',
       cta: '回花庭',
       to: '/garden',
     },
-    { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' },
+    {
+      id: 'clock',
+      label: '挂钟',
+      kind: 'pulse',
+      blurb: `此刻 ${clockLabel.value || '—'} · 最近仓库动态。`,
+    },
     { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' },
     {
       id: 'chair',

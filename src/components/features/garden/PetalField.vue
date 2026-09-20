@@ -25,6 +25,7 @@ let busy = false
 let reduced = false
 
 // 手感：入口花出现更勤、更好跟、好点；外观与普通花接近，不做偏红/花心/光晕
+// 节奏随本地时段微调：深夜更稀、风更静（与书房窗外同一时间宇宙）
 const CFG = {
   firstDelayMs: 400,
   respawnMinMs: 600,
@@ -35,6 +36,37 @@ const CFG = {
   clickDist: 48,
   portalRMin: 9,
   portalRMax: 12,
+  petalCount: 16,
+  windAmp: 1,
+}
+
+function tuneGardenClock() {
+  const hr = new Date().getHours() + new Date().getMinutes() / 60
+  // 22–5 深夜：花少、入口更迟、风弱；清晨–傍晚：默认
+  if (hr >= 22 || hr < 5) {
+    CFG.petalCount = 8
+    CFG.respawnMinMs = 1400
+    CFG.respawnJitterMs = 1600
+    CFG.firstDelayMs = 900
+    CFG.windAmp = 0.45
+  } else if (hr >= 5 && hr < 8) {
+    CFG.petalCount = 12
+    CFG.respawnMinMs = 900
+    CFG.respawnJitterMs = 1200
+    CFG.windAmp = 0.75
+  } else if (hr >= 17.5 && hr < 22) {
+    // 晚风：花仍多，入口稍缓
+    CFG.petalCount = 14
+    CFG.respawnMinMs = 800
+    CFG.respawnJitterMs = 1000
+    CFG.windAmp = 1.15
+  } else {
+    CFG.petalCount = 16
+    CFG.respawnMinMs = 600
+    CFG.respawnJitterMs = 900
+    CFG.firstDelayMs = 400
+    CFG.windAmp = 1
+  }
 }
 
 function shuffle(a) {
@@ -140,7 +172,8 @@ function frame(now) {
   raf = requestAnimationFrame(frame)
   if (busy || !ctx) return
   ctx.clearRect(0, 0, W, H)
-  wind = reduced ? 0.05 : Math.sin(now * 0.0002) * 0.55 + Math.sin(now * 0.0007) * 0.2
+  wind =
+    (reduced ? 0.05 : Math.sin(now * 0.0002) * 0.55 + Math.sin(now * 0.0007) * 0.2) * CFG.windAmp
 
   // 兜底：长时间无入口花则立刻刷一朵
   if (!portal && (now > nextAt || nextAt === 0)) spawn()
@@ -288,11 +321,12 @@ onMounted(() => {
   reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
   const isTouch =
     window.matchMedia?.('(pointer: coarse)').matches && (navigator.maxTouchPoints || 0) > 0
+  tuneGardenClock()
   queue = shuffle([...props.worlds])
   ctx = cv.value?.getContext('2d')
   overlayEl = cv.value?.parentElement?.querySelector('.garden__overlay')
   resize()
-  const count = reduced || isTouch ? 10 : 16
+  const count = reduced || isTouch ? Math.min(10, CFG.petalCount) : CFG.petalCount
   for (let i = 0; i < count; i++) petals.push(ordinary())
   nextAt = performance.now() + CFG.firstDelayMs
   window.addEventListener('resize', resize)
