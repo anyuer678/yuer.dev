@@ -25,7 +25,6 @@ const staticRoutes = [
   'room',
   'garden',
   'w/works',
-  'w/poetry',
   'w/learn',
   'w/lab',
   'w/about',
@@ -36,7 +35,6 @@ const staticRoutes = [
   'stories/polycodehub',
   'stories/evocode',
   'bench',
-  'poetry',
   'dashboard',
 ]
 // 动态路由：content 目录 → 路由前缀

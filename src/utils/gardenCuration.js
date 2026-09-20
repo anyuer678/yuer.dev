@@ -1,22 +1,9 @@
-// 花笺世界门槛精选：构建期元数据策展，不复制正文（16/17 · Phase C 强化）
+// 花笺世界门槛精选（诗境门槛已移除）
 import deskMap from '../content/desk.json'
 import gardenWorlds from '../content/garden-worlds.json'
 import { lab, notes, productProjects, projects, site } from './content.js'
 
 export { gardenWorlds }
-
-const POETRY_TAGS = ['架构', '设计', '理念', '思考', '复盘', 'Agent', 'AI']
-const POETRY_SLUGS = [
-  'evocode-architecture',
-  'dsh-architecture-patterns',
-  'decision-notes-and-capability-seam',
-  'ai-design-notes',
-  'polycodehub-architecture',
-  'lumen-notes',
-  'idea-backlog-notes',
-]
-// 诗境排除课业/刷题/速记，与学习廊彻底分家
-const POETRY_NOISE = /实验|速记|真题|刷题|章节|复习|期末|考点/
 
 const LEARN_BUCKETS = [
   ['算法', '数据结构'],
@@ -59,36 +46,6 @@ function pickWorks() {
   })
 }
 
-function pickPoetry() {
-  const reflective = notes.filter(
-    (n) => n.type !== 'learning' && !POETRY_NOISE.test(n.title || '')
-  )
-  const scored = reflective
-    .map((n) => {
-      let score = 0
-      const idx = POETRY_SLUGS.indexOf(n.slug)
-      if (idx >= 0) score += 24 - idx
-      for (const t of POETRY_TAGS) {
-        if (n.tags?.includes(t)) score += 2
-      }
-      // 标题/摘要里的架构、设计、理念加分
-      const hay = `${n.title}${n.summary}`
-      if (/架构|设计|理念|演化|Agent Runtime/.test(hay)) score += 3
-      return { n, score }
-    })
-    .sort((a, b) => b.score - a.score || b.n.date.localeCompare(a.n.date))
-  return scored.slice(0, 3).map(({ n }) =>
-    toItem({
-      kind: '短文',
-      title: n.title,
-      subtitle: n.date,
-      blurb: n.summary,
-      to: `/notes/${n.slug}`,
-      meta: n.tags?.slice(0, 3) ?? [],
-    })
-  )
-}
-
 function pickLearn() {
   const learning = notes.filter((n) => n.type === 'learning')
   const used = new Set()
@@ -105,7 +62,6 @@ function pickLearn() {
       picks.push(hit)
     }
   }
-  // 不足则按日期补满
   for (const n of learning) {
     if (picks.length >= 3) break
     if (!used.has(n.slug)) {
@@ -130,7 +86,6 @@ function pickLab() {
     .filter((i) => i.status === 'experiment' || i.status === 'idea')
     .slice()
     .sort((a, b) => {
-      // 有链接的实验优先，其次 idea，再按日期
       const la = a.link ? 0 : 1
       const lb = b.link ? 0 : 1
       if (la !== lb) return la - lb
@@ -184,7 +139,6 @@ function pickAbout() {
 
 const CURATORS = {
   works: pickWorks,
-  poetry: pickPoetry,
   learn: pickLearn,
   lab: pickLab,
   about: pickAbout,
@@ -207,7 +161,6 @@ export function listHref(world) {
   return params ? `${world.listTo}?${params}` : world.listTo
 }
 
-/** 花庭入口花队列（书房也在其中，门是常驻旁路） */
 export function portalWorlds() {
   return gardenWorlds.map((w) => ({ label: w.label, id: w.id, to: w.to, feel: w.feel }))
 }

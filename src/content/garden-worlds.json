@@ -9,16 +9,6 @@
     "listLabel": "查看全部项目"
   },
   {
-    "id": "poetry",
-    "label": "诗境",
-    "to": "/w/poetry",
-    "listTo": "/notes",
-    "listQuery": { "type": "other" },
-    "feel": "安静、纸与字",
-    "blurb": "架构、设计与路上的短思考。刻意不与学习廊混编。",
-    "listLabel": "浏览全部笔记"
-  },
-  {
     "id": "learn",
     "label": "学习",
     "to": "/w/learn",

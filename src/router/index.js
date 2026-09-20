@@ -133,7 +133,7 @@ const routes = [
   },
   {
     path: '/poetry',
-    redirect: '/w/poetry',
+    redirect: '/notes',
   },
   {
     path: '/contact',

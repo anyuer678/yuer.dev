@@ -1,6 +1,6 @@
 <script setup>
-// /garden 花庭 — 单幅底图空间 + Canvas 落花 + 纸页转场
-// 分层裁切叠在整图上会重影/拉伸（变形），故不叠 branch/door 副本。
+// /garden 花庭 — 全画幅对齐三层：底图 / 枝 / 门 + 天光纸纹
+// 三层同尺寸 cover，避免裁切小块叠图导致的错位变形
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import PetalField from '@/components/features/garden/PetalField.vue'
@@ -15,10 +15,12 @@ const fx = ref(null)
 const leaving = ref(false)
 const stage = ref(null)
 const base = import.meta.env.BASE_URL
-// 原完整底图：门、梅枝、院墙同一构图，避免叠层错位
-const bgUrl = `${base}images/garden/garden-bg.webp`
+const L = {
+  base: `${base}images/garden/garden-base.webp`,
+  branch: `${base}images/garden/garden-branch-full.webp`,
+  door: `${base}images/garden/garden-door-full.webp`,
+}
 
-// 极轻整体视差（仅整图位移，不切层、不缩放裁切）
 const px = ref(0)
 const py = ref(0)
 let reduced = false
@@ -59,19 +61,33 @@ onBeforeUnmount(() => {
 <template>
   <div class="garden">
     <div ref="stage" class="garden__stage">
-      <div
-        class="garden__bg"
-        :style="{
-          backgroundImage: `url(${bgUrl})`,
-          transform: `translate3d(${px * -10}px, ${py * -6}px, 0)`,
-        }"
+      <!-- 1 远景院墙（已挖空枝/门） -->
+      <img
+        class="garden__layer garden__layer--base"
+        :src="L.base"
+        alt=""
         aria-hidden="true"
+        :style="{ transform: `translate3d(${px * -6}px, ${py * -4}px, 0)` }"
       />
-
-      <!-- 非照片层：天光 + 暗角（不重复墙/枝/门） -->
+      <!-- 2 门层（全画幅透明） -->
+      <img
+        class="garden__layer garden__layer--door"
+        :src="L.door"
+        alt=""
+        aria-hidden="true"
+        :style="{ transform: `translate3d(${px * -3}px, ${py * -2}px, 0)` }"
+      />
+      <!-- 3 梅枝前景（全画幅透明，视差最大） -->
+      <img
+        class="garden__layer garden__layer--branch"
+        :src="L.branch"
+        alt=""
+        aria-hidden="true"
+        :style="{ transform: `translate3d(${px * 16}px, ${py * 10}px, 0)` }"
+      />
       <div
         class="garden__light"
-        :style="{ transform: `translate3d(${px * 4}px, ${py * 3}px, 0)` }"
+        :style="{ transform: `translate3d(${px * 3}px, ${py * 2}px, 0)` }"
         aria-hidden="true"
       />
       <div class="garden__vignette" aria-hidden="true" />
@@ -85,12 +101,7 @@ onBeforeUnmount(() => {
         <PetalField :worlds="worlds" @enter="onEnter" />
       </div>
 
-      <button
-        type="button"
-        class="study-gate"
-        aria-label="进入书房"
-        @click="leave('/room')"
-      >
+      <button type="button" class="study-gate" aria-label="进入书房" @click="leave('/room')">
         <span>书房</span>
       </button>
 
@@ -112,56 +123,58 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #f0ebe2;
   overflow: hidden;
+  background: #e8e2d6;
 }
-/* 略放大，位移时不露边；cover 保证比例不变形 */
-.garden__bg {
-  position: absolute;
-  inset: -3%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  will-change: transform;
-  transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
-}
-/* 天光：可见的院内光，而非几乎无感的 soft-light */
-.garden__light {
-  position: absolute;
-  inset: -8%;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 65% 50% at 16% 10%, rgba(255, 244, 220, 0.42), transparent 52%),
-    radial-gradient(ellipse 45% 35% at 88% 18%, rgba(255, 228, 190, 0.22), transparent 48%),
-    linear-gradient(165deg, rgba(255, 250, 240, 0.2) 0%, transparent 35%, rgba(90, 70, 50, 0.08) 100%);
-  mix-blend-mode: multiply;
-  transition: transform 0.55s cubic-bezier(0, 0, 0.2, 1);
-}
-/* 纸框感：四边收暗，像从笺上看院 */
-.garden__vignette {
+/* 三层同尺寸 cover → 特征对齐；位移只差在 translate */
+.garden__layer {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   pointer-events: none;
-  box-shadow:
-    inset 0 0 80px rgba(50, 36, 24, 0.22),
-    inset 0 0 160px rgba(50, 36, 24, 0.12);
-  background:
-    linear-gradient(90deg, rgba(40, 30, 20, 0.16) 0%, transparent 8%, transparent 92%, rgba(40, 30, 20, 0.14) 100%),
-    linear-gradient(180deg, rgba(40, 30, 20, 0.12) 0%, transparent 10%, transparent 88%, rgba(40, 30, 20, 0.18) 100%);
+  user-select: none;
+  transition: transform 0.45s cubic-bezier(0, 0, 0.2, 1);
+  will-change: transform;
 }
-.garden__bg {
-  /* 略压饱和，让天光层更可感 */
-  filter: saturate(0.92) brightness(1.02);
+.garden__layer--base {
+  z-index: 0;
+  filter: saturate(0.94) brightness(1.02);
 }
-.garden__grain {
+.garden__layer--door {
+  z-index: 1;
+}
+.garden__layer--branch {
+  z-index: 2;
+}
+.garden__light {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.22;
+  background:
+    radial-gradient(ellipse 60% 45% at 18% 12%, rgba(255, 244, 214, 0.35), transparent 55%),
+    linear-gradient(165deg, rgba(255, 250, 240, 0.12), transparent 40%);
+  mix-blend-mode: soft-light;
+  transition: transform 0.55s cubic-bezier(0, 0, 0.2, 1);
+}
+.garden__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 100px rgba(45, 32, 20, 0.2),
+    inset 0 0 0 1px rgba(45, 32, 20, 0.06);
+}
+.garden__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
   background-size: 140px;
   mix-blend-mode: multiply;
@@ -169,7 +182,7 @@ onBeforeUnmount(() => {
 .garden__overlay {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 6;
   pointer-events: none;
 }
 .garden__overlay :deep(canvas) {
@@ -179,7 +192,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 22px;
   left: 24px;
-  z-index: 5;
+  z-index: 7;
   writing-mode: vertical-rl;
   font-family: var(--font-display);
   font-size: 18px;
@@ -201,7 +214,7 @@ onBeforeUnmount(() => {
   left: 50%;
   bottom: 22px;
   transform: translateX(-50%);
-  z-index: 5;
+  z-index: 7;
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text-secondary);
@@ -214,7 +227,7 @@ onBeforeUnmount(() => {
   position: absolute;
   right: 6%;
   bottom: 18%;
-  z-index: 5;
+  z-index: 7;
   width: min(160px, 22vw);
   height: min(220px, 32vh);
   border: none;
@@ -249,9 +262,9 @@ onBeforeUnmount(() => {
 }
 @media (prefers-reduced-motion: reduce) {
   .garden__grain {
-    opacity: 0.12;
+    opacity: 0.1;
   }
-  .garden__bg,
+  .garden__layer,
   .garden__light {
     transition: none;
   }
