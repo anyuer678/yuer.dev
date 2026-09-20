@@ -2,8 +2,14 @@
 // HomePulse —— 构建期 GitHub 活动条（15 Wave 2.1）；零运行时 fetch
 import { computed } from 'vue'
 import { githubData } from '@/utils/content.js'
+import deskMap from '@/content/desk.json'
 
 const USER = computed(() => githubData.user || 'anyuer678')
+
+function repoTo(r) {
+  if (!r?.slug) return null
+  return deskMap[r.slug] ? `/desk/${r.slug}` : `/projects/${r.slug}`
+}
 
 const items = computed(() => {
   const repos = Object.values(githubData.repos || {})
@@ -17,7 +23,7 @@ const items = computed(() => {
     out.push({
       kind: 'release',
       label: `${withRelease.name} ${withRelease.release}`,
-      to: withRelease.slug ? `/projects/${withRelease.slug}` : null,
+      to: repoTo(withRelease),
       href: withRelease.slug
         ? null
         : `https://github.com/${USER.value}/${withRelease.name}/releases`,
@@ -33,7 +39,7 @@ const items = computed(() => {
     out.push({
       kind: 'push',
       label: r.name,
-      to: r.slug ? `/projects/${r.slug}` : null,
+      to: repoTo(r),
       href: r.slug ? null : `https://github.com/${USER.value}/${r.name}`,
       detail: timeAgo(r.pushed_at),
     })

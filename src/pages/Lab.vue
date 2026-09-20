@@ -45,15 +45,25 @@ function applyStatus(next) {
   <div class="container">
     <PageHeader title="实验室" description="不成熟但真实的小项目" :count="sorted.length" />
 
-    <!-- 隐藏特别篇：纸感工作室（不进主导航，仅此处入口） -->
-    <RouterLink to="/room" class="lab-secret">
-      <span class="lab-secret__badge">特别篇</span>
-      <span class="lab-secret__body">
-        <span class="lab-secret__title">纸感工作室</span>
-        <span class="lab-secret__desc">点一点桌上的东西——书桌、书架与窗边，藏着项目与时间线。</span>
-      </span>
-      <span class="lab-secret__cta" aria-hidden="true">→</span>
-    </RouterLink>
+    <!-- 特别篇双入口：花庭（遇见）与工作室（停留）——不进 Header -->
+    <div class="lab-secrets">
+      <RouterLink to="/garden" class="lab-secret">
+        <span class="lab-secret__badge">花笺</span>
+        <span class="lab-secret__body">
+          <span class="lab-secret__title">花庭</span>
+          <span class="lab-secret__desc">风里偶尔有一朵不一样的花——靠近停一停，再进入一个世界。</span>
+        </span>
+        <span class="lab-secret__cta" aria-hidden="true">→</span>
+      </RouterLink>
+      <RouterLink to="/room" class="lab-secret">
+        <span class="lab-secret__badge">特别篇</span>
+        <span class="lab-secret__body">
+          <span class="lab-secret__title">纸感工作室</span>
+          <span class="lab-secret__desc">点一点桌上的东西——书桌、书架与窗边，藏着项目与时间线。</span>
+        </span>
+        <span class="lab-secret__cta" aria-hidden="true">→</span>
+      </RouterLink>
+    </div>
 
     <div class="lab-filter">
       <label class="lab-filter__label" for="lab-status">状态</label>
@@ -84,12 +94,16 @@ function applyStatus(next) {
 </template>
 
 <style scoped>
+.lab-secrets {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
 .lab-secret {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  margin-bottom: var(--space-8);
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-4) var(--space-6);
   border: 1px dashed var(--color-border-strong);
   border-radius: var(--radius-lg);
   background: var(--color-surface);

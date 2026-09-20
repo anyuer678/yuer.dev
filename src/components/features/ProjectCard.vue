@@ -54,6 +54,13 @@ const repoLine = computed(() => {
     </div>
     <p v-if="repoLine" class="project-card__repo">{{ repoLine }}</p>
     <footer class="project-card__foot">
+      <RouterLink
+        v-if="project.tier === 'flagship'"
+        :to="`/desk/${project.slug}`"
+        class="project-card__desk"
+      >
+        入案头
+      </RouterLink>
       <ExternalLink v-if="project.demo" :href="project.demo">在线试用</ExternalLink>
       <ExternalLink v-if="project.github" :href="project.github">GitHub</ExternalLink>
     </footer>
@@ -106,6 +113,16 @@ const repoLine = computed(() => {
   gap: var(--space-4);
   position: relative;
   z-index: 2;
+}
+.project-card__desk {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.project-card__desk:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
 }
 .project-card__head {
   display: flex;

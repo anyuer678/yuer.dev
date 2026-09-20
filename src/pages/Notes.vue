@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 // Notes 列表页（F06）：tag 单选过滤 + 关键词搜索 + 分页
 // URL query 组合：?tag=&q=&page=（14 §5.4 同款模式）
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
@@ -57,6 +57,8 @@ const router = useRouter()
 
 const tag = computed(() => String(route.query.tag ?? '')) // 防数组形态 ?tag=a&tag=b
 const q = computed(() => String(route.query.q ?? '').trim())
+// type=learning：学习廊旁路（URL 即状态）
+const typeFilter = computed(() => String(route.query.type ?? ''))
 
 // 分组折叠：主标签横排，点击展开该组子标签（互斥：同一时间只展开一组）
 const activeGroup = ref(null)
@@ -83,6 +85,11 @@ watch(
 // 先 tag 过滤，再关键词搜索（标题/摘要/标签，忽略大小写）
 const filtered = computed(() => {
   let list = tag.value ? notes.filter((n) => n.tags.includes(tag.value)) : notes
+  if (typeFilter.value === 'learning') {
+    list = list.filter((n) => n.type === 'learning')
+  } else if (typeFilter.value === 'other') {
+    list = list.filter((n) => n.type !== 'learning')
+  }
   if (q.value) {
     const needle = q.value.toLowerCase()
     list = list.filter(
@@ -120,6 +127,13 @@ function clearAll() {
   router.replace({ query: {} })
 }
 
+function applyType(next) {
+  const query = { ...route.query }
+  next === '' ? delete query.type : (query.type = next)
+  delete query.page
+  router.replace({ query })
+}
+
 // 搜索框：本地输入 + 300ms 防抖写 query
 const searchInput = ref(q.value)
 let debounceTimer = null
@@ -153,6 +167,16 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
         />
       </template>
     </PageHeader>
+
+    <div class="note-type" role="group" aria-label="笔记类型">
+      <button type="button" :class="{ 'is-on': !typeFilter }" @click="applyType('')">全部</button>
+      <button type="button" :class="{ 'is-on': typeFilter === 'learning' }" @click="applyType('learning')">
+        学习
+      </button>
+      <button type="button" :class="{ 'is-on': typeFilter === 'other' }" @click="applyType('other')">
+        札记 · 架构
+      </button>
+    </div>
 
     <div v-if="groupedTags.length" class="note-toolbar">
       <div class="note-tags note-tags--main" role="group" aria-label="标签分组">
@@ -225,6 +249,28 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
 </template>
 
 <style scoped>
+.note-type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.note-type button {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.note-type button.is-on,
+.note-type button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
 .note-toolbar {
   display: flex;
   flex-direction: column;

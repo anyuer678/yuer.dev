@@ -1,0 +1,92 @@
+{
+  "tools": [
+    {
+      "id": "keyvault",
+      "name": "KeyVault",
+      "group": "安全",
+      "oneLiner": "本地加密钥匙串，管 LLM API Key 与 GitHub Token。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/keyvault && cd keyvault",
+      "example": "python -m keyvault add openai --prompt",
+      "to": "/projects/keyvault",
+      "repo": "https://github.com/anyuer678/keyvault"
+    },
+    {
+      "id": "stargrave",
+      "name": "StarGrave",
+      "group": "GitHub",
+      "oneLiner": "扫描 star 仓库，给出清理建议；unstar 可回滚。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/stargrave",
+      "example": "stargrave scan --dry-run",
+      "to": "/projects/stargrave",
+      "repo": "https://github.com/anyuer678/stargrave"
+    },
+    {
+      "id": "picren",
+      "name": "PicRen",
+      "group": "媒体",
+      "oneLiner": "AI 看图重命名：默认 dry-run，支持 --undo。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/picren",
+      "example": "picren ./photos --dry-run",
+      "to": "/projects/picren",
+      "repo": "https://github.com/anyuer678/picren"
+    },
+    {
+      "id": "upgrademate",
+      "name": "UpgradeMate",
+      "group": "代码",
+      "oneLiner": "规则驱动的旧代码升级：diff 预览、风险分级、可回滚。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/upgrademate",
+      "example": "upgrademate ./src --report",
+      "to": "/projects/upgrademate",
+      "repo": "https://github.com/anyuer678/upgrademate"
+    },
+    {
+      "id": "logtimeline",
+      "name": "LogTimeline",
+      "group": "代码",
+      "oneLiner": "中文自然语言时间 → 日志过滤 → LLM 归因。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/dsh-logtimeline",
+      "example": "logtimeline \"昨天下午服务器为什么崩了\" ./app.log",
+      "to": "/projects/logtimeline",
+      "repo": "https://github.com/anyuer678/dsh-logtimeline"
+    },
+    {
+      "id": "voiceconsole",
+      "name": "Voice Console",
+      "group": "语音 · Agent",
+      "oneLiner": "语音指令 → MCP 工具调用，白名单 + 确认门。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/voiceconsole",
+      "example": "voiceconsole --once",
+      "to": "/projects/voiceconsole",
+      "repo": "https://github.com/anyuer678/voiceconsole"
+    },
+    {
+      "id": "codetutor-cn",
+      "name": "CodeTutor CN",
+      "group": "代码",
+      "oneLiner": "贴代码逐步讲解「在干什么、为什么」，可出题。",
+      "lang": "HTML",
+      "install": "打开静态页或克隆仓库",
+      "example": "浏览器打开单页即可",
+      "to": "/projects/codetutor-cn",
+      "repo": "https://github.com/anyuer678/codetutor-cn"
+    },
+    {
+      "id": "n100",
+      "name": "N100 家用服务器",
+      "group": "GitHub",
+      "oneLiner": "Debian + Docker + frp 内网穿透的自托管底座。",
+      "lang": "Shell",
+      "install": "见笔记：Debian 基线 + compose",
+      "example": "docker compose up -d",
+      "to": "/notes/n100-server",
+      "repo": null
+    }
+  ]
+}

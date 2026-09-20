@@ -1,17 +1,12 @@
 // utils/content.js —— 内容管线：meta-only，不 import markdown-it（14 §5.1 决策 D1）
 // 产物为纯静态模块级常量；正文原文走非 eager glob 进详情共享 chunk。
-import { parseFrontmatter } from './parse-frontmatter.js'
+//
+// frontmatter 元数据来自 src/content/_meta/*.json（由 scripts/gen-content-meta.mjs
+// 生成，vite 插件在 dev / build 时自动刷新）。这里不能再直接 raw 读取 markdown —
+// 112 篇笔记正文合计 3.1MB，eager 加载会把它们全塞进主包。
+import notesMeta from '../content/_meta/notes.json'
+import projectsMeta from '../content/_meta/projects.json'
 
-const globProjects = import.meta.glob('../content/projects/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-})
-const globNotes = import.meta.glob('../content/notes/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-})
 const globJson = import.meta.glob('../content/*.json', {
   query: '?raw',
   import: 'default',
@@ -24,6 +19,7 @@ function loadJson(name) {
 }
 
 export const site = loadJson('site')
+export const gardenWorlds = loadJson('garden-worlds') ?? []
 export const lab = loadJson('lab') ?? []
 export const timeline = loadJson('timeline') ?? []
 export const repoMap = loadJson('repo-map') ?? {}
@@ -79,27 +75,22 @@ function attachRepoStats(item) {
   }
 }
 
-function buildMeta(entries) {
-  return entries
-    .filter(([path]) => !path.includes('_')) // 模板不入管线
-    .map(([path, raw]) => {
-      const { meta } = parseFrontmatter(raw)
-      return { slug: path.split('/').pop().replace(/\.md$/, ''), ...normalizeMeta(meta) }
-    })
+/** 从 frontmatter 索引构建元数据列表（索引里已排除 `_` 前缀模板文件） */
+function buildMeta(index) {
+  return Object.entries(index)
+    .map(([slug, meta]) => ({ slug, ...normalizeMeta(meta) }))
     .filter((item) => !item.draft) // draft 已过滤，内存中恒为 false
 }
 
 // 排序：order 升序优先，同 order 按 date 降序（04 §8.3）
-export const projects = buildMeta(Object.entries(globProjects))
+export const projects = buildMeta(projectsMeta)
   .map(attachRepoStats)
   .sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || b.date.localeCompare(a.date))
 
 export const flagshipProjects = projects.filter((p) => p.tier === 'flagship')
 export const productProjects = projects.filter((p) => p.tier === 'product')
 export const labProjects = projects.filter((p) => p.tier === 'lab')
-export const notes = buildMeta(Object.entries(globNotes)).sort((a, b) =>
-  b.date.localeCompare(a.date)
-)
+export const notes = buildMeta(notesMeta).sort((a, b) => b.date.localeCompare(a.date))
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug)
 export const getNote = (slug) => notes.find((n) => n.slug === slug)

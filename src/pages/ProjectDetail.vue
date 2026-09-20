@@ -9,6 +9,7 @@ import ArticleContent from '@/components/features/ArticleContent.vue'
 import { getProject, getNote, projectRawFiles, site } from '@/utils/content.js'
 import { renderMarkdown } from '@/utils/markdown.js'
 import { setTitle, setDescription } from '@/utils/seo.js'
+import deskMap from '@/content/desk.json'
 
 const baseUrl = import.meta.env.BASE_URL
 
@@ -19,6 +20,10 @@ const html = ref('')
 const relatedNotes = ref([])
 
 const repoStats = computed(() => project.value?.repoStats)
+const deskTo = computed(() => {
+  const slug = project.value?.slug
+  return slug && deskMap[slug] ? `/desk/${slug}` : null
+})
 
 function timeAgo(iso) {
   if (!iso) return ''
@@ -77,6 +82,7 @@ watchEffect(async (onInvalidate) => {
         </div>
         <div class="project-detail__meta">
           <time :datetime="project.date">{{ project.date }}</time>
+          <RouterLink v-if="deskTo" :to="deskTo">入案头</RouterLink>
           <ExternalLink v-if="project.demo" :href="project.demo">在线试用</ExternalLink>
           <ExternalLink v-if="project.github" :href="project.github">GitHub</ExternalLink>
         </div>

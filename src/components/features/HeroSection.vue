@@ -17,6 +17,8 @@ defineProps({
       <p v-if="site.positioning" class="hero__positioning">{{ site.positioning }}</p>
       <div class="hero__actions">
         <RouterLink to="/projects" class="btn btn--primary">查看项目</RouterLink>
+        <RouterLink to="/room" class="btn btn--ghost">进入工作室</RouterLink>
+        <RouterLink to="/garden" class="btn btn--ghost">花庭</RouterLink>
         <a
           v-if="site.links.github"
           :href="site.links.github"

@@ -1,0 +1,767 @@
+{
+  "cet6-vocabulary-eink": {
+    "slug": "cet6-vocabulary-eink",
+    "title": "CET-6 墨水屏版",
+    "subtitle": "CET-6 Vocabulary (E-Ink)",
+    "status": "completed",
+    "tier": "lab",
+    "featured": false,
+    "date": "2026-07",
+    "tech": [
+      "JavaScript",
+      "Electron",
+      "Capacitor"
+    ],
+    "tags": [
+      "学习",
+      "E-Ink",
+      "跨端"
+    ],
+    "summary": "针对 E-Ink 墨水屏优化的 CET-6 词汇应用：去彩色动画、保留完整学习功能，提供低功耗护眼阅读体验；Web / Android / Windows 三端。",
+    "demo": "https://anyuer678.github.io/cet6-vocabulary-eink/",
+    "github": "https://github.com/anyuer678/cet6-vocabulary-eink",
+    "order": 23,
+    "cover": "projects/cet6-vocabulary-eink.svg",
+    "journey": [
+      {
+        "date": "2026-07",
+        "title": "完成",
+        "desc": "E-Ink 优化版：去动画、高对比度，三端构建"
+      }
+    ]
+  },
+  "cet6-vocabulary": {
+    "slug": "cet6-vocabulary",
+    "title": "CET-6 词汇背诵系统",
+    "subtitle": "CET-6 词汇学习系统",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-07",
+    "tech": [
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+    "tags": [
+      "Learning"
+    ],
+    "summary": "CET-6 全词库 5023 词：背诵、默写、回忆、选择题四种模式 + 错词本，离线发音，Web / Windows / Android 三端。",
+    "demo": "https://anyuer678.github.io/cet6-vocabulary/",
+    "github": "https://github.com/anyuer678/cet6-vocabulary",
+    "order": 6,
+    "related": [
+      "quiz-tools-notes",
+      "ai-design-notes"
+    ],
+    "cover": "projects/cet6-vocabulary.png",
+    "journey": [
+      {
+        "date": "2026-07",
+        "title": "开始开发",
+        "desc": "CET-6 词汇背诵系统，覆盖考试大纲全部 5023 词"
+      }
+    ]
+  },
+  "chatez": {
+    "slug": "chatez",
+    "title": "Chatez",
+    "subtitle": "个人 AI 工作空间",
+    "status": "archived",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-05",
+    "tech": [
+      "React",
+      "TypeScript",
+      "Tauri",
+      "LLM"
+    ],
+    "tags": [
+      "AI",
+      "Desktop"
+    ],
+    "summary": "可配置 Prompt + Skill 的 AI 工作台（v1.14.1）：多角色切换、Skill 技能系统、SSE 流式输出、会话持久化，支持 Web / Windows / Android 三端。",
+    "demo": "https://anyuer678.github.io/chatez/",
+    "github": "https://github.com/anyuer678/chatez",
+    "order": 4,
+    "related": [
+      "qq-ai-bot-notes",
+      "voice-console-mcp-notes"
+    ],
+    "cover": "projects/chatez.png",
+    "journey": [
+      {
+        "date": "2026-05",
+        "title": "开始开发",
+        "desc": "可配置 Prompt + Skill 的 AI 工作台（React 18 + Tauri 2.x）"
+      }
+    ]
+  },
+  "codedrill": {
+    "slug": "codedrill",
+    "title": "CodeDrill",
+    "subtitle": "离线代码训练平台",
+    "status": "completed",
+    "tier": "product",
+    "featured": true,
+    "date": "2026-07",
+    "tech": [
+      "Vue 3",
+      "Vite",
+      "Electron",
+      "JavaScript"
+    ],
+    "tags": [
+      "Learning"
+    ],
+    "summary": "离线编程训练系统：代码临摹、代码填空、错误修复三种模式，支持 7 种语言与 22 套浅色主题，覆盖 Web / Windows / Android 三端。",
+    "demo": "https://anyuer678.github.io/codedrill/",
+    "github": "https://github.com/anyuer678/codedrill",
+    "order": 3,
+    "cover": "projects/codedrill.png",
+    "journey": [
+      {
+        "date": "2026-07",
+        "title": "开始开发",
+        "desc": "离线编程训练系统：代码临摹、填空、改错，Web / Windows / Android 三端"
+      }
+    ]
+  },
+  "codetutor-cn": {
+    "slug": "codetutor-cn",
+    "title": "中文代码教学器",
+    "subtitle": "Code Tutor CN",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "JavaScript",
+      "AI",
+      "LLM"
+    ],
+    "tags": [
+      "教学",
+      "AI"
+    ],
+    "summary": "贴一段代码，像老师一样按水平逐步讲\"这段代码在干什么、为什么这么写\"，还能出练习题；纯静态单页零依赖，按年龄段分级词汇。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/codetutor-cn",
+    "order": 11,
+    "cover": "projects/codetutor-cn.svg",
+    "related": [
+      "codetutor-cn-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "五步教学流程 + 年龄分级词汇表，纯静态单页可用"
+      }
+    ]
+  },
+  "desktoppet": {
+    "slug": "desktoppet",
+    "title": "Desktoppet",
+    "subtitle": "可扩展桌面宠物平台",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Electron",
+      "React",
+      "TypeScript"
+    ],
+    "tags": [
+      "Desktop"
+    ],
+    "summary": "Electron 桌面宠物：角色以资源包扩展、状态事件驱动，带陪伴统计与事件推送 API，450 例单测。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/desktoppet",
+    "order": 5,
+    "related": [
+      "deskpet-notes"
+    ],
+    "cover": "projects/desktoppet.jpg",
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "v1.0",
+        "desc": "Electron 桌宠：事件记录、统计报表、角色包、推送 API"
+      }
+    ]
+  },
+  "developer-intelligence": {
+    "slug": "developer-intelligence",
+    "title": "Developer Intelligence",
+    "subtitle": "代码仓库智能分析平台",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "LLM",
+      "AI",
+      "SQLite",
+      "AST"
+    ],
+    "tags": [
+      "AI",
+      "工具",
+      "分析"
+    ],
+    "summary": "让 AI Agent 深度理解你的代码仓库——从静态分析到 GitHub 全景，本地优先，零 LLM 依赖。含 4 个子项目。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/developer-intelligence",
+    "order": 10,
+    "related": [
+      "developer-intelligence-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "架构规划",
+        "desc": "4 个子项目架构设计完成，repo-intel-core 静态分析引擎开发中"
+      }
+    ]
+  },
+  "dsh-logtimeline": {
+    "slug": "dsh-logtimeline",
+    "title": "DSH LogTimeline",
+    "subtitle": "DeepSeek Harness 日志查询插件",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "LLM",
+      "AI"
+    ],
+    "tags": [
+      "日志",
+      "工具",
+      "插件"
+    ],
+    "summary": "LogTimeline 的 DeepSeek Harness 适配版：自然语言时间描述 → 日志过滤 → LLM 归因，打包为 DSH 插件，13 项测试通过。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/dsh-logtimeline",
+    "order": 16,
+    "related": [
+      "dsh-logtimeline-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "完成",
+        "desc": "LogTimeline 核心功能适配为 DSH 插件，13 项测试通过"
+      }
+    ]
+  },
+  "eclipse-wasteland": {
+    "slug": "eclipse-wasteland",
+    "title": "ECLIPSE 荒原防线",
+    "subtitle": "Browser FPS PVE Shooter",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "TypeScript",
+      "Vite",
+      "Three.js"
+    ],
+    "tags": [
+      "游戏",
+      "Three.js",
+      "前端"
+    ],
+    "summary": "浏览器端 FPS PVE 射击游戏：多波次副本、无尽爬塔、Roguelite 局内成长与深度养成系统，纯前端无后端，Three.js 渲染。",
+    "demo": "https://anyuer678.github.io/eclipse-wasteland/",
+    "github": "https://github.com/anyuer678/eclipse-wasteland",
+    "order": 19,
+    "cover": "projects/eclipse-wasteland.svg",
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "开发中",
+        "desc": "副本/爬塔 + 局内成长 + 深度养成系统，AI 协同开发"
+      }
+    ]
+  },
+  "evocode": {
+    "slug": "evocode",
+    "title": "EvoCode",
+    "subtitle": "AI 软件维护与演化平台",
+    "status": "development",
+    "tier": "flagship",
+    "featured": true,
+    "date": "2026-08",
+    "tech": [
+      "Vue 3",
+      "TypeScript",
+      "Spring Boot",
+      "Python",
+      "PostgreSQL",
+      "Redis",
+      "LLM",
+      "Docker"
+    ],
+    "tags": [
+      "AI",
+      "FullStack"
+    ],
+    "summary": "AST 代码分析 + LLM 报告生成，为老项目输出中文架构全景文档（开发中）。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/evocode",
+    "order": 2,
+    "related": [
+      "evocode-architecture"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "立项",
+        "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"
+      }
+    ]
+  },
+  "jpetstore-ssm-cms": {
+    "slug": "jpetstore-ssm-cms",
+    "title": "JPetStore SSM 重构",
+    "subtitle": "SSM PetStore CMS（团队项目）",
+    "status": "completed",
+    "tier": "lab",
+    "featured": false,
+    "date": "2026-05",
+    "tech": [
+      "Java",
+      "Spring Boot",
+      "MySQL",
+      "MyBatis"
+    ],
+    "tags": [
+      "SSM",
+      "团队项目",
+      "后台管理"
+    ],
+    "summary": "软件开发架构平台课程实验：8 人团队把 JPetStore 重构为 Spring MVC + MyBatis-Plus，并开发三大后台模块；负责用户模块 API 与前端商品模块。",
+    "demo": null,
+    "github": "",
+    "order": 21,
+    "cover": "projects/jpetstore-ssm-cms.svg",
+    "related": [
+      "jpetstore-ssm-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-05",
+        "title": "完成",
+        "desc": "SSM 重构 + 后台管理系统，8 人团队协作"
+      }
+    ]
+  },
+  "kb-ui": {
+    "slug": "kb-ui",
+    "title": "KB UI",
+    "subtitle": "Vue 3 组件库与工程模板集",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Vue 3",
+      "TypeScript",
+      "Vite"
+    ],
+    "tags": [
+      "组件库",
+      "工程化",
+      "monorepo"
+    ],
+    "summary": "自建前端素材库与工程模板集：55+ 组件、46 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动。",
+    "demo": "https://anyuer678.github.io/kb-ui/",
+    "github": "https://github.com/anyuer678/kb-ui",
+    "order": 20,
+    "cover": "projects/kb-ui.svg",
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "开发中",
+        "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"
+      }
+    ]
+  },
+  "key-tool": {
+    "slug": "key-tool",
+    "title": "Key Tool",
+    "subtitle": "API Key 多租户网关",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "FastAPI",
+      "OpenAI API"
+    ],
+    "tags": [
+      "安全",
+      "API",
+      "工具"
+    ],
+    "summary": "多维度限额密钥签发与消费网关：项目体系 / 余额计费 / 模型绑定 / 限流，转发任意 OpenAI 兼容上游，支持 SDK 直连与流式。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/key-tool",
+    "order": 18,
+    "related": [
+      "key-tool-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "功能完整",
+        "desc": "Web 面板 + CLI + OpenAI SDK 三种使用方式，65 项测试通过"
+      }
+    ]
+  },
+  "keyvault": {
+    "slug": "keyvault",
+    "title": "API 密钥保险箱",
+    "subtitle": "KeyVault",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python"
+    ],
+    "tags": [
+      "安全",
+      "工具"
+    ],
+    "summary": "本地加密钥匙串管 LLM API Key / GitHub Token：主密码不落盘，scrypt 派生 + AES-256-GCM 加密，audit 扫明文但值永不打印。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/keyvault",
+    "order": 17,
+    "cover": "projects/keyvault.svg",
+    "related": [
+      "keyvault-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "AES-256-GCM 加密钥匙串 + audit 审计 + shell 注入"
+      }
+    ]
+  },
+  "logtimeline": {
+    "slug": "logtimeline",
+    "title": "日志时间戳模糊查询器",
+    "subtitle": "LogTimeline",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "AI",
+      "LLM"
+    ],
+    "tags": [
+      "日志",
+      "工具"
+    ],
+    "summary": "说一句\"昨天下午服务器为什么崩了\"，自动解析成时间范围去扫日志，再用 LLM 归因；--no-llm 模式完全本地，日志不出本机。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/logtimeline",
+    "order": 15,
+    "cover": "projects/logtimeline.svg",
+    "related": [
+      "logtimeline-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "自然语言时间 → 日志过滤 → LLM 归因链路跑通"
+      }
+    ]
+  },
+  "lumen": {
+    "slug": "lumen",
+    "title": "Lumen",
+    "subtitle": "个人 AI Agent Runtime",
+    "status": "development",
+    "tier": "flagship",
+    "featured": true,
+    "date": "2026-08",
+    "tech": [
+      "Go",
+      "React",
+      "LLM",
+      "AI",
+      "Docker"
+    ],
+    "tags": [
+      "AI",
+      "Agent",
+      "FullStack"
+    ],
+    "summary": "24/7 常驻运行的个人 AI Runtime：拥有记忆、推理、工具调用与计算机操作能力，全本地运行，默认只监听本机。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/lumen",
+    "order": 1,
+    "related": [
+      "lumen-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "v3 Benchmark 通过",
+        "desc": "100 用例全部通过，38 项测试 PASS，Agent Loop + 记忆 + 安全防护完整闭环"
+      }
+    ]
+  },
+  "picren": {
+    "slug": "picren",
+    "title": "图片批量 AI 重命名器",
+    "subtitle": "PicRen",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "AI",
+      "LLM"
+    ],
+    "tags": [
+      "图片",
+      "工具"
+    ],
+    "summary": "让 AI 看图把 IMG 照片改成中文语义名：默认 dry-run 只预览，--execute 才真改，--undo 可回滚；图片本地压缩后才上传，隐私安全。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/picren",
+    "order": 14,
+    "cover": "projects/picren.svg",
+    "related": [
+      "picrename-ai-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "AI 看图 → 中文语义命名 → dry-run/execute/undo 全链路"
+      }
+    ]
+  },
+  "polycodehub": {
+    "slug": "polycodehub",
+    "title": "PolyCodeHub",
+    "subtitle": "全栈在线判题平台",
+    "status": "development",
+    "tier": "flagship",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "TypeScript",
+      "JavaScript",
+      "Java",
+      "Spring Boot",
+      "Python",
+      "FastAPI",
+      "Node.js",
+      "Docker",
+      "Redis"
+    ],
+    "tags": [
+      "OJ",
+      "全栈",
+      "判题沙箱"
+    ],
+    "summary": "自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，进程级沙箱判题（setuid 降权 + seccomp 隔离），Docker Compose 一键启动。",
+    "demo": "https://anyuer678.github.io/polycodehub/",
+    "github": "https://github.com/anyuer678/polycodehub",
+    "order": 8,
+    "related": [
+      "polycodehub-architecture"
+    ],
+    "cover": "projects/polycodehub.png",
+    "journey": [
+      {
+        "date": "2025-09",
+        "title": "雏形",
+        "desc": "用 Next.js 搭出第一版在线判题平台"
+      },
+      {
+        "date": "2026-08",
+        "title": "迁移迭代",
+        "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"
+      }
+    ]
+  },
+  "reasonix-skills": {
+    "slug": "reasonix-skills",
+    "title": "Reasonix Skills",
+    "subtitle": "可迁移 Markdown 技能包",
+    "status": "completed",
+    "tier": "lab",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Markdown",
+      "AI"
+    ],
+    "tags": [
+      "工具",
+      "工程化",
+      "AI"
+    ],
+    "summary": "5 个纯 Markdown 技能，把 DeepSeek Harness 的工程范式沉淀为可复用的开发指导：快照回归、决策留痕、可换后端、场景分组、架构范式。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/reasonix-skills",
+    "order": 22,
+    "related": [
+      "reasonix-skills-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "完成",
+        "desc": "5 个技能全部通过验证，408 行 / 17KB，12 项引用零虚构"
+      }
+    ]
+  },
+  "stargrave": {
+    "slug": "stargrave",
+    "title": "Star 清理建议器",
+    "subtitle": "StarGrave",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "LLM",
+      "AI"
+    ],
+    "tags": [
+      "GitHub",
+      "工具"
+    ],
+    "summary": "扫描 GitHub star 仓库，本地规则判断哪些已死、哪些值得复查，可选 LLM 复核，unstar 幂等可回滚；token 只走环境变量。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/stargrave",
+    "order": 12,
+    "cover": "projects/stargrave.svg",
+    "related": [
+      "stargrave-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "扫描 → 规则判定 → LLM 复核 → 安全 unstar 全链路"
+      }
+    ]
+  },
+  "todo-list": {
+    "slug": "todo-list",
+    "title": "Todo List",
+    "subtitle": "轻量个人待办应用",
+    "status": "completed",
+    "tier": "lab",
+    "featured": false,
+    "date": "2026-07",
+    "tech": [
+      "CSS",
+      "JavaScript"
+    ],
+    "tags": [
+      "Tool"
+    ],
+    "summary": "原生实现的开箱即用待办应用：今日视图 + 收件箱 + 番茄钟，数据本地存储，Web / Windows / Android 三端一套代码。",
+    "demo": "https://anyuer678.github.io/todo-list/",
+    "github": "https://github.com/anyuer678/todo-list",
+    "order": 7,
+    "cover": "projects/todo-list.png",
+    "journey": [
+      {
+        "date": "2026-07",
+        "title": "开始开发",
+        "desc": "轻量个人待办应用，集待办、番茄钟、统计于一体"
+      }
+    ]
+  },
+  "upgrademate": {
+    "slug": "upgrademate",
+    "title": "旧代码升级器",
+    "subtitle": "UpgradeMate",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "LLM"
+    ],
+    "tags": [
+      "重构",
+      "工具"
+    ],
+    "summary": "规则驱动的跨语言代码升级：行级正则替换生成 unified diff 与风险分级报告，--apply 前自动备份可回滚；可选 LLM 只提示不改文件。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/upgrademate",
+    "order": 13,
+    "cover": "projects/upgrademate.svg",
+    "related": [
+      "upgrademate-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "规则集驱动 + 三级风险报告 + 备份回滚"
+      }
+    ]
+  },
+  "voiceconsole": {
+    "slug": "voiceconsole",
+    "title": "语音指令控制台",
+    "subtitle": "Voice Command Console (MCP)",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-08",
+    "tech": [
+      "Python",
+      "LLM",
+      "MCP",
+      "AI"
+    ],
+    "tags": [
+      "语音",
+      "工具"
+    ],
+    "summary": "对着电脑说一句就执行并播报：本地语音识别 → 意图解析 → MCP 工具调用，白名单 + 语音确认两道安全门，雏形链路完整。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/voiceconsole",
+    "order": 9,
+    "cover": "projects/voiceconsole.svg",
+    "related": [
+      "voice-console-mcp-notes"
+    ],
+    "journey": [
+      {
+        "date": "2026-08",
+        "title": "雏形",
+        "desc": "五层链路打通：STT → 意图解析 → MCP 工具 → 安全校验 → TTS 播报"
+      }
+    ]
+  }
+}

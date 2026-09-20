@@ -1,0 +1,57 @@
+[
+  {
+    "id": "works",
+    "label": "作品",
+    "to": "/w/works",
+    "listTo": "/projects",
+    "feel": "有人在做真东西",
+    "blurb": "旗舰案头与真实落地的产品。不讲空概念，先看做成了什么。",
+    "listLabel": "查看全部项目"
+  },
+  {
+    "id": "poetry",
+    "label": "诗境",
+    "to": "/w/poetry",
+    "listTo": "/notes",
+    "listQuery": { "type": "other" },
+    "feel": "安静、纸与字",
+    "blurb": "架构、设计与路上的短思考。刻意不与学习廊混编。",
+    "listLabel": "浏览全部笔记"
+  },
+  {
+    "id": "learn",
+    "label": "学习",
+    "to": "/w/learn",
+    "listTo": "/notes",
+    "listQuery": { "type": "learning" },
+    "feel": "认真在学",
+    "blurb": "课业、实验与系统知识的沉淀。按主题各取一篇，不按时间堆最近三条。",
+    "listLabel": "浏览学习笔记"
+  },
+  {
+    "id": "lab",
+    "label": "实验",
+    "to": "/w/lab",
+    "listTo": "/lab",
+    "feel": "允许未完成",
+    "blurb": "跑通过、失败过、还在半路的探索。实验室允许未完成。",
+    "listLabel": "进入实验室"
+  },
+  {
+    "id": "about",
+    "label": "关于",
+    "to": "/w/about",
+    "listTo": "/about",
+    "feel": "人在但不吵",
+    "blurb": "软件工程学生，喜欢把想法做成软件。人在，但不抢戏。",
+    "listLabel": "完整关于页"
+  },
+  {
+    "id": "room",
+    "label": "书房",
+    "to": "/room",
+    "feel": "停留、沉淀",
+    "blurb": "纸感工作室。桌上与架上的东西，都通向真实内容。",
+    "listLabel": null
+  }
+]

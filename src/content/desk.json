@@ -1,0 +1,108 @@
+{
+  "lumen": {
+    "slug": "lumen",
+    "title": "Lumen",
+    "subtitle": "个人 AI Agent Runtime",
+    "tagline": "桌上摊开的那本，是正在写的 Runtime。",
+    "threeLines": [
+      {
+        "key": "解决什么",
+        "text": "多数 Agent 停在「LLM + Tools」。Lumen 要补的是可靠性、可观测、记忆与主动性——让它能长期常驻，而不是一次对话就散。"
+      },
+      {
+        "key": "怎么做",
+        "text": "Go 写 Agent Loop：意图路由 → 规划 → 上下文裁剪 → 工具与权限 → 执行与检查点 → 记忆沉淀。默认只监听本机。"
+      },
+      {
+        "key": "到哪了",
+        "text": "v3 Benchmark：100 用例通过，38 项测试 PASS。早期测试阶段，安全未做完整独立审计。"
+      }
+    ],
+    "highlights": [
+      "9 类工具与 MCP 扩展",
+      "Memory 2.0：评分 + 生命周期",
+      "Checkpoint / Replanner 断点恢复",
+      "默认 127.0.0.1，权限 L1/L2/L3"
+    ],
+    "exits": [
+      { "label": "完整档案", "to": "/projects/lumen", "desc": "项目页：架构、挑战与计划" },
+      { "label": "架构笔记", "to": "/notes/lumen-notes", "desc": "开发侧记录与关键点" },
+      { "label": "源码", "href": "https://github.com/anyuer678/lumen", "desc": "GitHub · anyuer678/lumen" }
+    ],
+    "storyTo": "/stories/lumen",
+    "storyLabel": "点灯开卷",
+    "roomTo": "/room",
+    "gardenTo": "/garden"
+  },
+  "polycodehub": {
+    "slug": "polycodehub",
+    "title": "PolyCodeHub",
+    "subtitle": "全栈在线判题平台",
+    "tagline": "架上那本厚的：从题库写到沙箱。",
+    "threeLines": [
+      {
+        "key": "解决什么",
+        "text": "自用 OJ：练习、提交、判题、比赛、题解与社区在一个系统里，不必在多个站点之间来回切。"
+      },
+      {
+        "key": "怎么做",
+        "text": "Next.js + Node 网关 + Spring 认证 + FastAPI 判题服务；进程级沙箱（setuid 降权 + seccomp），RabbitMQ 异步链路，Docker Compose 一键起。"
+      },
+      {
+        "key": "到哪了",
+        "text": "多语言判题与完整 Web 使用路径已通，独立仓库持续迭代；沙箱与判题链路做过安全向审查。"
+      }
+    ],
+    "highlights": [
+      "Python / Node / C++ / C / Java 判题",
+      "进程级沙箱：setuid + seccomp + 资源限制",
+      "比赛 · 每日一题 · 题解社区",
+      "Docker Compose 一键启动"
+    ],
+    "exits": [
+      { "label": "完整档案", "to": "/projects/polycodehub", "desc": "项目页与架构说明" },
+      { "label": "架构笔记", "to": "/notes/polycodehub-architecture", "desc": "题库、沙箱与判题链路" },
+      { "label": "在线试用", "href": "https://anyuer678.github.io/polycodehub/", "desc": "GitHub Pages Demo" },
+      { "label": "源码", "href": "https://github.com/anyuer678/polycodehub", "desc": "GitHub · anyuer678/polycodehub" }
+    ],
+    "storyTo": "/stories/polycodehub",
+    "storyLabel": "开卷",
+    "roomTo": "/room",
+    "gardenTo": "/garden"
+  },
+  "evocode": {
+    "slug": "evocode",
+    "title": "EvoCode",
+    "subtitle": "AI 软件维护与演化平台",
+    "tagline": "给老项目做「体检」的那本草稿。",
+    "threeLines": [
+      {
+        "key": "解决什么",
+        "text": "让 AI 不只会生成代码，也能理解已有软件：分析架构、发现技术债，把新维护者的上手时间从几天压到半小时量级。"
+      },
+      {
+        "key": "怎么做",
+        "text": "Vue 3 + Spring Boot 网关 + Python 分析服务；AST 与依赖图构建，再交给 LLM 生成中文架构报告；支持 zip / GitHub 导入。"
+      },
+      {
+        "key": "到哪了",
+        "text": "v0.1 代码体检 MVP 端到端跑通；AI 医生与技术债看板仍在开发中。"
+      }
+    ],
+    "highlights": [
+      "任意规模仓库 → 架构全景报告",
+      "质量 / 架构 / 演化分析",
+      "中文报告 + 针对仓库问答",
+      "模块、依赖、数据流可视化"
+    ],
+    "exits": [
+      { "label": "完整档案", "to": "/projects/evocode", "desc": "项目页与目标原则" },
+      { "label": "架构笔记", "to": "/notes/evocode-architecture", "desc": "网关 / 分析器 / AI 链路" },
+      { "label": "源码", "href": "https://github.com/anyuer678/evocode", "desc": "GitHub · anyuer678/evocode" }
+    ],
+    "storyTo": "/stories/evocode",
+    "storyLabel": "开卷",
+    "roomTo": "/room",
+    "gardenTo": "/garden"
+  }
+}

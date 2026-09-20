@@ -24,6 +24,10 @@ const year = new Date().getFullYear()
         <RouterLink to="/lab">实验室</RouterLink>
         <RouterLink to="/about">关于</RouterLink>
         <RouterLink to="/contact">联系</RouterLink>
+        <RouterLink to="/garden">花庭</RouterLink>
+        <RouterLink to="/room">工作室</RouterLink>
+        <RouterLink to="/bench">工作台</RouterLink>
+        <RouterLink to="/w/works">作品斋</RouterLink>
       </nav>
 
       <div class="footer__side">
@@ -80,7 +84,7 @@ const year = new Date().getFullYear()
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-2) var(--space-5);
+  gap: var(--space-2) var(--space-4);
   font-size: var(--text-caption);
 }
 .footer__nav a {
@@ -113,7 +117,7 @@ const year = new Date().getFullYear()
   .footer__inner {
     grid-template-columns: 1fr;
     justify-items: start;
-    gap: var(--space-5);
+    gap: var(--space-4);
     padding-block: var(--space-6);
   }
   .footer__nav {

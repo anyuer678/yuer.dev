@@ -86,10 +86,54 @@ const routes = [
     name: 'room',
     component: () => import('@/pages/Room.vue'),
     meta: {
-      nav: false, // 隐藏特别篇：入口在 Lab
+      nav: false, // 特别篇不进 Header：入口在 Home / Lab / 花庭
+      immersive: true, // 全屏沉浸：不渲染全局页头页脚，由页面自绘 HUD
       title: (s) => `工作室 · ${s.name}`,
       description: (s) => `走进 ${s.name} 的纸感工作室`,
     },
+  },
+  {
+    path: '/garden',
+    name: 'garden',
+    component: () => import('@/pages/Garden.vue'),
+    meta: {
+      nav: false,
+      immersive: true,
+      title: (s) => `花庭 · ${s.brand || s.name}`,
+      description: (s) => `从花庭遇见 ${s.name} 的项目、笔记与书房`,
+    },
+  },
+  {
+    path: '/w/:world',
+    name: 'world-gate',
+    component: () => import('@/pages/WorldGate.vue'),
+    meta: { nav: false }, // title/description 组件内 watch（动态世界名）
+  },
+  {
+    path: '/desk/:slug',
+    name: 'desk',
+    component: () => import('@/pages/Desk.vue'),
+    meta: { nav: false },
+  },
+  {
+    path: '/stories/:slug',
+    name: 'story',
+    component: () => import('@/pages/Story.vue'),
+    meta: { nav: false },
+  },
+  {
+    path: '/bench',
+    name: 'bench',
+    component: () => import('@/pages/Bench.vue'),
+    meta: {
+      nav: false,
+      title: (s) => `工作台 · ${s.name}`,
+      description: (s) => `${s.name} 的本地工具墙与纸面终端`,
+    },
+  },
+  {
+    path: '/poetry',
+    redirect: '/w/poetry',
   },
   {
     path: '/contact',

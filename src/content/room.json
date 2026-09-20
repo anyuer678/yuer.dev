@@ -1,4 +1,5 @@
 {
+  "_note": "归档契约（2.5D 热区方案）。生产实现以 RoomStage3D + room-books.json + Room.vue catalog 为准；新映射不要写回本文件。见 docs/15 二次拍板与 docs/16 §7。",
   "scenes": [
     {
       "id": "desk",

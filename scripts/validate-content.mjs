@@ -256,6 +256,53 @@ function checkJsonLinks(name) {
 checkJsonLinks('timeline')
 checkJsonLinks('lab')
 
+// --- 花笺/案头/开卷契约：路径存在且 slug 对齐 ---
+function checkSpecialMaps() {
+  const deskFile = join(ROOT, 'desk.json')
+  const storiesFile = join(ROOT, 'stories.json')
+  const worldsFile = join(ROOT, 'garden-worlds.json')
+  const hasProject = (slug) => existsSync(join(ROOT, 'projects', `${slug}.md`))
+  const hasNote = (slug) => existsSync(join(ROOT, 'notes', `${slug}.md`))
+  if (existsSync(deskFile)) {
+    const desk = JSON.parse(readFileSync(deskFile, 'utf8'))
+    for (const [slug, spread] of Object.entries(desk)) {
+      if (spread.slug && spread.slug !== slug)
+        report(12, 'desk.json', `键 "${slug}" 与 slug 字段 "${spread.slug}" 不一致`)
+      if (!hasProject(slug)) report(12, 'desk.json', `案头 "${slug}" 无对应项目 markdown`)
+      for (const ex of spread.exits || []) {
+        if (ex.to && /^\/(?:projects|notes)\//.test(ex.to)) {
+          const s = ex.to.split('/')[2]
+          if (!hasProject(s) && !hasNote(s))
+            report(12, 'desk.json', `案头 ${slug} 出口 "${ex.to}" 目标不存在`)
+        }
+      }
+      if (spread.storyTo && existsSync(storiesFile)) {
+        const stories = JSON.parse(readFileSync(storiesFile, 'utf8'))
+        const key = spread.storyTo.split('/').pop()
+        if (!stories[key])
+          report(12, 'desk.json', `案头 ${slug} 的 storyTo "${spread.storyTo}" 在 stories.json 无对应卷`)
+      }
+    }
+  }
+  if (existsSync(storiesFile)) {
+    const stories = JSON.parse(readFileSync(storiesFile, 'utf8'))
+    for (const [slug, story] of Object.entries(stories)) {
+      if (!story.acts || !Array.isArray(story.acts) || story.acts.length < 3)
+        report(12, 'stories.json', `卷 "${slug}" acts 不足`)
+      if (!hasProject(slug)) report(12, 'stories.json', `卷 "${slug}" 无对应项目`)
+    }
+  }
+  if (existsSync(worldsFile)) {
+    const worlds = JSON.parse(readFileSync(worldsFile, 'utf8'))
+    if (!Array.isArray(worlds) || !worlds.length) report(12, 'garden-worlds.json', '应为非空数组')
+    for (const w of worlds) {
+      if (!w.id || !w.label || !w.to) report(12, 'garden-worlds.json', `世界 ${w.id || '?'} 缺 id/label/to`)
+      if (w.listTo && !/^\/[a-z]/.test(w.listTo)) report(12, 'garden-worlds.json', `${w.id} listTo 非法`)
+    }
+  }
+}
+checkSpecialMaps()
+
 // 收尾：全部检查完一次性打印（不 fail-fast），末尾汇总
 if (errors.length) {
   console.error(errors.join('\n'))

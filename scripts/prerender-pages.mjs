@@ -15,7 +15,30 @@ if (!existsSync(src)) {
 }
 
 // 固定路由（router 中无参数的路由 path，除 '/' 与兜底）
-const staticRoutes = ['about', 'projects', 'timeline', 'notes', 'lab', 'contact', 'room', 'dashboard']
+const staticRoutes = [
+  'about',
+  'projects',
+  'timeline',
+  'notes',
+  'lab',
+  'contact',
+  'room',
+  'garden',
+  'w/works',
+  'w/poetry',
+  'w/learn',
+  'w/lab',
+  'w/about',
+  'desk/lumen',
+  'desk/polycodehub',
+  'desk/evocode',
+  'stories/lumen',
+  'stories/polycodehub',
+  'stories/evocode',
+  'bench',
+  'poetry',
+  'dashboard',
+]
 // 动态路由：content 目录 → 路由前缀
 const dynamicRoutes = [
   ['src/content/projects', 'projects'],

@@ -24,3 +24,12 @@ Thumbs.db
 
 # Reasonix 工具状态（会话归档、任务元数据，不入库）
 .reasonix/
+Reasonix聊天记录/
+opencode聊天记录/
+.zcode/
+_source-assets/
+assets/
+reasonix.toml
+
+# Local UI layout regression artifacts (screenshots + probe script)
+_ui_shots/

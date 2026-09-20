@@ -1,0 +1,1372 @@
+{
+  "ai-design-notes": {
+    "title": "AI 图片与 UI 设计实验",
+    "date": "2025-06",
+    "tags": [
+      "设计",
+      "AI",
+      "UI"
+    ],
+    "summary": "用 AI 给自己项目的图标、背景和界面做设计方案：水墨、书房、墨水屏、低饱和插画，一路探索下来确立了\"不要有明显 AI 生成感\"的审美标准。持续中。"
+  },
+  "algorithm-lab-notes": {
+    "title": "算法设计与分析实验：分治、贪心、动态规划与回溯",
+    "date": "2025-11-20",
+    "type": "learning",
+    "tags": [
+      "算法",
+      "实验",
+      "分治",
+      "贪心",
+      "动态规划",
+      "回溯"
+    ],
+    "summary": "算法课程五个实验的归纳：分治（归并/快排/循环赛日程表）、贪心（Dijkstra/找零/多机调度）、动态规划（0-1 背包/合唱队形）、回溯（八皇后/批处理调度/全排列）、三算法对比解 0-1 背包。"
+  },
+  "algorithm-notes": {
+    "title": "算法设计与分析速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "算法",
+      "分治",
+      "动态规划",
+      "贪心",
+      "回溯",
+      "分支限界"
+    ],
+    "summary": "算法设计与分析核心知识点速记，涵盖分治法、动态规划、贪心算法、回溯法、分支限界法等内容"
+  },
+  "alu-lab-notes": {
+    "title": "数字电路实验：用 SystemVerilog 写一个带标志位的 ALU",
+    "date": "2026-05-20",
+    "type": "learning",
+    "tags": [
+      "数字电路",
+      "实验",
+      "SystemVerilog",
+      "ALU",
+      "仿真"
+    ],
+    "summary": "数电实验归纳：用 SystemVerilog 实现带负/零/进位/溢出标志的 4 位 ALU（加/减/与/或），并用 Icarus Verilog 仿真验证。含进位与溢出判定的推导。"
+  },
+  "assembly-notes": {
+    "title": "汇编语言速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "汇编语言",
+      "x86",
+      "寻址方式",
+      "中断",
+      "DOS"
+    ],
+    "summary": "汇编语言核心知识点速记，涵盖数据类型、寻址方式、指令系统、中断、DOS编程等内容"
+  },
+  "campus-trading-notes": {
+    "title": "校园二手交易平台（团队项目笔记）",
+    "date": "2026-06",
+    "type": "project",
+    "tags": [
+      "Spring Boot",
+      "MyBatis",
+      "MySQL",
+      "JSP",
+      "团队项目"
+    ],
+    "summary": "软件交互课程大作业：SSM 校园 C2C 二手交易平台，手机号验证码注册、多条件组合搜索、发布商品、求购与议价，按团队分工开发。"
+  },
+  "campus-trading-platform-notes": {
+    "title": "校园交易平台",
+    "date": "2025-06",
+    "tags": [
+      "Java",
+      "SSM",
+      "MySQL",
+      "Web"
+    ],
+    "summary": "软件交互设计课程项目：基于 SSM 的校园二手交易平台，支持发布/搜索/购买/聊天/支付，含前后端完整实现。"
+  },
+  "chcore-os-lab-notes": {
+    "title": "ChCore 操作系统实验：启动流程、页表与物理内存管理",
+    "date": "2026-06-12",
+    "type": "learning",
+    "tags": [
+      "操作系统",
+      "实验",
+      "ChCore",
+      "ARM64",
+      "页表",
+      "内存管理"
+    ],
+    "summary": "ChCore 操作系统实验归纳：Lab1 多核启动与 AArch64 页表建立，Lab2 buddy 伙伴系统与 slab 分配器实现，含主从核区分、块分裂合并的代码逻辑。"
+  },
+  "codetutor-cn-notes": {
+    "title": "中文代码教学器",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "JavaScript",
+      "教学"
+    ],
+    "summary": "贴一段代码，像老师一样逐步讲\"这段代码在干什么、为什么这么写\"，还能出练习题；纯静态单页零依赖，按年龄段分级词汇。雏形已实现，未完成。"
+  },
+  "compiler-ch1-3-collection-notes": {
+    "title": "编译原理章节笔记合集（1-3章：概述/文法/词法分析）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "编译原理",
+      "文法",
+      "词法分析",
+      "DFA",
+      "NFA",
+      "正规式"
+    ],
+    "summary": "编译原理第1-3章详细章节笔记合集，覆盖编译概述、文法和语言、词法分析（共39篇章节笔记合并）"
+  },
+  "compiler-ch4-9-collection-notes": {
+    "title": "编译原理章节笔记合集（4-9章：语法分析/语义/优化）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "编译原理",
+      "语法分析",
+      "LL",
+      "LR",
+      "语义分析",
+      "代码优化"
+    ],
+    "summary": "编译原理第4-9章详细章节笔记合集，覆盖语法分析（LL/LR）、语法制导翻译、语义分析、代码优化（共28篇章节笔记合并）"
+  },
+  "compiler-notes": {
+    "title": "编译原理速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "编译原理",
+      "词法分析",
+      "语法分析",
+      "语义分析",
+      "代码优化"
+    ],
+    "summary": "编译原理核心知识点速记，涵盖词法分析、语法分析、语义分析、中间代码生成、代码优化等内容"
+  },
+  "compiler-study-guide-notes": {
+    "title": "编译原理学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "编译原理",
+      "词法分析",
+      "语法分析",
+      "LL",
+      "LR",
+      "学习指导"
+    ],
+    "summary": "编译原理全课程详细学习指导，覆盖编译过程、文法、词法分析、LL/LR语法分析、语法制导翻译、语义分析、代码优化等全部章节"
+  },
+  "compiler-theme-notes": {
+    "title": "编译原理主题笔记合集（语法制导/语义/代码生成）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "编译原理",
+      "语法制导",
+      "中间代码",
+      "代码生成",
+      "运行时"
+    ],
+    "summary": "编译原理按主题整理的章节笔记合集，覆盖语法制导翻译、语义分析、中间表示、代码生成与优化、运行时环境（共9篇章节笔记合并）"
+  },
+  "computer-network-notes": {
+    "title": "计算机网络复习：从分层到 TCP 拥塞控制",
+    "date": "2026-06-20",
+    "type": "learning",
+    "tags": [
+      "计算机网络",
+      "课程笔记",
+      "TCP/IP"
+    ],
+    "summary": "计算机网络课程复习笔记：OSI/TCP-IP 分层、物理层编码与复用、数据链路层差错控制、IP 子网划分与路由、TCP 三次握手与拥塞控制、常用应用层协议。按课程复习材料整理。"
+  },
+  "computer-organization-chapter-collection-notes": {
+    "title": "数字设计与计算机组成原理章节笔记合集",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "RISC-V",
+      "ISA",
+      "数字电路",
+      "CPU"
+    ],
+    "summary": "数字设计与计算机组成原理各章详细笔记合集，覆盖引言、计算机组成原理、RISC-V各章、IO系统（共11篇章节笔记合并）"
+  },
+  "computer-organization-comprehensive-notes": {
+    "title": "计算机组成原理综合笔记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "RISC-V",
+      "CPU",
+      "流水线",
+      "综合笔记"
+    ],
+    "summary": "计算机组成原理全课程综合整理笔记"
+  },
+  "computer-organization-notes-collection": {
+    "title": "计算机组成原理课堂笔记合集",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "RISC-V",
+      "ISA",
+      "流水线",
+      "存储器"
+    ],
+    "summary": "计算机组成原理课堂详细笔记合集，覆盖Introduction、ISA、Computer Organization、DDCAarm各章（共10篇章节笔记合并）"
+  },
+  "computer-organization-notes": {
+    "title": "计算机组成原理速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "CPU",
+      "存储器",
+      "指令系统",
+      "总线",
+      "输入输出"
+    ],
+    "summary": "计算机组成原理核心知识点速记，涵盖数据表示、运算器、存储系统、指令系统、CPU、总线、I/O系统等内容"
+  },
+  "computer-organization-study-guide-notes": {
+    "title": "计算机组成原理学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "RISC-V",
+      "流水线",
+      "存储系统",
+      "学习指导"
+    ],
+    "summary": "数字设计与计算机组成原理全课程详细学习指导，覆盖RISC-V ISA、CPU流水线、存储层次、IO系统等"
+  },
+  "course-labs-summary-notes": {
+    "title": "课程实验汇总",
+    "date": "2025-12",
+    "tags": [
+      "实验",
+      "课程",
+      "综合"
+    ],
+    "summary": "大一至大二各课程实验汇总：Java/Web/数据库/编译原理/计组/计网/Linux/算法/数字设计/软件工程，覆盖编程、系统、理论三类。"
+  },
+  "data-structure-lab-notes": {
+    "title": "数据结构实验：用线性表实现多项式加法",
+    "date": "2025-04-14",
+    "type": "learning",
+    "tags": [
+      "数据结构",
+      "实验",
+      "线性表",
+      "C++"
+    ],
+    "summary": "数据结构实验归纳：用顺序表与链表两种方式实现一元多项式加法，涉及插入删除查找、同指数合并、按降幂排列。从 bug 中理解指针与内存管理。"
+  },
+  "data-structure-notes": {
+    "title": "数据结构速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数据结构",
+      "链表",
+      "树",
+      "图",
+      "排序",
+      "查找",
+      "算法复杂度"
+    ],
+    "summary": "数据结构核心知识点速记，涵盖线性表、树、图、排序算法、查找算法等内容"
+  },
+  "database-advanced-notes": {
+    "title": "数据库系统进阶速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "事务",
+      "并发控制",
+      "分布式",
+      "优化"
+    ],
+    "summary": "数据库系统进阶知识点速记，涵盖事务管理、并发控制、分布式数据库、性能优化等内容"
+  },
+  "database-architecture-notes": {
+    "title": "数据库系统结构：三级模式、二级映像与物理设计",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "课程笔记"
+    ],
+    "summary": "数据库系统课程的理论部分：三级模式结构与两级数据独立性、关系模型与关系代数操作、物理设计的索引/聚簇/哈希方法、B 树与 B+ 树对比，基于知识点汇总整理。"
+  },
+  "database-chapter-collection-notes": {
+    "title": "数据库系统章节笔记合集（ch1-10）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "关系代数",
+      "SQL",
+      "ER模型",
+      "规范化",
+      "索引"
+    ],
+    "summary": "数据库系统各章详细笔记合集，覆盖绪论、关系代数、关系演算、SQL、ER模型、规范化、数据库设计、索引（共8篇章节笔记合并）"
+  },
+  "database-index-notes": {
+    "title": "数据库索引详解：从 B+ 树到位图索引",
+    "date": "2026-06-22",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "索引",
+      "课程笔记"
+    ],
+    "summary": "数据库系统课程索引章节笔记：索引的优缺点与工作原理、聚簇/非聚簇与功能分类、哈希/位图/R 树/倒排四种结构、设计原则与 EXPLAIN 优化。"
+  },
+  "database-lab-notes": {
+    "title": "数据库系统实验：从建表到触发器",
+    "date": "2026-05-14",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "实验",
+      "MySQL",
+      "SQL",
+      "触发器"
+    ],
+    "summary": "数据库系统课程四个实验的归纳：建库建表与完整性、数据查询与更新、视图与存储过程、触发器与游标。环境为 Ubuntu 虚拟机里的 MySQL 8.0，全程命令行操作。"
+  },
+  "database-notes": {
+    "title": "数据库系统速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "SQL",
+      "关系模型",
+      "范式",
+      "索引",
+      "ER模型"
+    ],
+    "summary": "数据库系统核心知识点速记，涵盖关系代数、SQL、ER模型、规范化理论、索引等内容"
+  },
+  "database-overview-notes": {
+    "title": "数据库系统概述：数据模型、关系与完整性",
+    "date": "2026-06-22",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "课程笔记"
+    ],
+    "summary": "数据库系统课程第一章笔记：数据库与 DBMS 定义、数据管理三阶段、概念/逻辑/物理三层数据模型、关系模型的基本概念与三类完整性约束、系统组成与 DBA 职责。"
+  },
+  "database-sql-notes": {
+    "title": "数据库期末复习：从 ER 图到触发器",
+    "date": "2026-06-18",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "SQL",
+      "课程笔记"
+    ],
+    "summary": "数据库课程期末复习笔记：三级结构两级独立性、ER 图设计、关系模式规范化、视图/索引/存储过程/触发器，代码例题基于课程复习材料整理。"
+  },
+  "database-study-guide-notes": {
+    "title": "数据库系统学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "关系代数",
+      "SQL",
+      "ER模型",
+      "规范化",
+      "学习指导"
+    ],
+    "summary": "数据库系统全课程详细学习指导，覆盖绪论、关系代数、SQL、ER模型、规范化、数据库设计、索引等八章"
+  },
+  "database-system-notes": {
+    "title": "数据库系统补充：关系代数、ER 建模与索引",
+    "date": "2026-06-22",
+    "type": "learning",
+    "tags": [
+      "数据库",
+      "课程笔记",
+      "关系代数",
+      "索引"
+    ],
+    "summary": "数据库系统课程补充笔记（配合期末复习篇）：关系代数运算、关系演算、ER 模型设计、函数依赖与范式分解、数据库设计步骤、B+ 树索引原理。按课程章节笔记整理。"
+  },
+  "decision-notes-and-capability-seam": {
+    "title": "决策留痕与可换后端设计",
+    "date": "2026-08",
+    "tags": [
+      "工程方法论",
+      "决策",
+      "架构",
+      "DeepSeek Harness"
+    ],
+    "summary": "两套从 DeepSeek Harness 借鉴的工程纪律：决策留痕（每个非平凡决策留下可追溯记录）和可换后端设计（三角模型抽象，换实现不改消费方）。配合使用效果最佳。"
+  },
+  "design-patterns-notes": {
+    "title": "设计模式速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "设计模式",
+      "创建型",
+      "结构型",
+      "行为型",
+      "GoF"
+    ],
+    "summary": "23种设计模式核心知识点速记，涵盖创建型、结构型、行为型模式及应用场景"
+  },
+  "deskpet-notes": {
+    "title": "桌宠 Desktoppet：把角色做成资源包",
+    "date": "2026-08",
+    "tags": [
+      "Desktop",
+      "Electron"
+    ],
+    "type": "project",
+    "summary": "桌面宠物平台的设计拆解：角色=资源包、事件中心驱动状态、剪贴板互动与本地 API，450 例单测与零运行时依赖的取舍。"
+  },
+  "developer-intelligence-notes": {
+    "title": "Developer Intelligence 平台设计",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "工具",
+      "Python"
+    ],
+    "summary": "让 AI Agent 深度理解代码仓库的平台：4 个子项目分层（引擎/引导/架构/GitHub），本地优先零 LLM 依赖，表驱动扩展新语言。"
+  },
+  "digital-circuit-notes": {
+    "title": "数字电路速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "数字电路",
+      "逻辑门",
+      "组合逻辑",
+      "时序逻辑",
+      "触发器"
+    ],
+    "summary": "数字电路核心知识点速记，涵盖逻辑代数、组合逻辑电路、时序逻辑电路、触发器等内容"
+  },
+  "digital-design-notes": {
+    "title": "数字设计与计算机组成原理",
+    "date": "2025-12",
+    "tags": [
+      "CPU",
+      "ARM",
+      "数字电路",
+      "流水线"
+    ],
+    "summary": "数字设计与计算机组成原理课程：从布尔代数到 ARM CPU 设计，11 章笔记覆盖组合/时序逻辑、ALU、控制器、流水线、IO 系统。"
+  },
+  "dsh-architecture-patterns": {
+    "title": "从 DeepSeek Harness 提炼的 6 条架构原则",
+    "date": "2026-08",
+    "tags": [
+      "架构",
+      "原则",
+      "DeepSeek Harness",
+      "工程方法论"
+    ],
+    "summary": "从 DeepSeek Harness 提炼的 6 条可迁移架构原则——注册即副作用、模型所见必可重建、显式优于隐式、错误要大声、事件是扩展点、能力可换后端。"
+  },
+  "dsh-logtimeline-notes": {
+    "title": "DSH LogTimeline 适配记录",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "日志",
+      "Python"
+    ],
+    "summary": "把 LogTimeline 的自然语言时间解析 + 日志过滤能力包装为 DeepSeek Harness 插件，复用核心逻辑，13 项测试通过。"
+  },
+  "evocode-architecture": {
+    "title": "EvoCode 架构设计记录",
+    "date": "2026-08-05",
+    "tags": [
+      "架构",
+      "AI"
+    ],
+    "summary": "为什么把\"分析\"和\"生成\"拆成两个服务：确定性代码分析与 LLM 生成必须隔离。"
+  },
+  "github-collector-lumen": {
+    "title": "让 Agent 看懂我的 28 个仓库",
+    "date": "2026-08",
+    "tags": [
+      "lumen",
+      "developer-intelligence",
+      "架构",
+      "MCP",
+      "采集器"
+    ],
+    "summary": "打通\"GitHub 采集器 → SQLite 事实库 → Analyst 检索 → lumen MCP 调用\"的完整闭环——方向 B（代码智能）从空中楼阁变成可运行插件，评分 6.0→6.8。"
+  },
+  "house-rental-system-notes": {
+    "title": "智能房屋租赁系统",
+    "date": "2025-11",
+    "tags": [
+      "Python",
+      "Flask",
+      "MySQL",
+      "Docker"
+    ],
+    "summary": "软工基础课程项目：Python + Flask + SQLAlchemy + MySQL，三类角色、智能搜索推荐、租赁全流程、报表统计、Docker 部署。"
+  },
+  "idea-backlog-notes": {
+    "title": "小工具想法库：从 82 个想法到 7 个雏形",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "工具",
+      "想法"
+    ],
+    "summary": "平时攒下的 AI 小工具想法清单（82 条、八类），配合对 100+ 方向的竞争现状调研（红海/有窗口/空白），筛出值得动手的方向并落地 7 个雏形。"
+  },
+  "java-notes": {
+    "title": "Java编程速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Java",
+      "面向对象",
+      "集合",
+      "多线程",
+      "IO",
+      "泛型",
+      "异常"
+    ],
+    "summary": "Java编程核心知识点速记，涵盖面向对象、集合框架、多线程、IO流、泛型、异常处理等内容"
+  },
+  "java-oop-lab-notes": {
+    "title": "Java 面向对象实验：从类设计到接口与异常",
+    "date": "2025-05-21",
+    "type": "learning",
+    "tags": [
+      "Java",
+      "实验",
+      "面向对象",
+      "继承",
+      "多态"
+    ],
+    "summary": "Java 面向对象程序设计课程的八个实验归纳：类设计、继承、多态、异常处理、字符串与文件 I/O、抽象类与接口。按实验主题整理知识点与典型题。"
+  },
+  "jpetstore-ssm-notes": {
+    "title": "JPetStore SSM 重构与后台管理系统（团队项目笔记）",
+    "date": "2026-05",
+    "type": "project",
+    "tags": [
+      "Spring Boot",
+      "MyBatis",
+      "Spring MVC",
+      "Webpack",
+      "团队项目"
+    ],
+    "summary": "软件开发架构平台实验：8 人团队把 JPetStore 重构为 Spring MVC + MyBatis-Plus，并开发三大后台模块。我负责用户模块 API 与前端商品模块。"
+  },
+  "key-tool-notes": {
+    "title": "Key Tool 多租户网关",
+    "date": "2026-08",
+    "tags": [
+      "安全",
+      "API",
+      "Python"
+    ],
+    "summary": "API Key 多维度限额签发与消费网关：项目体系 + 余额计费 + OpenAI 兼容转发，预扣+退差保证并发安全，65 项测试通过。"
+  },
+  "keyvault-notes": {
+    "title": "API 密钥保险箱",
+    "date": "2026-08",
+    "tags": [
+      "安全",
+      "Python",
+      "工具"
+    ],
+    "summary": "本地加密钥匙串管 LLM API Key / GitHub Token：主密码不落盘，scrypt 派生 + AES-256-GCM 加密，audit 扫明文但值永不打印。雏形已实现，未完成。"
+  },
+  "linux-basics-notes": {
+    "title": "Linux 基础：文件系统、用户与 Shell",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "课程笔记"
+    ],
+    "summary": "开源操作系统课程的 Linux 基础部分：目录标准、权限模型、用户与进程、Shell 入门和脚本进阶，基于课件整理。"
+  },
+  "linux-chapter-collection-notes": {
+    "title": "Linux系统章节笔记合集（CH01-10）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "文件系统",
+      "Shell",
+      "Nginx",
+      "Docker",
+      "进程管理"
+    ],
+    "summary": "Linux系统各章详细笔记合集，覆盖开源OS概述、文件系统、进程网络、Shell、Nginx、Docker等（共10篇章节笔记合并）"
+  },
+  "linux-file-server-notes": {
+    "title": "Linux 文件服务器与 Nginx 进阶：NFS、Samba、FTP 与 HTTPS 负载均衡",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "Nginx",
+      "网络服务",
+      "课程笔记"
+    ],
+    "summary": "开源操作系统课程的服务部分：NFS 网络文件共享、Samba 与 Windows 互通、vsftpd 主动/被动模式，以及 Nginx HTTPS 配置、负载均衡策略与一致性哈希，基于课件整理。"
+  },
+  "linux-knowledge-summary-notes": {
+    "title": "Linux知识点汇总",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "文件系统",
+      "Shell",
+      "进程",
+      "网络"
+    ],
+    "summary": "Linux操作系统知识点汇总，覆盖文件系统、用户进程网络、Shell脚本、系统安全等章节"
+  },
+  "linux-notes": {
+    "title": "Linux系统速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "Shell",
+      "文件系统",
+      "进程管理",
+      "网络配置"
+    ],
+    "summary": "Linux系统核心知识点速记，涵盖文件系统、进程管理、Shell编程、网络配置、系统安全等内容"
+  },
+  "linux-opensource-notes": {
+    "title": "开源操作系统",
+    "date": "2025-12",
+    "tags": [
+      "Linux",
+      "Shell",
+      "Nginx",
+      "Docker"
+    ],
+    "summary": "开源操作系统课程（Linux）：12 章笔记覆盖 Linux 概述、文件系统、Shell 编程、进程管理、Nginx Web 服务器、Docker 容器化。"
+  },
+  "linux-security-notes": {
+    "title": "Linux 系统安全与防火墙：umask、特殊权限、SELinux 与 iptables",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "安全",
+      "课程笔记"
+    ],
+    "summary": "开源操作系统课程的安全部分：umask 默认权限、SUID/SGID/Sticky 特殊权限、ACL 与 SELinux 强制访问控制、iptables 四表五链和 firewalld，基于课件整理。"
+  },
+  "linux-server-notes": {
+    "title": "Linux 服务管理：包管理、systemd、Nginx 与 Docker",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "Nginx",
+      "Docker",
+      "课程笔记"
+    ],
+    "summary": "开源操作系统课程的服务器部分：软件包与磁盘、systemd 服务与定时任务、Nginx 反向代理负载均衡、Docker 容器化，基于课件整理。"
+  },
+  "linux-study-guide-notes": {
+    "title": "Linux系统学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "Shell",
+      "文件系统",
+      "进程管理",
+      "Nginx",
+      "学习指导"
+    ],
+    "summary": "Linux系统全课程详细学习指导，覆盖文件系统、进程、Shell、网络、Nginx、Docker等内容"
+  },
+  "llm-test-generation-report": {
+    "title": "LLM自动化单元测试生成与修复研究综述",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "LLM",
+      "单元测试",
+      "ChatUniTest",
+      "软件工程",
+      "研究综述"
+    ],
+    "summary": "基于大语言模型的自动化单元测试生成与修复技术研究综述与实践应用报告"
+  },
+  "local-ai-knowledge-base": {
+    "title": "本地 AI 知识库",
+    "date": "2026-04",
+    "tags": [
+      "AI",
+      "RAG",
+      "Ollama",
+      "Dify"
+    ],
+    "summary": "想让 AI 读懂自己的存档文件：Dify、Wiki.js、Ollama、RAG、文件解析一路折腾（2026-04 ~ 2026-06），验证了本地知识库的可行性，检索质量离好用还差得远。"
+  },
+  "logtimeline-notes": {
+    "title": "日志时间戳模糊查询器",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "日志",
+      "Python"
+    ],
+    "summary": "说一句\"昨天下午服务器为什么崩了\"，自动解析成时间范围去扫日志，再用 LLM 归因；--no-llm 模式完全本地。雏形已实现，未完成。"
+  },
+  "lumen-notes": {
+    "title": "Lumen Agent Runtime",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "Agent",
+      "Go",
+      "React"
+    ],
+    "summary": "24/7 常驻的个人 AI Runtime：Go 实现 Agent Loop + 9 类工具 + 记忆 + 安全，React Dashboard，v3 100 用例全通过。"
+  },
+  "marxism-notes": {
+    "title": "马克思主义基本原理历年真题汇总",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "马原",
+      "马克思",
+      "哲学",
+      "政治经济学",
+      "真题"
+    ],
+    "summary": "马克思主义基本原理历年真题题目汇总，覆盖哲学、政治经济学、科学社会主义等考点"
+  },
+  "medical-elderly-care-notes": {
+    "title": "智慧医养医生服务系统（团队项目笔记）",
+    "date": "2026-07",
+    "type": "project",
+    "tags": [
+      "Spring Boot",
+      "MyBatis-Plus",
+      "MySQL",
+      "Redis",
+      "团队项目"
+    ],
+    "summary": "8 人团队开发的医养结合医生端系统：覆盖老人档案、健康预警、随访、转诊协同全流程。我深度参与。"
+  },
+  "n100-server": {
+    "title": "我的 N100 服务器部署过程",
+    "date": "2026-07-20",
+    "tags": [
+      "Linux",
+      "部署"
+    ],
+    "summary": "一台闲鱼买的成品 N100 迷你主机当家庭服务器：刷系统、装 Docker、frp 内网穿透、探活监控，从零到能跑服务的完整记录。"
+  },
+  "network-chapter-collection-notes": {
+    "title": "计算机网络章节笔记合集（ch1-6）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机网络",
+      "物理层",
+      "数据链路层",
+      "网络层",
+      "传输层",
+      "应用层"
+    ],
+    "summary": "计算机网络各章详细笔记合集，覆盖概述、物理层、数据链路层、网络层、传输层、应用层（共11篇章节笔记合并）"
+  },
+  "network-notes": {
+    "title": "计算机网络速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机网络",
+      "TCP",
+      "IP",
+      "HTTP",
+      "OSI",
+      "网络协议"
+    ],
+    "summary": "计算机网络核心知识点速记，涵盖物理层到应用层的协议与原理"
+  },
+  "network-study-guide-notes": {
+    "title": "计算机网络学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "计算机网络",
+      "OSI",
+      "TCP",
+      "IP",
+      "HTTP",
+      "学习指导"
+    ],
+    "summary": "计算机网络全课程详细学习指导，覆盖物理层到应用层各章核心知识点"
+  },
+  "online-edu-platform-notes": {
+    "title": "在线教育平台",
+    "date": "2025-07",
+    "tags": [
+      "Java",
+      "Spring Boot",
+      "Web"
+    ],
+    "summary": "暑期实训项目：在线教育平台，支持课程管理、学生选课、在线学习、作业提交、考试测评，团队协作完成。"
+  },
+  "operating-system-notes": {
+    "title": "操作系统",
+    "date": "2025-12",
+    "tags": [
+      "OS",
+      "ARM",
+      "内核",
+      "进程"
+    ],
+    "summary": "操作系统课程复习：从 OS 发展史到微内核架构、异常处理、进程同步、内存管理、文件系统，基于 ARM64 视角。"
+  },
+  "os-container-lab-notes": {
+    "title": "把 JPetStore 部署上线：从 Linux 裸机到 K8s 集群",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Linux",
+      "Nginx",
+      "Docker",
+      "Kubernetes",
+      "部署实践"
+    ],
+    "summary": "把 JPetStore 用三种方式部署：Linux 裸机 + Nginx、Docker Compose 容器化、Tomcat 集群与 K8s（选做）。踩坑 16 个，大半是环境兼容问题。"
+  },
+  "os-notes": {
+    "title": "操作系统速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "操作系统",
+      "进程",
+      "内存管理",
+      "文件系统",
+      "调度算法"
+    ],
+    "summary": "操作系统核心知识点速记，涵盖进程管理、内存管理、文件系统、I/O管理等内容"
+  },
+  "os-review-detail-notes": {
+    "title": "操作系统复习笔记（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "操作系统",
+      "进程",
+      "内存管理",
+      "文件系统",
+      "复习"
+    ],
+    "summary": "操作系统全课程详细复习笔记，覆盖进程管理、调度、内存管理、文件系统、I/O等核心考点"
+  },
+  "os-review-notes": {
+    "title": "操作系统复习：进程、内存、死锁与文件系统",
+    "date": "2026-06-20",
+    "type": "learning",
+    "tags": [
+      "操作系统",
+      "课程笔记",
+      "进程",
+      "内存管理",
+      "死锁"
+    ],
+    "summary": "操作系统课程复习整理：基础概念、进程与线程、CPU 调度、内存管理与虚拟内存、死锁、文件系统与 I/O。按期末重点速记与知识点汇总归纳。"
+  },
+  "picrename-ai-notes": {
+    "title": "图片批量 AI 重命名器",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "Python",
+      "图片"
+    ],
+    "summary": "让 AI 看图把 IMG 照片改成中文语义名：默认 dry-run 只预览，--execute 才真改，--undo 可回滚。雏形已实现，未完成。"
+  },
+  "polycodehub-architecture": {
+    "title": "PolyCodeHub 架构设计记录",
+    "date": "2026-08-10",
+    "tags": [
+      "架构",
+      "全栈",
+      "微服务"
+    ],
+    "summary": "判题是 CPU 密集还得隔离的活，和 API、认证根本不是一类需求——记录 PolyCodeHub 把网关、认证、判题沙箱拆成四个服务的决策，以及四轮安全与工程化修复。"
+  },
+  "probability-notes": {
+    "title": "概率论与数理统计速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "概率论",
+      "随机变量",
+      "分布",
+      "期望",
+      "方差",
+      "数理统计"
+    ],
+    "summary": "概率论与数理统计核心知识点速记，涵盖随机事件、随机变量、数字特征、大数定律、数理统计等内容"
+  },
+  "project-management-notes": {
+    "title": "项目管理速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "项目管理",
+      "进度管理",
+      "成本管理",
+      "风险管理",
+      "Scrum"
+    ],
+    "summary": "项目管理核心知识点速记，涵盖范围管理、进度管理、成本管理、风险管理、质量管理等内容"
+  },
+  "qq-ai-bot-notes": {
+    "title": "我为什么放弃 QQ AI Bot",
+    "date": "2026-03",
+    "tags": [
+      "AI",
+      "聊天机器人",
+      "实验"
+    ],
+    "summary": "用 AstrBot + NapCat 搭过 QQ AI 机器人：AI 聊天、记忆、人格、插件都试过，最后因生态不稳、插件不足、账号限制而放弃——这段经历把我引向了 AI Agent 方向。"
+  },
+  "quiz-tools-notes": {
+    "title": "课程刷题工具",
+    "date": "2026-06",
+    "tags": [
+      "HTML",
+      "JavaScript",
+      "刷题"
+    ],
+    "summary": "考前给自己和同学做的单文件刷题工具：Linux、开源操作系统、数据库原理、数字电路 mock 考试——HTML + JSON 题库，打开即用，零依赖。已基本完成。"
+  },
+  "reasonix-skills-notes": {
+    "title": "Reasonix Skills 技能包设计",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "工程范式",
+      "Markdown"
+    ],
+    "summary": "5 个纯 Markdown 技能，从 deepseek-harness 提炼可迁移工程原则：快照回归、决策留痕、可换后端、场景分组、架构范式，12 项引用零虚构。"
+  },
+  "redis-devops-notes": {
+    "title": "Redis 缓存与云原生运维：DevOps、CI/CD、IaC 与监控",
+    "date": "2026-06",
+    "type": "learning",
+    "tags": [
+      "Redis",
+      "DevOps",
+      "CI/CD",
+      "课程笔记"
+    ],
+    "summary": "开源操作系统课程的后半部分：Redis 数据类型与缓存三大问题、DevOps 与 CI/CD 流水线、Ansible/Terraform 基础设施即代码、Prometheus 监控，基于课件整理。"
+  },
+  "rental-system-notes": {
+    "title": "智能房屋租赁系统（团队项目笔记）",
+    "date": "2026-06",
+    "type": "project",
+    "tags": [
+      "Flask",
+      "MySQL",
+      "SQLAlchemy",
+      "团队项目"
+    ],
+    "summary": "软件工程基础课程大作业：Python Flask 实现的房东/租客/管理员三类角色租赁平台，含智能推荐、模拟支付、合同生成。我承担素材库与前端视觉专项。"
+  },
+  "restful-frontend-notes": {
+    "title": "RESTful API 与前端工程化速记",
+    "date": "2026-06-20",
+    "type": "learning",
+    "tags": [
+      "RESTful",
+      "JavaScript",
+      "Vue",
+      "前端工程化",
+      "课程笔记"
+    ],
+    "summary": "软件开发架构平台课程的前后端笔记：REST 六约束、Spring Boot 实现模式、JWT 认证鉴权、ES6 语法、Vue 指令与组件、构建工具与部署，基于老师课件整理。"
+  },
+  "single-cycle-cpu-notes": {
+    "title": "单周期 ARM 处理器：从指令集到 SystemVerilog",
+    "date": "2026-06-08",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "实验",
+      "ARM",
+      "SystemVerilog",
+      "CPU"
+    ],
+    "summary": "计算机原理与结构实验归纳：SystemVerilog + Digital 设计单周期 ARM 处理器，支持数据处理、访存、分支指令，用 GNU 工具链汇编验证。"
+  },
+  "software-architecture-notes": {
+    "title": "软件架构基础：质量属性、SOLID 与架构风格",
+    "date": "2026-06-22",
+    "type": "learning",
+    "tags": [
+      "软件架构",
+      "课程笔记"
+    ],
+    "summary": "软件开发架构平台课程第一章笔记：软件架构的定义与重要性、质量属性（性能/可用性/安全等）、架构设计原则（SOLID）、九种常见架构风格对比、框架与库的区别。"
+  },
+  "software-architecture-quick-notes": {
+    "title": "软件架构开发一页A4速记",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "软件架构",
+      "Spring",
+      "速记"
+    ],
+    "summary": "软件架构开发考试版一页A4速记"
+  },
+  "software-engineering-chapter-collection-notes": {
+    "title": "软件工程基础章节笔记合集",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "软件工程",
+      "系统工程",
+      "生存期过程",
+      "敏捷",
+      "可行性",
+      "测试"
+    ],
+    "summary": "软件工程基础各章详细笔记合集，覆盖系统工程、软件工程概述、生存期过程、敏捷开发、可行性研究、软件测试（共10篇章节笔记合并）"
+  },
+  "software-engineering-comprehensive-notes": {
+    "title": "软件工程基础综合笔记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "软件工程",
+      "生存期过程",
+      "敏捷",
+      "UML",
+      "测试",
+      "综合笔记"
+    ],
+    "summary": "软件工程基础全课程综合整理笔记"
+  },
+  "software-engineering-lab-notes": {
+    "title": "软件工程基础实验：可行性研究、需求分析与系统设计",
+    "date": "2026-05-01",
+    "type": "learning",
+    "tags": [
+      "软件工程",
+      "实验",
+      "需求分析",
+      "系统设计",
+      "UML"
+    ],
+    "summary": "软件工程基础课程前三个实验归纳：可行性研究与项目计划（甘特图）、需求分析（用例图/数据流图）、系统设计（软件结构图/UML 类图）。用 Mermaid 和亿图绘制，全程围绕图书馆管理系统案例。"
+  },
+  "software-engineering-notes": {
+    "title": "软件工程基础速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "软件工程",
+      "需求分析",
+      "UML",
+      "设计模式",
+      "测试",
+      "敏捷开发"
+    ],
+    "summary": "软件工程基础核心知识点速记，涵盖软件生命周期、需求分析、系统设计、测试方法、敏捷开发等内容"
+  },
+  "software-engineering-study-guide-notes": {
+    "title": "软件工程基础学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "软件工程",
+      "敏捷开发",
+      "需求分析",
+      "软件测试",
+      "学习指导"
+    ],
+    "summary": "软件工程基础全课程详细学习指导，覆盖系统工程、生存期过程、敏捷开发、可行性研究、软件测试等"
+  },
+  "software-testing-notes": {
+    "title": "软件测试速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "软件测试",
+      "黑盒测试",
+      "白盒测试",
+      "自动化测试",
+      "性能测试"
+    ],
+    "summary": "软件测试核心知识点速记，涵盖测试方法、测试用例设计、自动化测试、性能测试等内容"
+  },
+  "spring-architecture-comprehensive-notes": {
+    "title": "软件开发架构平台综合笔记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "MyBatis",
+      "RESTful",
+      "Vue",
+      "综合笔记"
+    ],
+    "summary": "软件开发架构平台全课程综合整理笔记，串联各章知识点形成完整知识体系"
+  },
+  "spring-boot-complete-notes": {
+    "title": "软件开发架构平台完整知识点总结",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "MyBatis",
+      "AOP",
+      "IoC"
+    ],
+    "summary": "软件开发架构平台全课程完整知识点总结"
+  },
+  "spring-boot-full-course-notes": {
+    "title": "软件开发架构平台全课程总结（完整版）",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "RESTful",
+      "Vue",
+      "React"
+    ],
+    "summary": "软件开发架构平台全课程完整版总结，覆盖CH01-CH12全部章节"
+  },
+  "spring-boot-notes": {
+    "title": "软件开发架构平台速记",
+    "date": "2025-05",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "MyBatis",
+      "RESTful",
+      "React",
+      "Vue",
+      "前后端分离"
+    ],
+    "summary": "软件开发架构平台核心知识点速记，涵盖Spring IoC/AOP/MVC、MyBatis、RESTful API、ES6异步、React/Vue等内容"
+  },
+  "spring-boot-study-guide-notes": {
+    "title": "软件开发架构平台学习指导（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "MyBatis",
+      "RESTful",
+      "Vue",
+      "学习指导"
+    ],
+    "summary": "软件开发架构平台全课程详细学习指导，覆盖Spring IoC/AOP/MVC、ORM、RESTful API、前端框架全部章节"
+  },
+  "spring-chapter-collection-notes": {
+    "title": "软件开发架构平台章节笔记合集（CH01-08）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "MyBatis",
+      "Maven",
+      "Vue"
+    ],
+    "summary": "软件开发架构平台各章详细笔记合集，覆盖架构框架概述、Spring基础、AOP、MVC、Boot、ORM、RESTful、Vue（共8篇章节笔记合并）"
+  },
+  "spring-core-notes": {
+    "title": "Spring 核心速记：IoC、AOP 与 Spring MVC",
+    "date": "2026-06-20",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "Java",
+      "课程笔记"
+    ],
+    "summary": "软件开发架构平台课程的 Spring 部分笔记：IoC 控制反转、AOP 面向切面、Spring MVC 七步流程，基于老师课件整理。"
+  },
+  "spring-exam-papers": {
+    "title": "软件开发架构平台模拟试卷合集",
+    "date": "2025-07",
+    "type": "learning",
+    "tags": [
+      "Spring",
+      "SpringBoot",
+      "RESTful",
+      "ORM",
+      "模拟考试"
+    ],
+    "summary": "软件开发架构平台11套模拟试卷合集，覆盖Spring框架、RESTful API、ORM、前端技术、日志系统等专项测试"
+  },
+  "springboot-mybatis-notes": {
+    "title": "Spring Boot 与持久层：ORM、MyBatis、MyBatis-Plus",
+    "date": "2026-06-20",
+    "type": "learning",
+    "tags": [
+      "Spring Boot",
+      "MyBatis",
+      "Java",
+      "课程笔记"
+    ],
+    "summary": "软件开发架构平台课程的持久层笔记：Spring Boot 配置与多环境、JPA 方法名查询、MyBatis 动态 SQL、缓存与分页、Hibernate 三状态、MyBatis-Plus。"
+  },
+  "sql-notes": {
+    "title": "SQL速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "SQL",
+      "数据库",
+      "查询",
+      "DDL",
+      "DML",
+      "索引"
+    ],
+    "summary": "SQL核心语法速记，涵盖DDL、DML、DQL、DCL、视图、索引、存储过程、触发器等内容"
+  },
+  "stargrave-notes": {
+    "title": "Star 清理建议器",
+    "date": "2026-08",
+    "tags": [
+      "GitHub",
+      "Python",
+      "工具"
+    ],
+    "summary": "扫描 GitHub star 仓库，本地规则判断哪些已死、哪些值得复查，可选 LLM 复核，unstar 幂等可回滚；token 只走环境变量。雏形已实现，未完成。"
+  },
+  "upgrademate-notes": {
+    "title": "旧代码升级器",
+    "date": "2026-08",
+    "tags": [
+      "Python",
+      "重构",
+      "工具"
+    ],
+    "summary": "规则驱动的跨语言代码升级：行级正则替换生成 unified diff 与风险分级报告，--apply 前自动备份可回滚；可选 LLM 只提示不改文件。雏形已实现，未完成。"
+  },
+  "ux-heuristic-lab-notes": {
+    "title": "软件交互设计实验：WPS 可用性缺陷分析与改进",
+    "date": "2025-11-01",
+    "type": "learning",
+    "tags": [
+      "软件交互",
+      "实验",
+      "可用性",
+      "UI/UX",
+      "人机交互"
+    ],
+    "summary": "软件交互设计实验归纳：用认知负荷、用户主权、操作连续性等心理学理论分析 WPS Office 的四类可用性缺陷，并给出低成本改进方案与启发式评估结论。"
+  },
+  "voice-console-mcp-notes": {
+    "title": "语音指令控制台（MCP）",
+    "date": "2026-08",
+    "tags": [
+      "AI",
+      "MCP",
+      "Python",
+      "语音"
+    ],
+    "summary": "对着电脑说\"打开桌面\"就执行并播报：本地语音识别 → 意图解析 → MCP 工具调用，白名单 + 语音确认两道安全门。雏形已实现，未完成。"
+  },
+  "web-frontend-notes": {
+    "title": "Web前端开发速记",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "前端",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
+      "框架"
+    ],
+    "summary": "Web前端开发核心知识点速记，涵盖HTML5、CSS3、JavaScript、TypeScript、前端框架等内容"
+  },
+  "web-review-notes": {
+    "title": "Web系统与技术期末复习（详细版）",
+    "date": "2025-06",
+    "type": "learning",
+    "tags": [
+      "Web",
+      "jpetstore",
+      "HTML",
+      "CSS",
+      "JS",
+      "XML"
+    ],
+    "summary": "Web系统与技术期末复习笔记，覆盖Web基础、jpetstore项目、前后端技术等内容"
+  },
+  "web-system-notes": {
+    "title": "Web 系统与技术",
+    "date": "2025-06",
+    "tags": [
+      "Web",
+      "Java",
+      "Servlet",
+      "MVC"
+    ],
+    "summary": "Web 系统与技术课程复习：HTTP 协议、Servlet/JSP、MVC 模式、AJAX、jQuery、过滤器/监听器、Maven、JSON 全链路。"
+  },
+  "zynq-soc-lab-notes": {
+    "title": "全可编程 SOC 实验：Vivado 硬件设计 + SDK 裸机程序",
+    "date": "2026-06-15",
+    "type": "learning",
+    "tags": [
+      "计算机组成原理",
+      "实验",
+      "Zynq",
+      "Vivado",
+      "嵌入式"
+    ],
+    "summary": "计组实验四归纳：Vivado 搭 Zynq 全可编程 SOC 最小系统，Xilinx SDK 写裸机串口程序下载到开发板，含 MIO/AXI 概念与排错经验。"
+  }
+}

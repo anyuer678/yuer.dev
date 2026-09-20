@@ -1,0 +1,196 @@
+{
+  "lumen": {
+    "slug": "lumen",
+    "title": "Lumen",
+    "subtitle": "个人 AI Agent Runtime",
+    "projectTo": "/projects/lumen",
+    "noteTo": "/notes/lumen-notes",
+    "deskTo": "/desk/lumen",
+    "roomTo": "/room",
+    "acts": [
+      {
+        "id": "01",
+        "title": "问题",
+        "lead": "为什么需要一个个人 Agent Runtime",
+        "body": "聊天壳很多：接上模型、挂几个工具，就能「帮忙做事」。但一旦要 24/7 常驻、操作本机文件与系统、记住上周说过的话，并在失败后接着做完——大多数实现会先在上下文、权限和可观测上散架。",
+        "bullets": [
+          "LLM 输出不稳，工具参数一错整条链路就断",
+          "长会话上下文膨胀，该记的忘了、不该记的塞满了",
+          "危险操作没有分级，要么全放开要么全不可用"
+        ]
+      },
+      {
+        "id": "02",
+        "title": "愿景",
+        "lead": "记忆 · 推理 · 工具 · 本机操作",
+        "body": "Lumen 不做又一个聊天入口，而是做可被桌宠、手机 App、CLI 复用的 Runtime 底座。跟它说「帮我整理下载目录」，它应当自己规划、调用工具、执行、沉淀记忆，并在之后主动汇报。",
+        "bullets": [
+          "可靠性：上下文预算、工具修复、Checkpoint",
+          "可观测：每阶段 Trace，失败可分类",
+          "主动性：事件驱动 + 策略，不只是被动问答",
+          "边界：默认只监听本机，危险操作需确认"
+        ]
+      },
+      {
+        "id": "03",
+        "title": "演进",
+        "lead": "从骨架到 Benchmark",
+        "body": "2026-08 启动。先把 Go Agent Loop 跑通，再接工具与记忆，最后用安全层和 100 用例把「能演示」压成「能持续跑」。",
+        "timeline": [
+          { "date": "2026-08", "title": "Agent Loop 骨架", "desc": "IntentRouter → Planner → Execution 通路" },
+          { "date": "2026-08", "title": "九类工具 + Repair", "desc": "Shell / 文件 / 浏览器 / MCP 等；宽容解析修复参数" },
+          { "date": "2026-08", "title": "记忆与安全", "desc": "评分生命周期；Token + L1/L2/L3 + 命令黑名单" },
+          { "date": "2026-08", "title": "v3 Benchmark", "desc": "100 用例通过，38 项测试 PASS" }
+        ]
+      },
+      {
+        "id": "04",
+        "title": "现场",
+        "lead": "构建期 GitHub 数据，零运行时请求",
+        "body": "下面是仓库的最近状态。完整功能说明仍以项目档案为准。",
+        "pulseKey": "lumen"
+      },
+      {
+        "id": "05",
+        "title": "去处",
+        "lead": "合上书之后",
+        "body": "故事讲到这里。要继续挖细节，走档案与笔记；要回屋里，从书房再进来。",
+        "links": [
+          { "label": "完整项目档案", "to": "/projects/lumen" },
+          { "label": "架构笔记", "to": "/notes/lumen-notes" },
+          { "label": "案头", "to": "/desk/lumen" },
+          { "label": "回书房", "to": "/room" },
+          { "label": "回花庭", "to": "/garden" }
+        ]
+      }
+    ]
+  },
+  "polycodehub": {
+    "slug": "polycodehub",
+    "title": "PolyCodeHub",
+    "subtitle": "全栈在线判题平台",
+    "projectTo": "/projects/polycodehub",
+    "noteTo": "/notes/polycodehub-architecture",
+    "deskTo": "/desk/polycodehub",
+    "roomTo": "/room",
+    "acts": [
+      {
+        "id": "01",
+        "title": "问题",
+        "lead": "自用 OJ，为什么要自己搭",
+        "body": "练习算法时，希望题库、提交、判题、比赛和题解在同一个系统里，而不是账号分散在多个站点。更要紧的是：判题代码必须跑在可控沙箱里，不能随便摸到本机与内网。",
+        "bullets": [
+          "多语言提交与资源限制要有明确边界",
+          "判题不能堵死 Web 请求",
+          "从零到一键启动，部署成本要够低"
+        ]
+      },
+      {
+        "id": "02",
+        "title": "愿景",
+        "lead": "题库到沙箱的完整链路",
+        "body": "Next.js 面向使用，Node 网关做编排，Spring 管认证，FastAPI 专职判题；消息队列把评测异步化。目标是「自己每天愿意用」的 OJ，而不是演示页。",
+        "bullets": [
+          "进程级沙箱：setuid 降权 + seccomp 断网 + rlimit",
+          "比赛 · 每日一题 · 题解与社区",
+          "Docker Compose 一键起，脚本生成强密钥"
+        ]
+      },
+      {
+        "id": "03",
+        "title": "演进",
+        "lead": "雏形 → 独立仓 → 沙箱加固",
+        "body": "2025-09 用 Next.js 搭出第一版；2026 迁独立仓库，补齐安全边界与异步判题，压成可长期迭代的形态。",
+        "timeline": [
+          { "date": "2025-09", "title": "雏形", "desc": "第一版在线判题平台" },
+          { "date": "2026-08", "title": "迁移重构", "desc": "独立仓库 + Docker Compose 一键启动" },
+          { "date": "2026-08", "title": "沙箱边界", "desc": "setuid + seccomp + 资源限制；异步判题链路" }
+        ]
+      },
+      {
+        "id": "04",
+        "title": "现场",
+        "lead": "构建期 GitHub 数据",
+        "body": "仓库最近状态如下；功能细节见项目档案与架构笔记。",
+        "pulseKey": "polycodehub"
+      },
+      {
+        "id": "05",
+        "title": "去处",
+        "lead": "合上书之后",
+        "body": "可以去看档案、架构笔记，或直接打开 Demo 提交一发。",
+        "links": [
+          { "label": "完整项目档案", "to": "/projects/polycodehub" },
+          { "label": "架构笔记", "to": "/notes/polycodehub-architecture" },
+          { "label": "案头", "to": "/desk/polycodehub" },
+          { "label": "回书房", "to": "/room" },
+          { "label": "回花庭", "to": "/garden" }
+        ]
+      }
+    ]
+  },
+  "evocode": {
+    "slug": "evocode",
+    "title": "EvoCode",
+    "subtitle": "AI 软件维护与演化平台",
+    "projectTo": "/projects/evocode",
+    "noteTo": "/notes/evocode-architecture",
+    "deskTo": "/desk/evocode",
+    "roomTo": "/room",
+    "acts": [
+      {
+        "id": "01",
+        "title": "问题",
+        "lead": "老项目如何被读懂",
+        "body": "生成代码容易，理解已有软件难。新维护者面对仓库往往要「几天」才能建立全局感；架构知识散落在人脑里，人一走就丢。",
+        "bullets": [
+          "任意规模仓库都要能出架构全景",
+          "上手时间从几天压到半小时量级",
+          "知识可沉淀、可检索，不靠记忆"
+        ]
+      },
+      {
+        "id": "02",
+        "title": "愿景",
+        "lead": "确定性分析兜底，LLM 只负责说人话",
+        "body": "Vue 3 看报告，Spring 网关管任务与权限，Python 做 AST 与依赖图。事实来自分析器，模型只把事实写成中文报告——避免幻觉污染结论。",
+        "bullets": [
+          "质量 / 架构 / 演化多维体检",
+          "zip 与 GitHub 导入",
+          "报告可问答，但引用分析器事实"
+        ]
+      },
+      {
+        "id": "03",
+        "title": "演进",
+        "lead": "立项到 MVP",
+        "body": "2026-08 立项：分析服务 → 后端 → 前端 → LLM 报告。v0.1 体检链路端到端跑通，AI 医生与技术债看板仍在路上。",
+        "timeline": [
+          { "date": "2026-08", "title": "立项", "desc": "目标与三条原则定稿" },
+          { "date": "2026-08", "title": "分析管线", "desc": "扫描 / 质量 / 架构 / 演化" },
+          { "date": "2026-08", "title": "v0.1 MVP", "desc": "导入 → 分析 → 中文报告端到端" }
+        ]
+      },
+      {
+        "id": "04",
+        "title": "现场",
+        "lead": "构建期 GitHub 数据",
+        "body": "仓库现场如下。长期路线见档案「未来计划」。",
+        "pulseKey": "evocode"
+      },
+      {
+        "id": "05",
+        "title": "去处",
+        "lead": "合上书之后",
+        "body": "v1 明确不做自动改代码，只做理解与建议。细节走档案与笔记。",
+        "links": [
+          { "label": "完整项目档案", "to": "/projects/evocode" },
+          { "label": "架构笔记", "to": "/notes/evocode-architecture" },
+          { "label": "案头", "to": "/desk/evocode" },
+          { "label": "回书房", "to": "/room" },
+          { "label": "回花庭", "to": "/garden" }
+        ]
+      }
+    ]
+  }
+}
