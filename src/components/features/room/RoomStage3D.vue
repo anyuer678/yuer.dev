@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import roomBooks from '@/content/room-books.json'
-import { githubData, getProject } from '@/utils/content.js'
+import { githubData, getProject, projects } from '@/utils/content.js'
 
 const props = defineProps({
   lampOn: { type: Boolean, default: true },
@@ -130,14 +130,135 @@ function repoAgeDays(repo) {
   return r?.pushed_at ? daysSince(r.pushed_at) : null
 }
 
-function applyDust(mesh, ageDays) {
-  if (!mesh?.material?.color || ageDays == null) return
-  const dust = Math.min(1, Math.max(0, (ageDays - DUST_DAYS) / 90))
-  if (dust <= 0) return
+/** 书 → 项目档案（slug / 仓名 / github 尾段） */
+function projectForBook(projectSlug, repo) {
+  if (projectSlug) {
+    const p = getProject(projectSlug)
+    if (p) return p
+  }
+  if (!repo) return null
+  return (
+    getProject(repo) ||
+    projects.find((p) => p.slug === repo || (p.github || '').includes(`/${repo}`)) ||
+    null
+  )
+}
+
+/**
+ * 书皮状态：
+ * - 长时间未推送 → 褪色蒙尘（去饱和、发灰、变哑）
+ * - 完工项目 → 暖金精装感（偏金、更干净、微金属）；极旧时金调仍在但罩尘
+ * 材质务必先 clone（见 tagClickable），避免同材质百书一起变色。
+ */
+function applyBookFinish(mesh, data) {
+  if (!mesh?.material?.color) return
+  const age = data?.ageDays
+  const status = data?.projectStatus
+  const completed = status === 'completed'
+  const archived = status === 'archived'
+
+  let dust = 0
+  if (age != null && age > DUST_DAYS) {
+    dust = Math.min(1, (age - DUST_DAYS) / 90)
+  }
+  if (archived) dust = Math.max(dust, 0.4)
+
+  const m = mesh.material
   const hsl = {}
-  mesh.material.color.getHSL(hsl)
-  mesh.material.color.setHSL(hsl.h, hsl.s * (1 - dust * 0.7), Math.min(0.82, hsl.l + dust * 0.2))
-  mesh.material.roughness = Math.min(1, (mesh.material.roughness ?? 0.8) + dust * 0.15)
+  m.color.getHSL(hsl)
+
+  if (completed) {
+    // 完工：暖金书脊，像合上并归档的精装本
+    const gold = new THREE.Color().setHSL(0.11, 0.42, 0.48)
+    m.color.lerp(gold, 0.55 - dust * 0.25)
+    if (m.emissive) m.emissive.setRGB(0.035 * (1 - dust), 0.028 * (1 - dust), 0.01)
+    m.roughness = Math.max(0.28, (m.roughness ?? 0.75) - 0.22 + dust * 0.3)
+    if (m.metalness != null) m.metalness = Math.min(0.42, m.metalness + 0.18 - dust * 0.2)
+  } else if (status === 'development') {
+    // 在写：略偏暖、保持纸感，不蒙尘（除非仓库真旧）
+    if (m.emissive) m.emissive.setRGB(0.012, 0.008, 0.004)
+  }
+
+  if (dust > 0) {
+    m.color.getHSL(hsl)
+    m.color.setHSL(
+      hsl.h,
+      hsl.s * (1 - dust * 0.72),
+      Math.min(0.86, hsl.l + dust * 0.24)
+    )
+    m.roughness = Math.min(1, (m.roughness ?? 0.8) + dust * 0.22)
+    if (m.metalness != null) m.metalness *= 1 - dust * 0.65
+    if (m.emissive) m.emissive.multiplyScalar(Math.max(0.15, 1 - dust))
+  }
+
+  mesh.userData.bookDust = dust
+  mesh.userData.bookCompleted = completed
+}
+
+function bookMeta(projectSlug, repo) {
+  const proj = projectForBook(projectSlug, repo)
+  const age = repoAgeDays(repo || proj?.slug)
+  const status = proj?.status || null
+  return {
+    ageDays: age,
+    projectStatus: status,
+    completed: status === 'completed',
+    dusty: age != null && age > DUST_DAYS,
+    projectSlug: projectSlug || proj?.slug || null,
+  }
+}
+
+function bookDataFor(name) {
+  if (!name) return null
+  if (deskBookMap[name]) {
+    const b = deskBookMap[name]
+    const meta = bookMeta(b.projectSlug, b.repo)
+    const proj = projectForBook(b.projectSlug, b.repo)
+    return {
+      id: 'book:' + name,
+      label: b.title,
+      kind: 'book',
+      blurb: b.blurb,
+      cta: '翻开书',
+      to: proj ? `/projects/${b.projectSlug || proj.slug}` : `/notes/${b.slug}`,
+      noteSlug: b.slug,
+      projectTitle: proj?.title || null,
+      projectSubtitle: proj?.subtitle || null,
+      storyTo: b.projectSlug ? `/stories/${b.projectSlug}` : null,
+      ...meta,
+    }
+  }
+  if (sideBook && name === sideBook.mesh) {
+    return {
+      id: 'book:' + name,
+      label: sideBook.title,
+      kind: 'book',
+      blurb: sideBook.blurb,
+      cta: '翻开书',
+      to: `/notes/${sideBook.slug}`,
+      noteSlug: sideBook.slug,
+      ageDays: null,
+      dusty: false,
+      completed: false,
+      projectStatus: null,
+    }
+  }
+  if (SHELF_RE.test(name)) {
+    const n = shelfNotes[shelfSlotOf(name)]
+    if (!n) return null
+    const meta = bookMeta(null, n.repo)
+    return {
+      id: 'book:' + name,
+      label: n.title,
+      kind: 'book',
+      blurb: `书架 · ${n.title}`,
+      cta: '翻开书',
+      to: `/notes/${n.slug}`,
+      noteSlug: n.slug,
+      ...meta,
+    }
+  }
+  return null
 }
 
 const INTERACTIVE = [
@@ -155,68 +276,15 @@ const INTERACTIVE = [
   { test: (n) => n.startsWith('WallClock'), data: { id: 'clock', label: '挂钟', kind: 'pulse', blurb: '最近仓库动态。' } },
   { test: (n) => n.startsWith('Armchair') || n.startsWith('OfficeChair'), data: { id: 'chair', label: '椅子', kind: 'contact', blurb: '坐下聊聊。', cta: '联系', to: '/contact' } },
   { test: (n) => n.startsWith('Desktop_') || n === 'Desk_Pad', data: { id: 'desk', label: '橡木书桌', kind: 'desk', blurb: '工作台面。' } },
-  { test: (n) => n === 'Keyboard' || n.includes('Keyboard'), data: { id: 'keyboard', label: '键盘', kind: 'projects', blurb: '手感不错——适合敲项目。', cta: '打开项目', to: '/projects' } },
+  { test: (n) => n === 'Keyboard' || n.includes('Keyboard'), data: { id: 'keyboard', label: '键盘', kind: 'projects', blurb: '纸面终端：工具墙。', cta: '工作台', to: '/bench' } },
   { test: (n) => n.startsWith('Sill_Book') || n.startsWith('Sill_Plant'), data: { id: 'sill', label: '窗台', kind: 'notes', blurb: '窗边读一会儿。', cta: '笔记', to: '/notes' } },
-  { test: (n) => n.includes('Window_Glass') || n === 'Window', data: { id: 'window', label: '窗', kind: 'contact', blurb: '窗外的光会随时间变化。有事写信。', cta: '联系', to: '/contact' } },
+  { test: (n) => n.includes('Window_Glass') || n === 'Window', data: { id: 'window', label: '窗', kind: 'contact', blurb: '窗外是花庭。', cta: '回花庭', to: '/garden' } },
   { test: (n) => n.includes('Window') || n.includes('Curtain'), data: { id: 'curtain', label: '窗帘', kind: 'desk', blurb: '半掩的纱帘。' } },
 ]
 
 function matchInteractive(name) {
   if (!name) return null
   for (const rule of INTERACTIVE) if (rule.test(name)) return { ...rule.data }
-  return null
-}
-
-function bookDataFor(name) {
-  if (!name) return null
-  if (deskBookMap[name]) {
-    const b = deskBookMap[name]
-    const age = repoAgeDays(b.repo)
-    const proj = b.projectSlug ? getProject(b.projectSlug) : null
-    return {
-      id: 'book:' + name,
-      label: b.title,
-      kind: 'book',
-      blurb: b.blurb,
-      cta: '翻开书',
-      to: proj ? `/projects/${b.projectSlug}` : `/notes/${b.slug}`,
-      noteSlug: b.slug,
-      projectSlug: b.projectSlug || null,
-      ageDays: age,
-      dusty: age != null && age > DUST_DAYS,
-      projectTitle: proj?.title || null,
-      projectSubtitle: proj?.subtitle || null,
-    }
-  }
-  if (sideBook && name === sideBook.mesh) {
-    return {
-      id: 'book:' + name,
-      label: sideBook.title,
-      kind: 'book',
-      blurb: sideBook.blurb,
-      cta: '翻开书',
-      to: `/notes/${sideBook.slug}`,
-      noteSlug: sideBook.slug,
-      ageDays: null,
-      dusty: false,
-    }
-  }
-  if (SHELF_RE.test(name)) {
-    const n = shelfNotes[shelfSlotOf(name)]
-    if (!n) return null
-    const age = repoAgeDays(n.repo)
-    return {
-      id: 'book:' + name,
-      label: n.title,
-      kind: 'book',
-      blurb: `书架 · ${n.title}`,
-      cta: '翻开书',
-      to: `/notes/${n.slug}`,
-      noteSlug: n.slug,
-      ageDays: age,
-      dusty: age != null && age > DUST_DAYS,
-    }
-  }
   return null
 }
 
@@ -312,7 +380,7 @@ function tagClickable(obj) {
         child.material = child.material.clone()
         child.material.name = `${child.material.name || 'book'}@${child.name}`
       }
-      applyDust(child, data.ageDays)
+      applyBookFinish(child, data)
       child.userData._home = { y: child.position.y, x: child.rotation.x, z: child.rotation.z }
     }
   })

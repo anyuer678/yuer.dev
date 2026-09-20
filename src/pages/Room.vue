@@ -6,7 +6,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import RoomStage3D from '@/components/features/room/RoomStage3D.vue'
 import roomBooks from '@/content/room-books.json'
-import { featuredProjects, githubData, productProjects, projects, site } from '@/utils/content.js'
+import { featuredProjects, getProject, githubData, productProjects, projects, site } from '@/utils/content.js'
 import { setTitle, setDescription } from '@/utils/seo.js'
 
 const router = useRouter()
@@ -65,9 +65,30 @@ const catalog = computed(() => {
     if (!r?.pushed_at) return null
     return Math.floor((Date.now() - new Date(r.pushed_at).getTime()) / 86400000)
   }
+  const projOf = (projectSlug, repo) => {
+    if (projectSlug) {
+      const p = getProject(projectSlug)
+      if (p) return p
+    }
+    if (!repo) return null
+    return (
+      getProject(repo) ||
+      projects.find((p) => p.slug === repo || (p.github || '').includes(`/${repo}`)) ||
+      null
+    )
+  }
+  const bookFlags = (projectSlug, repo) => {
+    const age = ageOf(repo || projectSlug)
+    const status = projOf(projectSlug, repo)?.status || null
+    return {
+      ageDays: age,
+      projectStatus: status,
+      completed: status === 'completed',
+      dusty: age != null && age > 45,
+    }
+  }
   const desk = (roomBooks.deskBooks || []).map((b) => {
-    const age = ageOf(b.repo)
-    // 旗舰书先落案头（/desk/:slug），再从案头开卷/进档案
+    const flags = bookFlags(b.projectSlug, b.repo)
     const to = b.projectSlug ? `/desk/${b.projectSlug}` : `/notes/${b.slug}`
     return {
       id: 'book:' + b.mesh,
@@ -77,10 +98,9 @@ const catalog = computed(() => {
       cta: b.projectSlug ? '入案头' : '翻开书',
       to,
       projectSlug: b.projectSlug || undefined,
-      noteSlug: b.projectSlug ? b.slug : b.slug,
+      noteSlug: b.slug,
       storyTo: b.projectSlug ? `/stories/${b.projectSlug}` : undefined,
-      ageDays: age,
-      dusty: age != null && age > 45,
+      ...flags,
     }
   })
   // 物件 → 世界门槛（Phase C）：先进气质，再进全量列表；书仍走案头/笔记
@@ -166,18 +186,21 @@ const catalog = computed(() => {
     : []
   // 书架上 18 篇笔记各对应一本刻了书名的「真书」。
   // id 直接指向真实 mesh —— 点索引就能高亮到那一本，不再是拨不通的死链。
-  const shelf = shelfAnchors.value.map((a, i) => ({
-    id: 'book:' + a.mesh,
-    label: a.title,
-    kind: 'book',
-    blurb: `书架第 ${i + 1} 本 · ${a.title}`,
-    cta: '翻开书',
-    to: `/notes/${a.slug}`,
-    noteSlug: a.slug,
-    shelfIndex: i,
-    // 收起时只露前 SHELF_PREVIEW 本，其余靠「+N」展开
-    folded: i >= SHELF_PREVIEW,
-  }))
+  const shelf = shelfAnchors.value.map((a, i) => {
+    const flags = bookFlags(null, a.repo)
+    return {
+      id: 'book:' + a.mesh,
+      label: a.title,
+      kind: 'book',
+      blurb: `书架第 ${i + 1} 本 · ${a.title}`,
+      cta: '翻开书',
+      to: `/notes/${a.slug}`,
+      noteSlug: a.slug,
+      shelfIndex: i,
+      folded: i >= SHELF_PREVIEW,
+      ...flags,
+    }
+  })
   return [...core, ...desk, ...side, ...shelf]
 })
 
@@ -568,10 +591,14 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
               <button type="button" class="sheet__x" aria-label="关闭" @click="clearSelection">×</button>
             </div>
             <h2 class="sheet__title">{{ selected.label }}</h2>
-            <p v-if="selected.dusty" class="dust">
-              <span class="dust__dot" aria-hidden="true" />
-              蒙尘 · 已 {{ selected.ageDays }} 天未推送
-            </p>
+            <div class="sheet__flags">
+              <span v-if="selected.completed" class="seal">完工</span>
+              <span v-if="selected.dusty" class="dust">
+                <span class="dust__dot" aria-hidden="true" />
+                蒙尘 · 已 {{ selected.ageDays }} 天未推送
+              </span>
+              <span v-else-if="selected.projectStatus === 'development'" class="writing">在写</span>
+            </div>
             <p class="sheet__blurb">{{ selected.blurb }}</p>
 
             <!-- 打开的书：案头 / 开卷 / 笔记 -->
@@ -725,12 +752,23 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
                   <button
                     type="button"
                     class="dock__item"
-                    :class="{ 'is-on': selected?.id === item.id, 'is-dusty': item.dusty }"
-                    :title="item.dusty ? `${item.blurb || ''}（蒙尘 ${item.ageDays} 天）` : item.blurb"
+                    :class="{
+                      'is-on': selected?.id === item.id,
+                      'is-dusty': item.dusty,
+                      'is-done': item.completed,
+                    }"
+                    :title="
+                      item.completed
+                        ? `${item.blurb || ''}（完工）`
+                        : item.dusty
+                          ? `${item.blurb || ''}（蒙尘 ${item.ageDays} 天）`
+                          : item.blurb
+                    "
                     @click="pickFromCatalog(item)"
                   >
                     {{ item.label }}
                     <span v-if="item.dusty" class="dock__dust" aria-hidden="true" />
+                    <span v-else-if="item.completed" class="dock__seal" aria-hidden="true" />
                   </button>
                 </li>
                 <li v-if="foldedShelfCount">
@@ -1137,6 +1175,11 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 }
 .dock__item.is-dusty {
   color: #b8a898;
+  opacity: 0.8;
+  filter: saturate(0.6);
+}
+.dock__item.is-done {
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.5);
 }
 .dock__more {
   border-style: dashed;
@@ -1147,6 +1190,12 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
   height: 5px;
   border-radius: 50%;
   background: #a09080;
+}
+.dock__seal {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: #c9a227;
 }
 .dock-enter-active,
 .dock-leave-active {
@@ -1223,6 +1272,33 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 }
 .sheet__cta-row {
   margin-top: 4px;
+}
+.sheet__flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.seal {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #8a6a18;
+  border: 1px solid #c9a227;
+  background: linear-gradient(180deg, #f7e7b0, #e8d48a);
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+.writing {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: #b05c3a;
+  border: 1px dashed rgba(176, 92, 58, 0.55);
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 .dust {
   display: inline-flex;
