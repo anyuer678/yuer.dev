@@ -105,3 +105,27 @@ EventBus ── 广播 → Proactive 主动恢复 / 前端 SSE 实时推送
 ## 源码
 
 - [GitHub](https://github.com/anyuer678/lumen)
+
+## 深度复盘（安全硬化）
+
+### 问题
+
+「操控整台电脑」的 Agent 最大风险不是功能少，而是：**权限模型名实不符**、**shell 字符串执行可绕黑名单**、**确认流可被低权限 token 自批**。
+
+### 已落地的硬化（Sprint1）
+
+- 空 API scopes **不再等于全权**（fail-closed；迁移开关 `LUMEN_ALLOW_LEGACY_EMPTY_SCOPES`）
+- `?token=` 鉴权仅限 SSE/事件流路径
+- `/confirmations` 需要 `confirm:approve`；批准仍校验 PermLevel
+- `shell.run` / `fs:delete` 等策略升至 L2（需确认）；RunTool 合并为**单次**确认门
+- 文档：`docs/THREAT_MODEL.md`、`docs/SECURITY.md`、CHANGELOG 迁移说明
+
+### 残余风险（写进威胁模型）
+
+字符串 shell + 黑名单无法替代 OS 级沙箱；Computer Use / MCP 仍高危；bootstrap 空库窗口期需本机隔离；独立渗透审计未做。
+
+### 一句话
+
+个人 Agent Runtime 的作品集叙事应建立在 **可证明的授权边界** 上，而不是「无所不能」。
+
+

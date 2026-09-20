@@ -70,3 +70,28 @@ pip install keyvault-local
 
 - [GitHub](https://github.com/anyuer678/keyvault)
 - [PyPI](https://pypi.org/project/keyvault-local/)
+
+## 深度复盘（加密与产品边界）
+
+### 问题
+
+个人密钥工具容易「宣传加密、实现随意」：元数据泄露、Windows chmod 无效、Web 会话被盗即可删库、CLI 无限试密码。
+
+### 设计要点
+
+- **真加密**：scrypt + AES-256-GCM，每条独立 nonce，AAD 绑 `name||provider`
+- **默认打码**：`kv get` 摘要输出；完整值显式
+- **Web step-up**：delete/export/import 需再次输入主密码
+- **CLI 限速**：解锁失败 5 次/60s
+- **Windows ACL**：opt-in（`KV_APPLY_WIN_ACL=1`），避免与 SQLite 默认路径冲突
+- **KDF 元数据**：`kv rekey` + `KDF_VERSION` 标记，便于未来参数升级叙事
+
+### 边界
+
+同机恶意进程仍可碰内存/剪贴板；主密码丢失无后门；高价值密钥需磁盘加密 + 操作纪律。
+
+### 一句话
+
+本地工具的价值在 **威胁模型诚实 + 默认行为安全**，而不是功能列表长度。
+
+

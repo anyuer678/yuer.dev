@@ -78,6 +78,38 @@ Next.js 前端 ──→ Node.js + Express API 网关 ──→ Java 21 + Spring
 - 判题沙箱进一步加固与测试覆盖
 - 支持更多语言与交互式判题
 
+## 深度复盘（A+ 轨）
+
+### 问题
+
+多服务 OJ 在功能跑通后，真正难的是：**不可信代码如何不伤主机**、**生产向部署是否与安全叙事一致**、**历史事故能否被回归锁住**。
+
+### 架构与安全决策
+
+| 层 | 做法 |
+|----|------|
+| 隔离 | 进程级：root 设 rlimit → 清空补充组 → `setuid` 降权 → `sandbox_netblock`（libseccomp 黑名单）→ 环境清洗 |
+| Fail-closed | `sandbox_netblock` 缺失/不可执行时 **拒绝判题** |
+| 异步 | 网关写 `PENDING` → RabbitMQ → Worker 判题 → 幂等回写 |
+| 部署 | `docker-compose.prod.yml`：DB/Redis/MQ/Auth **不对宿主 publish**；Web/Gateway 仅 `127.0.0.1` |
+
+### 边界（诚实）
+
+- 黑名单 seccomp **≠** 容器/gVisor；**不**承诺多租户生产隔离
+- 早期 `FIX_LOG` 记录过 CORS/硬编码密码/用例泄露等问题，现已转为回归清单
+- 判题自动化测试仍偏薄；沙箱对抗用例骨架与 CI 工作流已合入，完整逃逸测试需 judge 镜像
+
+### 可验证证据
+
+- 源码：`services/judge-service-python/app/sandbox_helper.py`、`sandbox_netblock.c`
+- 运维：`infra/docker/docker-compose.prod.yml`、`docs/REGRESSION_FROM_FIXLOG.md`
+- 流程：`tests/sandbox_adversarial/` + `.github/workflows/sandbox-adversarial.yml`
+
+### 一句话
+
+作品集里最硬的系统设计样本：**能讲清沙箱边界与 prod 端口策略**，而不是「又一个在线 OJ 壳」。
+
+
 ## 源码与 Demo
 
 - [GitHub](https://github.com/anyuer678/polycodehub)
