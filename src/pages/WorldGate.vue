@@ -1,5 +1,6 @@
 <script setup>
-// /w/:world 世界门槛 — 各世界版式分家，不是同一列表换色
+// /w/:world — 两种读法，不是五套皮肤
+// essay：慢读（诗境 / 关于）；catalog：扫读（作品 / 学习 / 实验）
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import EmptyState from '@/components/ui/EmptyState.vue'
@@ -12,6 +13,7 @@ const world = computed(() => getWorld(String(route.params.world || '')))
 const picks = computed(() => (world.value ? getWorldPicks(world.value.id) : []))
 const allHref = computed(() => (world.value ? listHref(world.value) : null))
 const id = computed(() => world.value?.id || 'works')
+const mode = computed(() => (id.value === 'poetry' || id.value === 'about' ? 'essay' : 'catalog'))
 
 function applyMeta() {
   const w = world.value
@@ -28,123 +30,54 @@ function cnNum(i) {
 </script>
 
 <template>
-  <div v-if="world" class="gate" :class="`gate--${id}`">
-    <!-- 背景分层：非照片装饰层（纸感/光晕/网格），各世界不同 -->
-    <div class="gate__wash" aria-hidden="true" />
-    <div class="gate__texture" aria-hidden="true" />
-
-    <!-- —— 诗境：居中纸页，无列表壳 —— -->
-    <template v-if="id === 'poetry'">
-      <header class="p-head">
-        <p class="p-kicker">诗境</p>
-        <h1 class="p-title">{{ world.feel }}</h1>
-        <p class="p-blurb">{{ world.blurb }}</p>
+  <div v-if="world" class="gate" :class="`gate--${mode} gate--${id}`">
+    <!-- essay：慢读 -->
+    <template v-if="mode === 'essay'">
+      <header class="e-head">
+        <p class="e-mark">{{ world.label }}</p>
+        <h1 class="e-title">{{ world.feel }}</h1>
+        <p class="e-blurb">{{ world.blurb }}</p>
       </header>
-      <ol class="p-list">
-        <li v-for="(item, i) in picks" :key="item.to" class="p-item">
-          <p class="p-num">{{ cnNum(i) }}</p>
-          <h2 class="p-name">
+      <ol class="e-list">
+        <li v-for="(item, i) in picks" :key="item.to" class="e-item">
+          <span class="e-num">{{ cnNum(i) }}</span>
+          <h2 class="e-name">
             <RouterLink :to="item.to">{{ item.title }}</RouterLink>
           </h2>
-          <p v-if="item.subtitle" class="p-date">{{ item.subtitle }}</p>
-          <p v-if="item.blurb" class="p-sum">{{ item.blurb }}</p>
+          <p v-if="item.subtitle" class="e-sub">{{ item.subtitle }}</p>
+          <p v-if="item.blurb" class="e-sum">{{ item.blurb }}</p>
         </li>
       </ol>
     </template>
 
-    <!-- —— 学习：课表 / 主题卡 —— -->
-    <template v-else-if="id === 'learn'">
-      <header class="l-head">
+    <!-- catalog：扫读 -->
+    <template v-else>
+      <header class="c-head">
         <div>
-          <p class="l-kicker">学习廊</p>
-          <h1 class="l-title">{{ world.label }}</h1>
-          <p class="l-feel">{{ world.feel }}</p>
+          <p class="c-kicker">{{ world.label }}</p>
+          <h1 class="c-title">{{ world.feel }}</h1>
+          <p class="c-blurb">{{ world.blurb }}</p>
         </div>
-        <p class="l-count">{{ picks.length }} 篇节选</p>
+        <p class="c-count">{{ picks.length }}</p>
       </header>
-      <p class="l-blurb">{{ world.blurb }}</p>
-      <div class="l-grid">
-        <article v-for="item in picks" :key="item.to" class="l-card">
-          <div class="l-card__top">
-            <span class="l-card__kind">{{ item.kind }}</span>
-            <span v-if="item.subtitle" class="l-card__date">{{ item.subtitle }}</span>
-          </div>
-          <h2 class="l-card__title">
-            <RouterLink :to="item.to">{{ item.title }}</RouterLink>
-          </h2>
-          <p class="l-card__blurb">{{ item.blurb }}</p>
-          <p v-if="item.meta?.length" class="l-card__tags">
-            <span v-for="m in item.meta" :key="m">{{ m }}</span>
-          </p>
-        </article>
-      </div>
-    </template>
-
-    <!-- —— 作品：案头目录，大号序号 + 产品感 —— -->
-    <template v-else-if="id === 'works'">
-      <header class="w-head">
-        <p class="w-kicker">作品斋</p>
-        <h1 class="w-title">{{ world.feel }}</h1>
-        <p class="w-blurb">{{ world.blurb }}</p>
-      </header>
-      <ol class="w-list">
-        <li v-for="(item, i) in picks" :key="item.to" class="w-row">
-          <span class="w-idx">{{ String(i + 1).padStart(2, '0') }}</span>
-          <div class="w-body">
-            <div class="w-title-row">
-              <h2 class="w-name">
+      <ol class="c-list">
+        <li v-for="(item, i) in picks" :key="item.to" class="c-row">
+          <span class="c-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+          <div class="c-body">
+            <div class="c-title-row">
+              <h2 class="c-name">
                 <RouterLink :to="item.to">{{ item.title }}</RouterLink>
               </h2>
-              <span class="w-kind">{{ item.kind }}</span>
+              <span class="c-kind">{{ item.kind }}</span>
             </div>
-            <p v-if="item.subtitle" class="w-sub">{{ item.subtitle }}</p>
-            <p class="w-sum">{{ item.blurb }}</p>
-            <p v-if="item.meta?.length" class="w-meta">
+            <p v-if="item.subtitle" class="c-sub">{{ item.subtitle }}</p>
+            <p v-if="item.blurb" class="c-sum">{{ item.blurb }}</p>
+            <p v-if="item.meta?.length" class="c-meta">
               <span v-for="m in item.meta" :key="m">{{ m }}</span>
             </p>
           </div>
         </li>
       </ol>
-    </template>
-
-    <!-- —— 实验：工作台草稿 —— -->
-    <template v-else-if="id === 'lab'">
-      <header class="b-head">
-        <h1 class="b-title">实验场</h1>
-        <p class="b-feel">{{ world.feel }}</p>
-        <p class="b-blurb">{{ world.blurb }}</p>
-      </header>
-      <ul class="b-list">
-        <li v-for="item in picks" :key="item.to" class="b-item">
-          <span class="b-stamp">{{ item.kind }}</span>
-          <div>
-            <h2 class="b-name">
-              <RouterLink :to="item.to">{{ item.title }}</RouterLink>
-            </h2>
-            <p class="b-desc">{{ item.blurb }}</p>
-            <p v-if="item.subtitle" class="b-date">{{ item.subtitle }}</p>
-          </div>
-        </li>
-      </ul>
-    </template>
-
-    <!-- —— 关于 / 其它：极简 —— -->
-    <template v-else>
-      <header class="a-head">
-        <h1 class="a-title">{{ world.label }}</h1>
-        <p class="a-feel">{{ world.feel }}</p>
-        <p class="a-blurb">{{ world.blurb }}</p>
-      </header>
-      <ul class="a-list">
-        <li v-for="item in picks" :key="item.to">
-          <RouterLink :to="item.to" class="a-link">
-            <span class="a-kind">{{ item.kind }}</span>
-            <span class="a-name">{{ item.title }}</span>
-            <span class="a-go" aria-hidden="true">→</span>
-          </RouterLink>
-          <p v-if="item.blurb" class="a-blurb2">{{ item.blurb }}</p>
-        </li>
-      </ul>
     </template>
 
     <EmptyState
@@ -166,126 +99,35 @@ function cnNum(i) {
     </footer>
   </div>
 
-  <div v-else class="container container--narrow gate-miss">
+  <div v-else class="gate-miss">
     <h1>世界尚未命名</h1>
-    <p><RouterLink to="/garden">回花庭</RouterLink> · <RouterLink to="/projects">项目</RouterLink></p>
+    <p><RouterLink to="/garden">回花庭</RouterLink></p>
   </div>
 </template>
 
 <style scoped>
 .gate {
-  position: relative;
   min-height: 100%;
-  padding: var(--space-8) clamp(16px, 4vw, 32px) var(--space-16);
-  overflow: hidden;
+  padding: var(--space-8) clamp(16px, 5vw, 40px) var(--space-16);
 }
-.gate > :not(.gate__wash):not(.gate__texture) {
-  position: relative;
-  z-index: 1;
-}
-/* wash / texture：每世界一套，靠 .gate--id 覆盖 */
-.gate__wash,
-.gate__texture {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-.gate__wash {
-  background: transparent;
-}
-.gate__texture {
-  opacity: 0.5;
-  background: transparent;
-}
-
-/* 诗境：暖纸 + 极淡横向纹理（像笺） */
-.gate--poetry .gate__wash {
-  background:
-    radial-gradient(ellipse 100% 70% at 50% 0%, rgba(246, 233, 225, 0.75), transparent 65%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(232, 220, 200, 0.35), transparent 70%),
-    linear-gradient(180deg, #faf6ef 0%, var(--color-bg) 100%);
-}
-.gate--poetry .gate__texture {
-  opacity: 0.35;
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 27px,
-    rgba(90, 74, 58, 0.045) 27px,
-    rgba(90, 74, 58, 0.045) 28px
-  );
-}
-
-/* 学习：冷静桌垫 + 细网格 */
-.gate--learn .gate__wash {
-  background:
-    linear-gradient(180deg, #ebe8e0 0%, var(--color-surface-muted) 40%, #e4e2da 100%);
-}
-.gate--learn .gate__texture {
-  opacity: 0.45;
-  background-image:
-    linear-gradient(rgba(90, 90, 80, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(90, 90, 80, 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* 作品：展陈纸 + 顶光 */
-.gate--works .gate__wash {
-  background:
-    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(246, 233, 225, 0.55), transparent 60%),
-    linear-gradient(180deg, #f7f3eb 0%, var(--color-bg) 55%);
-}
-.gate--works .gate__texture {
-  opacity: 0.25;
-  background-image: radial-gradient(circle at 20% 30%, rgba(176, 92, 58, 0.06) 0 1px, transparent 1.5px);
-  background-size: 18px 18px;
-}
-
-/* 实验：工位台面 + 斜线 */
-.gate--lab .gate__wash {
-  background:
-    linear-gradient(160deg, #e8e4da 0%, #dcd8ce 50%, #d4d0c6 100%);
-}
-.gate--lab .gate__texture {
-  opacity: 0.55;
-  background-image: repeating-linear-gradient(
-    -12deg,
-    transparent,
-    transparent 10px,
-    rgba(90, 80, 60, 0.05) 10px,
-    rgba(90, 80, 60, 0.05) 11px
-  );
-}
-
-/* 关于：静室微光 */
-.gate--about .gate__wash {
-  background:
-    radial-gradient(ellipse 70% 50% at 70% 20%, rgba(246, 233, 225, 0.4), transparent 55%),
-    var(--color-bg);
-}
-
 .gate__foot {
   margin-top: var(--space-12);
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding-top: var(--space-6);
+  padding-top: var(--space-5, 20px);
   border-top: var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
 }
 .gate__all {
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
   color: var(--color-accent);
   text-decoration: none;
 }
 .gate__nav {
   display: flex;
   gap: var(--space-4);
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
 }
 .gate__nav a {
   color: var(--color-text-secondary);
@@ -295,451 +137,220 @@ function cnNum(i) {
 .gate__all:hover {
   color: var(--color-accent);
 }
-.gate-miss {
-  padding-block: var(--space-16);
-}
 
-/* ========== 诗境 ========== */
-.gate--poetry {
-  max-width: 36rem;
+/* —— essay：明显更空、更居中、更大字 —— */
+.gate--essay {
+  max-width: 34rem;
   margin: 0 auto;
   text-align: center;
+  padding-top: var(--space-16);
+  background:
+    linear-gradient(180deg, rgba(246, 233, 225, 0.55) 0%, transparent 280px),
+    var(--color-bg);
 }
-.p-head {
-  padding: var(--space-12) 0 var(--space-8);
+.e-head {
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-8);
+  border-bottom: none;
 }
-.p-kicker {
+.e-mark {
   font-family: var(--font-display);
-  font-size: var(--text-small);
-  letter-spacing: 0.35em;
+  font-size: 12px;
+  letter-spacing: 0.4em;
   color: var(--color-accent);
 }
-.p-title {
-  margin-top: var(--space-4);
+.e-title {
+  margin-top: var(--space-6);
   font-family: var(--font-display);
-  font-size: clamp(28px, 5vw, 40px);
+  font-size: clamp(32px, 6vw, 44px);
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.25;
 }
-.p-blurb {
-  margin: var(--space-6) auto 0;
-  max-width: 22em;
+.e-blurb {
+  margin: var(--space-8) auto 0;
+  max-width: 18em;
   font-family: var(--font-display);
   font-size: var(--text-body);
-  line-height: 1.9;
+  line-height: 2;
   color: var(--color-text-secondary);
 }
-.p-list {
+.e-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
-.p-item {
-  padding: 0;
-  border: none;
-}
-.p-num {
+.e-num {
+  display: block;
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-tertiary);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--space-4);
 }
-.p-name {
-  margin-top: var(--space-3);
+.e-name {
   font-family: var(--font-display);
-  font-size: clamp(22px, 3.5vw, 28px);
+  font-size: clamp(24px, 4vw, 32px);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.4;
 }
-.p-name a {
+.e-name a {
   color: var(--color-text);
   text-decoration: none;
 }
-.p-name a:hover {
+.e-name a:hover {
   color: var(--color-accent);
 }
-.p-date {
-  margin-top: var(--space-2);
+.e-sub {
+  margin-top: var(--space-3);
   font-family: var(--font-display);
   font-style: italic;
-  font-size: var(--text-small);
   color: var(--color-text-tertiary);
+  font-size: var(--text-small);
 }
-.p-sum {
-  margin: var(--space-4) auto 0;
-  max-width: 28em;
+.e-sum {
+  margin: var(--space-5, 20px) auto 0;
+  max-width: 26em;
   font-family: var(--font-display);
   font-size: var(--text-small);
-  line-height: 1.85;
+  line-height: 1.9;
   color: var(--color-text-secondary);
 }
 
-/* ========== 学习 ========== */
-.gate--learn {
-  max-width: none;
-  margin: 0;
-  padding-inline: clamp(16px, 4vw, 40px);
+/* —— catalog：左对齐、密、可扫 —— */
+.gate--catalog {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: left;
+  background: var(--color-bg);
 }
-.gate--learn .l-head,
-.gate--learn .l-blurb,
-.gate--learn .l-grid,
-.gate--learn .gate__foot {
-  max-width: var(--container);
-  margin-left: auto;
-  margin-right: auto;
-}
-.l-head {
+.c-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: var(--space-4);
-  padding-top: var(--space-8);
-  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-4);
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--color-text);
 }
-.l-kicker {
+.c-kicker {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.16em;
   color: var(--color-accent);
 }
-.l-title {
+.c-title {
   margin-top: 4px;
   font-family: var(--font-sans);
-  font-size: var(--text-h1);
   font-weight: 700;
+  font-size: var(--text-h1);
   letter-spacing: -0.02em;
+  line-height: var(--lh-h1);
 }
-.l-feel {
-  margin-top: 4px;
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--color-text-secondary);
-}
-.l-count {
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
-  white-space: nowrap;
-}
-.l-blurb {
-  margin-bottom: var(--space-6);
-  max-width: 52ch;
+.c-blurb {
+  margin-top: var(--space-3);
+  max-width: 46ch;
   font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
-.l-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
-}
-.l-card {
-  background: var(--color-surface);
-  border: var(--border-default);
-  border-radius: var(--radius-md);
-  padding: var(--space-5, 20px) var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-height: 160px;
-}
-.l-card__top {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
+.c-count {
   font-family: var(--font-mono);
-  font-size: 11px;
-}
-.l-card__kind {
-  color: var(--color-accent);
-}
-.l-card__date {
-  color: var(--color-text-tertiary);
-}
-.l-card__title {
-  font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--color-border-strong);
   font-weight: 600;
-  line-height: 1.35;
 }
-.l-card__title a {
+.c-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.c-row {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5, 20px) 0;
+  border-bottom: var(--border-default);
+}
+.c-idx {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--color-accent);
+  padding-top: 2px;
+}
+.c-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.c-name {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.c-name a {
   color: var(--color-text);
   text-decoration: none;
 }
-.l-card__title a:hover {
+.c-name a:hover {
   color: var(--color-accent);
 }
-.l-card__blurb {
-  flex: 1;
+.c-kind {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.c-sub {
+  margin-top: 4px;
+  font-family: var(--font-mono);
   font-size: var(--text-caption);
   color: var(--color-text-secondary);
-  line-height: 1.55;
 }
-.l-card__tags {
+.c-sum {
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+  max-width: 52ch;
+}
+.c-meta {
+  margin-top: var(--space-3);
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   font-family: var(--font-mono);
   font-size: 11px;
 }
-.l-card__tags span {
-  padding: 2px 6px;
+.c-meta span {
+  padding: 2px 7px;
+  border: var(--border-default);
   border-radius: 3px;
-  background: var(--color-surface-muted);
   color: var(--color-text-secondary);
+  background: var(--color-surface);
 }
 
-/* ========== 作品 ========== */
-.gate--works {
-  max-width: 720px;
-  margin: 0 auto;
+/* 仅 catalog 内极轻差异，不再做五套底 */
+.gate--learn .c-row {
+  background: linear-gradient(90deg, var(--color-surface-muted), transparent 85%);
 }
-.w-head {
-  padding: var(--space-8) 0 var(--space-6);
-  border-bottom: 2px solid var(--color-text);
-}
-.w-kicker {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--color-accent);
-}
-.w-title {
-  margin-top: var(--space-2);
-  font-family: var(--font-display);
-  font-size: var(--text-h1);
-  line-height: var(--lh-h1);
-}
-.w-blurb {
-  margin-top: var(--space-3);
-  color: var(--color-text-secondary);
-  max-width: 40ch;
-  font-size: var(--text-small);
-}
-.w-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.w-row {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: var(--space-4);
-  padding: var(--space-6) 0;
-  border-bottom: var(--border-default);
-}
-.w-idx {
-  font-family: var(--font-mono);
-  font-size: 22px;
-  color: var(--color-accent);
-  line-height: 1;
-  padding-top: 4px;
-}
-.w-title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-3);
-}
-.w-name {
-  font-family: var(--font-display);
-  font-size: var(--text-h2);
-  line-height: var(--lh-h2);
-}
-.w-name a {
-  color: var(--color-text);
-  text-decoration: none;
-}
-.w-name a:hover {
-  color: var(--color-accent);
-}
-.w-kind {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-  background: var(--color-accent-soft);
-  border-radius: 999px;
-  padding: 2px 8px;
-}
-.w-sub {
-  margin-top: 4px;
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--color-text-secondary);
-}
-.w-sum {
-  margin-top: var(--space-3);
-  font-size: var(--text-small);
-  color: var(--color-text-secondary);
-  max-width: 48ch;
-}
-.w-meta {
-  margin-top: var(--space-3);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text-secondary);
-}
-.w-meta span:not(:last-child)::after {
-  content: '·';
-  margin-left: var(--space-2);
-  color: var(--color-text-tertiary);
+.gate--lab .c-row {
+  border-bottom-style: dashed;
 }
 
-/* ========== 实验 ========== */
-.gate--lab {
-  max-width: 640px;
-  margin: 0 auto;
+.gate-miss {
+  padding: var(--space-16) clamp(16px, 4vw, 32px);
 }
-.b-head {
-  padding: var(--space-8) 0 var(--space-5, 20px);
-}
-.b-title {
-  font-family: var(--font-mono);
-  font-size: var(--text-h1);
-  letter-spacing: 0.06em;
-}
-.b-feel {
-  margin-top: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
-  color: var(--color-accent);
-}
-.b-blurb {
-  margin-top: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--color-text-secondary);
-  max-width: 48ch;
-}
-.b-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
-.b-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px dashed var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.55);
-}
-.b-stamp {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-  border: 1px dashed var(--color-accent);
-  border-radius: 2px;
-  padding: 2px 6px;
-  height: fit-content;
-  white-space: nowrap;
-}
-.b-name {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: 600;
-}
-.b-name a {
-  color: var(--color-text);
-  text-decoration: none;
-}
-.b-name a:hover {
-  color: var(--color-accent);
-}
-.b-desc {
-  margin-top: 6px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text-secondary);
-  line-height: 1.55;
-}
-.b-date {
-  margin-top: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--color-text-tertiary);
-}
-
-/* ========== 关于 ========== */
-.gate--about {
-  max-width: 28rem;
-  margin: 0 auto;
-  padding-top: var(--space-16);
-}
-.a-title {
-  font-family: var(--font-display);
-  font-size: var(--text-h1);
-}
-.a-feel {
-  margin-top: var(--space-2);
-  font-family: var(--font-display);
-  font-style: italic;
-  color: var(--color-text-secondary);
-}
-.a-blurb {
-  margin-top: var(--space-6);
-  color: var(--color-text-secondary);
-  line-height: 1.8;
-}
-.a-list {
-  list-style: none;
-  margin: var(--space-8) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-5, 20px);
-}
-.a-link {
-  display: grid;
-  grid-template-columns: 48px 1fr auto;
-  gap: var(--space-3);
-  align-items: baseline;
-  text-decoration: none;
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid transparent;
-}
-.a-link:hover {
-  border-bottom-color: var(--color-border);
-}
-.a-kind {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--color-text-tertiary);
-}
-.a-name {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  color: var(--color-text);
-}
-.a-link:hover .a-name {
-  color: var(--color-accent);
-}
-.a-go {
-  color: var(--color-text-tertiary);
-}
-.a-blurb2 {
-  margin-top: 4px;
-  margin-left: calc(48px + var(--space-3));
-  font-size: var(--text-caption);
-  color: var(--color-text-secondary);
-}
-
 @media (max-width: 639px) {
-  .w-row {
-    grid-template-columns: 40px 1fr;
+  .c-row {
+    grid-template-columns: 36px 1fr;
   }
-  .l-head {
-    flex-direction: column;
-    align-items: flex-start;
+  .c-count {
+    font-size: 28px;
   }
 }
 </style>

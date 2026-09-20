@@ -126,25 +126,35 @@ onBeforeUnmount(() => {
   will-change: transform;
   transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
 }
-/* 天光：左上偏暖，与照片内容无关的空气层 */
+/* 天光：可见的院内光，而非几乎无感的 soft-light */
 .garden__light {
   position: absolute;
   inset: -8%;
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 55% at 18% 12%, rgba(255, 248, 232, 0.28), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 85% 20%, rgba(255, 236, 210, 0.12), transparent 50%),
-    linear-gradient(180deg, rgba(250, 246, 238, 0.08) 0%, transparent 40%);
-  mix-blend-mode: soft-light;
+    radial-gradient(ellipse 65% 50% at 16% 10%, rgba(255, 244, 220, 0.42), transparent 52%),
+    radial-gradient(ellipse 45% 35% at 88% 18%, rgba(255, 228, 190, 0.22), transparent 48%),
+    linear-gradient(165deg, rgba(255, 250, 240, 0.2) 0%, transparent 35%, rgba(90, 70, 50, 0.08) 100%);
+  mix-blend-mode: multiply;
   transition: transform 0.55s cubic-bezier(0, 0, 0.2, 1);
 }
+/* 纸框感：四边收暗，像从笺上看院 */
 .garden__vignette {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 50%, rgba(40, 30, 20, 0.14) 100%);
+  box-shadow:
+    inset 0 0 80px rgba(50, 36, 24, 0.22),
+    inset 0 0 160px rgba(50, 36, 24, 0.12);
+  background:
+    linear-gradient(90deg, rgba(40, 30, 20, 0.16) 0%, transparent 8%, transparent 92%, rgba(40, 30, 20, 0.14) 100%),
+    linear-gradient(180deg, rgba(40, 30, 20, 0.12) 0%, transparent 10%, transparent 88%, rgba(40, 30, 20, 0.18) 100%);
+}
+.garden__bg {
+  /* 略压饱和，让天光层更可感 */
+  filter: saturate(0.92) brightness(1.02);
 }
 .garden__grain {
   position: absolute;
