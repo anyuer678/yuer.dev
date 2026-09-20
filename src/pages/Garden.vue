@@ -62,7 +62,7 @@ onMounted(() => {
 
       <RouterLink class="list-link" to="/projects">列表浏览 →</RouterLink>
       <RouterLink class="home-link" to="/">首页</RouterLink>
-      <p class="hint">风里偶尔有一朵不一样的花 · 靠近停一停</p>
+      <p class="hint">偏红较大的花是入口 · 靠近稍候显名，再点一下进入</p>
 
       <!-- 无障碍旁路：键盘/读屏不依赖落花命中，直达各世界门槛 -->
       <nav class="sr-worlds" aria-label="世界入口">
@@ -140,6 +140,9 @@ onMounted(() => {
   color: var(--color-text-secondary);
   letter-spacing: 0.12em;
   text-decoration: none;
+  padding: 6px 10px;
+  background: rgba(255, 252, 246, 0.72);
+  border-radius: 999px;
 }
 .list-link {
   left: 24px;
@@ -161,11 +164,14 @@ onMounted(() => {
   z-index: 4;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--color-text-secondary);
-  letter-spacing: 0.14em;
+  color: var(--color-text);
+  letter-spacing: 0.08em;
   pointer-events: none;
   text-align: center;
-  max-width: min(90vw, 420px);
+  max-width: min(92vw, 460px);
+  padding: 6px 12px;
+  background: rgba(255, 252, 246, 0.78);
+  border-radius: 999px;
 }
 .study-gate {
   position: absolute;

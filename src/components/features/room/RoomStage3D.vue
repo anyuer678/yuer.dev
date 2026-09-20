@@ -1136,14 +1136,21 @@ onMounted(async () => {
     })
     // 排架映射必须先算好：下面的 tagClickable 靠它决定每本书翻开哪篇笔记
     buildShelfMap(modelRoot)
-    emit('shelfmap', shelfAnchorList)
+    // 书脊标签依赖独立的 BK_* 网格；若模型被错误合并则跳过，避免贴出错位面片
+    if (!shelfOrder.length || shelfOrder.length < 20) {
+      console.warn('[RoomStage3D] shelf books missing, skip spine labels', shelfOrder.length)
+    } else {
+      emit('shelfmap', shelfAnchorList)
+    }
     scene.add(modelRoot)
     tagClickable(modelRoot)
     applyShadows(modelRoot)
     await decorateArt(modelRoot, base)
     // 书脊刻名：18 本锚点书各贴一枚书名签（一张图集 + 合并四边形，只加 1 个 draw call）
-    spineLabels = buildSpineLabels(modelRoot)
-    if (spineLabels) scene.add(spineLabels)
+    if (shelfOrder.length >= 20) {
+      spineLabels = buildSpineLabels(modelRoot)
+      if (spineLabels) scene.add(spineLabels)
+    }
     addBackdrop()
     addDust()
     setupClockAndWindow(modelRoot)
