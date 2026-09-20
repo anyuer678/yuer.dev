@@ -1,5 +1,6 @@
 <script setup>
-// /garden 花庭 — 漫游壳：分层静态空间 + Canvas 落花 + 纸页转场（docs/16/17）
+// /garden 花庭 — 单幅底图空间 + Canvas 落花 + 纸页转场
+// 分层裁切叠在整图上会重影/拉伸（变形），故不叠 branch/door 副本。
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import PetalField from '@/components/features/garden/PetalField.vue'
@@ -14,13 +15,10 @@ const fx = ref(null)
 const leaving = ref(false)
 const stage = ref(null)
 const base = import.meta.env.BASE_URL
-const L = {
-  far: `${base}images/garden/garden-far.webp`,
-  branch: `${base}images/garden/garden-branch.webp`,
-  door: `${base}images/garden/garden-door.webp`,
-}
+// 原完整底图：门、梅枝、院墙同一构图，避免叠层错位
+const bgUrl = `${base}images/garden/garden-bg.webp`
 
-// 视差（静态层 + 指针；减动效关闭）
+// 极轻整体视差（仅整图位移，不切层、不缩放裁切）
 const px = ref(0)
 const py = ref(0)
 let reduced = false
@@ -61,28 +59,11 @@ onBeforeUnmount(() => {
 <template>
   <div class="garden">
     <div ref="stage" class="garden__stage">
-      <!-- 静态分层：远景 → 院墙 → 梅枝/门（网页负责动态，不靠一张动画壁纸） -->
       <div
-        class="garden__layer garden__layer--far"
+        class="garden__bg"
         :style="{
-          backgroundImage: `url(${L.far})`,
-          transform: `translate(${px * -8}px, ${py * -4}px) scale(1.06)`,
-        }"
-        aria-hidden="true"
-      />
-      <div
-        class="garden__layer garden__layer--branch"
-        :style="{
-          backgroundImage: `url(${L.branch})`,
-          transform: `translate(${px * 22}px, ${py * 14}px)`,
-        }"
-        aria-hidden="true"
-      />
-      <div
-        class="garden__layer garden__layer--door"
-        :style="{
-          backgroundImage: `url(${L.door})`,
-          transform: `translate(${px * -6}px, ${py * -3}px)`,
+          backgroundImage: `url(${bgUrl})`,
+          transform: `translate3d(${px * -10}px, ${py * -6}px, 0)`,
         }"
         aria-hidden="true"
       />
@@ -97,7 +78,6 @@ onBeforeUnmount(() => {
         <PetalField :worlds="worlds" @enter="onEnter" />
       </div>
 
-      <!-- 门热区：叠在分层门上，不是列表导航 -->
       <button
         type="button"
         class="study-gate"
@@ -128,38 +108,16 @@ onBeforeUnmount(() => {
   background-color: #f0ebe2;
   overflow: hidden;
 }
-.garden__layer {
+/* 略放大，位移时不露边；cover 保证比例不变形 */
+.garden__bg {
   position: absolute;
+  inset: -3%;
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
   pointer-events: none;
   will-change: transform;
-  transition: transform 0.35s var(--ease-out, cubic-bezier(0, 0, 0.2, 1));
-}
-.garden__layer--far {
-  inset: -4%;
-  z-index: 0;
-  background-size: cover;
-}
-.garden__layer--branch {
-  left: 0;
-  top: 0;
-  width: min(48vw, 640px);
-  height: min(46vh, 420px);
-  z-index: 2;
-  background-size: contain;
-  background-position: left top;
-  background-repeat: no-repeat;
-}
-.garden__layer--door {
-  right: 4%;
-  bottom: 10%;
-  width: min(28vw, 360px);
-  height: min(58vh, 520px);
-  z-index: 2;
-  background-size: contain;
-  background-position: center bottom;
-  opacity: 0.95;
+  transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
 }
 .garden__grain {
   position: absolute;
@@ -217,11 +175,11 @@ onBeforeUnmount(() => {
 }
 .study-gate {
   position: absolute;
-  right: 7%;
-  bottom: 16%;
+  right: 6%;
+  bottom: 18%;
   z-index: 5;
-  width: min(170px, 24vw);
-  height: min(240px, 34vh);
+  width: min(160px, 22vw);
+  height: min(220px, 32vh);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -233,7 +191,7 @@ onBeforeUnmount(() => {
 .study-gate span {
   position: absolute;
   left: 50%;
-  top: 42%;
+  top: 38%;
   transform: translate(-50%, -50%);
   font-family: var(--font-mono);
   font-size: 13px;
@@ -251,16 +209,12 @@ onBeforeUnmount(() => {
   .hint {
     font-size: 11px;
   }
-  .garden__layer--branch {
-    width: min(62vw, 360px);
-    height: min(36vh, 260px);
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .garden__grain {
     opacity: 0.12;
   }
-  .garden__layer {
+  .garden__bg {
     transition: none;
   }
 }
