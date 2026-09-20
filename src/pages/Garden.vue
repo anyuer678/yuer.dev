@@ -68,6 +68,13 @@ onBeforeUnmount(() => {
         aria-hidden="true"
       />
 
+      <!-- 非照片层：天光 + 暗角（不重复墙/枝/门） -->
+      <div
+        class="garden__light"
+        :style="{ transform: `translate3d(${px * 4}px, ${py * 3}px, 0)` }"
+        aria-hidden="true"
+      />
+      <div class="garden__vignette" aria-hidden="true" />
       <div class="garden__grain" aria-hidden="true" />
 
       <div class="brand" aria-hidden="true">

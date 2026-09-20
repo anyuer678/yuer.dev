@@ -305,9 +305,6 @@ function cnNum(i) {
   margin: 0 auto;
   text-align: center;
 }
-.gate--poetry {
-  /* 气质底在 wash 层；此处只约束阅读栏宽 */
-}
 .p-head {
   padding: var(--space-12) 0 var(--space-8);
 }
