@@ -8,7 +8,7 @@ featured: true
 date: 2026-08
 tech: [Vue 3, TypeScript, Spring Boot, Python, PostgreSQL, Redis, LLM, Docker]
 tags: [AI, FullStack]
-summary: AST 代码分析 + LLM 报告生成，为老项目输出中文架构全景文档（开发中）。
+summary: 本机软件体检（local-tool）：规则引擎扫描 + 可选 LLM；无认证，勿公网。tree-sitter 架构解析真实存在，无 key 时报告降级。
 demo:
 github: https://github.com/anyuer678/evocode
 order: 2
@@ -91,6 +91,26 @@ LLM 只做"基于分析结果的生成"，避免幻觉污染事实。
 
 ### 一句话
 能降级的 AI 才叫工具；写死宣传的 AI 只是故事。
+
+
+## 架构速览
+
+```text
+Vue3 前端
+   │  /api/v1（仅 127.0.0.1）
+   ▼
+Spring Boot Backend ── PostgreSQL(pgvector) / Redis
+   │  /analyze/v1（仅本机）
+   ▼
+FastAPI Analyzer
+   ├─ 规则扫描：security / complexity / duplication / style …
+   ├─ 架构：tree-sitter（py/java/js/ts/go）+ 分层/环检测
+   ├─ 演化：git log 信号
+   └─ LLM（可选）：报告 / AI 医生 / RAG — 无 key 则 RULES 降级
+```
+
+- 护栏：`docker-compose.full.yml` 端口仅 127.0.0.1；`scripts/check_bind_guard.py`
+- 启动：`python analyzer/run.py`（默认 loopback；公网需显式 opt-in）
 
 ## 源码与 Demo
 
