@@ -93,6 +93,8 @@ watchEffect(async (onInvalidate) => {
         :src="baseUrl + project.cover"
         :alt="`${project.title} 预览`"
         class="project-detail__cover"
+        loading="lazy"
+        decoding="async"
       />
 
       <hr class="project-detail__divider" />
