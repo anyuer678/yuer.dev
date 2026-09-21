@@ -13,9 +13,10 @@
     "postbuild": "node scripts/prerender-pages.mjs",
     "sync:github": "node scripts/sync-github.mjs",
     "validate": "node scripts/validate-content.mjs",
+    "check:perf-budget": "node scripts/check-perf-budget.mjs",
     "lint": "eslint src --ext .js,.vue",
     "format": "prettier --write src scripts",
-    "check": "npm run validate && npm run lint && npm run build"
+    "check": "npm run validate && npm run lint && npm run check:perf-budget && npm run build"
   },
   "dependencies": {
     "highlight.js": "^11.9.0",

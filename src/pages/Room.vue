@@ -2,9 +2,12 @@
 // /room —— 3D 书房：全屏沉浸式舞台 + 两端极简 HUD + 底部索引 dock + 检视信息条
 // 布局约定：控件只出现在「顶部两端」和「底部边缘」，
 // 画面中央与左上（书架所在）完全留给场景。
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import RoomStage3D from '@/components/features/room/RoomStage3D.vue'
+// 3D 舞台异步加载：three/GLB 不进 Room 路由 shell chunk，失败时由 stageFailed 降级
+const RoomStage3D = defineAsyncComponent(
+  () => import('@/components/features/room/RoomStage3D.vue')
+)
 import roomBooks from '@/content/room-books.json'
 import { featuredProjects, getProject, githubData, productProjects, projects, site } from '@/utils/content.js'
 import { setTitle, setDescription } from '@/utils/seo.js'
