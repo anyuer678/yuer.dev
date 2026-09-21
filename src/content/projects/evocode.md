@@ -74,6 +74,24 @@ LLM 只做"基于分析结果的生成"，避免幻觉污染事实。
 - 维护建议知识库（常见反模式与修复方案）
 - 明确不做：自动改代码（v1 只做"理解"与"建议"）
 
+## 深度复盘（规则引擎为主）
+
+### 问题
+「AI 体检」容易名实不符：核心若是 LLM，无网即空。
+
+### 事实
+- 核心是 **确定性规则扫描**（安全/复杂度/重复/架构…）
+- LLM 为可选增强；无 key 降级 `source=RULES`
+- tree-sitter 在 analyzer 依赖与 parser 中**真实存在**
+- 定位：`local-tool`，无认证，仅本机
+
+### 配套
+- `docker-compose.full.yml` + bind guard（非 loopback 默认拒绝）
+- `analyzer/run.py` 安全启动入口
+
+### 一句话
+能降级的 AI 才叫工具；写死宣传的 AI 只是故事。
+
 ## 源码与 Demo
 
 - GitHub：https://github.com/anyuer678/evocode

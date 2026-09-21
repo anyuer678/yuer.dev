@@ -70,3 +70,21 @@ journey: [{"date": "2026-08", "title": "雏形", "desc": "五层链路打通：S
 ## 源码
 
 - [GitHub](https://github.com/anyuer678/voiceconsole)
+
+## 深度复盘（本地控制面）
+
+### 问题
+语音 → 本机命令，最大风险是「确认门被 MCP 客户端自批」与「路径无边界」。
+
+### 已落地
+- 默认 `confirm_authority=local-ui`：MCP 不能 `confirm(confirm_id)` 自批
+- 路径沙箱：生产默认 home+cwd（**不含**系统 temp）；测试用 `VOICECONSOLE_PATH_ROOTS`
+- 持久审计、安全门（`shell=False`）、TTS 默认本地
+- 文档：`docs/THREAT_MODEL.md`
+
+### 边界
+同机进程仍可能打本地 Web；白名单含侦察类命令；不可在不可信 MCP 宿主使用。
+
+### 一句话
+本地工具的安全门必须建立在**不可自证**的确认通道上。
+
