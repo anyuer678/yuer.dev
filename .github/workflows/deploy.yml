@@ -1,9 +1,14 @@
 # GitHub Pages 部署（07 §9.1）：push main 自动构建部署到 https://anyuer678.github.io/yuer.dev/
+#
+# pull_request 也会跑 build job（npm ci → validate → lint → perf-budget → build），
+# 使 main 的 required status check 能落在真实的 `build` check-run 上；
+# deploy job 只在非 PR 事件执行，PR 不会触碰 github-pages 环境。
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -12,7 +17,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  # 按 ref 分组：PR 上的校验不会取消正在进行的 main 部署
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -42,6 +48,8 @@ jobs:
 
   deploy:
     needs: build
+    # 只在 push / workflow_dispatch 上发布；PR 上仅做校验
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
