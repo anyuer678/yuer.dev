@@ -1259,7 +1259,9 @@ onMounted(async () => {
   const base = import.meta.env.BASE_URL
   try {
     const gltf = await loader.loadAsync(`${base}models/study_room/study_room_web.opt.glb`, (e) => {
-      if (e.total) loadPct.value = Math.round((e.loaded / e.total) * 100)
+      // e.total 取的是响应头里的 Content-Length（gzip 后的大小），而 e.loaded 是**解压后**的字节数
+      // → 比值会超过 1，界面上出现过「载入书房… 122%」。进度显示必须夹在 0–100。
+      if (e.total) loadPct.value = Math.min(100, Math.round((e.loaded / e.total) * 100))
     })
     draco.dispose()
     modelRoot = gltf.scene
