@@ -36,6 +36,10 @@ const staticRoutes = [
   'stories/evocode',
   'bench',
   'dashboard',
+  // 重定向路由也要生成壳：否则 /poetry 落在 GitHub Pages 的 404.html 兜底上，
+  // 深链返回 404 并在 console 留下一条 404 报错 —— 与本文档开头的目标相悖。
+  // 壳返回 200 后由前端 router 完成 /poetry → 目标页的跳转。
+  'poetry',
 ]
 // 动态路由：content 目录 → 路由前缀
 const dynamicRoutes = [
