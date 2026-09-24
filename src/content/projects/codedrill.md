@@ -4,7 +4,7 @@ title: CodeDrill
 subtitle: 离线代码训练平台
 status: completed
 tier: product
-featured: true
+featured: false
 date: 2026-07
 tech: [Vue 3, Vite, Electron, JavaScript]
 tags: [Learning]
