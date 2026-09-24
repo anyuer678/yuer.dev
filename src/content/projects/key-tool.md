@@ -2,18 +2,18 @@
 slug: key-tool
 title: Key Tool
 subtitle: API Key 多租户网关
-status: development
+status: archived
 tier: product
 featured: false
 date: 2026-08
 tech: [Python, FastAPI, OpenAI API]
 tags: [安全, API, 工具]
-summary: 多维度限额密钥签发与消费网关：项目体系 / 余额计费 / 模型绑定 / 限流，转发任意 OpenAI 兼容上游，支持 SDK 直连与流式。
+summary: 多维度限额密钥签发与消费网关：项目体系 / 余额计费 / 模型绑定 / 限流，转发任意 OpenAI 兼容上游，支持 SDK 直连与流式（已归档，替代见 keyvault）。
 demo:
 github: https://github.com/anyuer678/key-tool
 order: 18
 related: [key-tool-notes]
-journey: [{"date": "2026-08", "title": "功能完整", "desc": "Web 面板 + CLI + OpenAI SDK 三种使用方式，65 项测试通过"}]
+journey: [{"date": "2026-08", "title": "功能完整", "desc": "Web 面板 + CLI + OpenAI SDK 三种使用方式，65 项测试通过"}, {"date": "2026-09", "title": "归档", "desc": "停止维护，密钥管理统一到 keyvault"}]
 ---
 
 ## 项目介绍

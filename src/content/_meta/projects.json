@@ -104,7 +104,7 @@
     "subtitle": "离线代码训练平台",
     "status": "completed",
     "tier": "product",
-    "featured": true,
+    "featured": false,
     "date": "2026-07",
     "tech": [
       "Vue 3",
@@ -387,7 +387,7 @@
       "工程化",
       "monorepo"
     ],
-    "summary": "自建前端素材库与工程模板集：73 组件、46 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动；npm 四包已发布（kb-ui-vue / @yuer678/kb-utils / @yuer678/kb-api / @yuer678/create-kb）。",
+    "summary": "自建前端素材库与工程模板集：73 组件、46 套主题、36 个页面模块、7 种脚手架模板，零运行时依赖；npm 四包已发布。",
     "demo": "https://anyuer678.github.io/kb-ui/",
     "github": "https://github.com/anyuer678/kb-ui",
     "order": 20,

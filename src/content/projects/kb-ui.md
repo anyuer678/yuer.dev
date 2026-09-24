@@ -4,16 +4,16 @@ title: KB UI
 subtitle: Vue 3 组件库与工程模板集
 status: development
 tier: product
-featured: false
+featured: true
 date: 2026-08
 tech: [Vue 3, TypeScript, Vite]
 tags: [组件库, 工程化, monorepo]
-summary: 自建前端素材库与工程模板集：55+ 组件、46 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动。
+summary: 自建前端素材库与工程模板集：73 组件、46 套主题、36 个页面模块、7 种脚手架模板，零运行时依赖；npm 四包已发布。
 demo: https://anyuer678.github.io/kb-ui/
 github: https://github.com/anyuer678/kb-ui
 order: 20
 cover: projects/kb-ui.svg
-journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"}]
+journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"}, {"date": "2026-09", "title": "npm 发版", "desc": "四包上线 npm（kb-ui-vue@0.4.1 等），组件数 55+ 增至 73"}]
 ---
 
 ## 项目介绍
@@ -28,7 +28,7 @@ journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题�
 
 ## 功能
 
-- 组件库（@kb/ui，55+ 组件）：基础 / 表单 / 反馈 / 数据全覆盖，函数式 API（message / notification）
+- 组件库（@kb/ui，73 组件）：基础 / 表单 / 反馈 / 数据全覆盖，函数式 API（message / notification）
 - 主题系统（46 套）：46 套主题（圆润/扁平/渐变/玻璃/赛博/终端/水墨/孟菲斯…），深色模式组合切换
 - 页面模块模板（36 个）：登录 / 仪表盘 / 数据大屏 / 任务看板 / 聊天窗口 / 音乐播放器 等，playground 内全部可切换预览
 - 通用工具库（@kb/utils，60+ 函数）：格式化 / 数组 / 对象 / 字符串 / 并发控制 / 防抖节流 / 存储封装
@@ -40,7 +40,7 @@ journey: [{"date": "2026-08", "title": "开发中", "desc": "组件库 + 主题�
 ```
 kb-ui/（pnpm workspace monorepo）
   packages/
-    ui/            @kb/ui 组件库（55+ 组件）
+    ui/            @kb/ui 组件库（73 组件）
     utils/         @kb/utils 工具函数库
     config/        共享工程配置（tsconfig/eslint/prettier/stylelint）
     create-kb/     脚手架 CLI（7 种模板）
