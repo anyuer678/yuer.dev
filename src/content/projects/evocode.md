@@ -13,7 +13,7 @@ demo:
 github: https://github.com/anyuer678/evocode
 order: 2
 related: [evocode-architecture]
-journey: [{"date": "2026-08", "title": "立项", "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"}]
+journey: [{"date": "2026-08", "title": "立项", "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"}, {"date": "2026-09", "title": "v3.22 发布", "desc": "GitHub Release v3.22：建议引擎 + 12 类规则扫描 + 逐行分析"}]
 ---
 
 ## 项目介绍
