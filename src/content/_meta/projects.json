@@ -326,6 +326,11 @@
         "date": "2026-08",
         "title": "立项",
         "desc": "AI 软件维护与演化平台，GitHub 仓库建立，开发中"
+      },
+      {
+        "date": "2026-09",
+        "title": "v3.22 发布",
+        "desc": "GitHub Release v3.22：建议引擎 + 12 类规则扫描 + 逐行分析"
       }
     ]
   },
@@ -370,7 +375,7 @@
     "subtitle": "Vue 3 组件库与工程模板集",
     "status": "development",
     "tier": "product",
-    "featured": false,
+    "featured": true,
     "date": "2026-08",
     "tech": [
       "Vue 3",
@@ -382,7 +387,7 @@
       "工程化",
       "monorepo"
     ],
-    "summary": "自建前端素材库与工程模板集：55+ 组件、46 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动。",
+    "summary": "自建前端素材库与工程模板集：73 组件、46 套主题、36 个页面模块、60+ 工具函数、7 种脚手架模板，零运行时依赖、CSS 变量驱动；npm 四包已发布（kb-ui-vue / @yuer678/kb-utils / @yuer678/kb-api / @yuer678/create-kb）。",
     "demo": "https://anyuer678.github.io/kb-ui/",
     "github": "https://github.com/anyuer678/kb-ui",
     "order": 20,
@@ -392,6 +397,11 @@
         "date": "2026-08",
         "title": "开发中",
         "desc": "组件库 + 主题系统 + 页面模块 + 脚手架模板 + DevOps 资产"
+      },
+      {
+        "date": "2026-09",
+        "title": "npm 发版",
+        "desc": "四包上线 npm（kb-ui-vue@0.4.1 等），组件数 55+ 增至 73"
       }
     ]
   },
@@ -399,7 +409,7 @@
     "slug": "key-tool",
     "title": "Key Tool",
     "subtitle": "API Key 多租户网关",
-    "status": "development",
+    "status": "archived",
     "tier": "product",
     "featured": false,
     "date": "2026-08",
@@ -413,7 +423,7 @@
       "API",
       "工具"
     ],
-    "summary": "多维度限额密钥签发与消费网关：项目体系 / 余额计费 / 模型绑定 / 限流，转发任意 OpenAI 兼容上游，支持 SDK 直连与流式。",
+    "summary": "多维度限额密钥签发与消费网关：项目体系 / 余额计费 / 模型绑定 / 限流，转发任意 OpenAI 兼容上游，支持 SDK 直连与流式（已归档，替代见 keyvault）。",
     "demo": null,
     "github": "https://github.com/anyuer678/key-tool",
     "order": 18,
@@ -425,6 +435,11 @@
         "date": "2026-08",
         "title": "功能完整",
         "desc": "Web 面板 + CLI + OpenAI SDK 三种使用方式，65 项测试通过"
+      },
+      {
+        "date": "2026-09",
+        "title": "归档",
+        "desc": "停止维护，密钥管理统一到 keyvault"
       }
     ]
   },
