@@ -2,7 +2,7 @@
 slug: stargrave
 title: Star 清理建议器
 subtitle: StarGrave
-status: development
+status: archived
 tier: product
 featured: false
 date: 2026-08

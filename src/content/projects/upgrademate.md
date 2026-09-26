@@ -2,7 +2,7 @@
 slug: upgrademate
 title: 旧代码升级器
 subtitle: UpgradeMate
-status: development
+status: archived
 tier: product
 featured: false
 date: 2026-08
