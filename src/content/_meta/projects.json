@@ -599,12 +599,13 @@
       "全栈",
       "判题沙箱"
     ],
-    "summary": "自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，进程级沙箱判题（setuid 降权 + seccomp 隔离），Docker Compose 一键启动。",
+    "summary": "自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，四层沙箱判题（seccomp 白名单 + cgroup + ns/jail + setuid），Docker Compose 一键启动。",
     "demo": "https://anyuer678.github.io/polycodehub/",
     "github": "https://github.com/anyuer678/polycodehub",
     "order": 8,
     "related": [
-      "polycodehub-architecture"
+      "polycodehub-architecture",
+      "polycodehub-sandbox-notes"
     ],
     "cover": "projects/polycodehub.png",
     "journey": [
@@ -617,6 +618,11 @@
         "date": "2026-08",
         "title": "迁移迭代",
         "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"
+      },
+      {
+        "date": "2026-09",
+        "title": "沙箱三层演进",
+        "desc": "seccomp 黑名单→trace 驱动白名单、cgroup v2 按判题隔离、ns+jail 最小根——adversarial CI 实测抓出并修复 12 个真 bug"
       }
     ]
   },
