@@ -8,13 +8,13 @@ featured: false
 date: 2026-08
 tech: [TypeScript, JavaScript, Java, Spring Boot, Python, FastAPI, Node.js, Docker, Redis]
 tags: [OJ, 全栈, 判题沙箱]
-summary: 自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，进程级沙箱判题（setuid 降权 + seccomp 隔离），Docker Compose 一键启动。
+summary: 自用全栈 OJ：题库、提交、判题、比赛、题解与社区一体，四层沙箱判题（seccomp 白名单 + cgroup + ns/jail + setuid），Docker Compose 一键启动。
 demo: https://anyuer678.github.io/polycodehub/
 github: https://github.com/anyuer678/polycodehub
 order: 8
-related: [polycodehub-architecture]
+related: [polycodehub-architecture, polycodehub-sandbox-notes]
 cover: projects/polycodehub.png
-journey: [{"date": "2025-09", "title": "雏形", "desc": "用 Next.js 搭出第一版在线判题平台"}, {"date": "2026-08", "title": "迁移迭代", "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"}]
+journey: [{"date": "2025-09", "title": "雏形", "desc": "用 Next.js 搭出第一版在线判题平台"}, {"date": "2026-08", "title": "迁移迭代", "desc": "迁到独立仓库继续迭代，Docker Compose 一键启动，判题沙箱用 setuid 降权 + seccomp 隔离"}, {"date": "2026-09", "title": "沙箱三层演进", "desc": "seccomp 黑名单→trace 驱动白名单、cgroup v2 按判题隔离、ns+jail 最小根——adversarial CI 实测抓出并修复 12 个真 bug"}]
 ---
 
 ## 项目介绍
@@ -25,7 +25,7 @@ journey: [{"date": "2025-09", "title": "雏形", "desc": "用 Next.js 搭出第�
 ## 设计目标
 
 - 支持多语言提交：Python 3 / Node.js / C++ (g++ 14) / C (gcc 14) / Java 21
-- 判题运行在进程级隔离沙箱中（`setuid` 降权 + seccomp 网络隔离 + 资源限制）
+- 判题运行在四层沙箱中（`setuid` 降权 + seccomp 黑名单/白名单 + cgroup v2 + ns/jail，演进记录见笔记《判题沙箱演进》）
 - Web 端覆盖完整使用：题库、提交、判题、比赛、每日一题、题解与社区
 - 异步任务链路：判题任务经消息队列解耦，网关与判题服务各自伸缩
 - 一键启动：Docker Compose 编排，脚本自动生成环境配置并做健康检查
