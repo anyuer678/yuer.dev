@@ -932,6 +932,19 @@
     ],
     "summary": "判题是 CPU 密集还得隔离的活，和 API、认证根本不是一类需求——记录 PolyCodeHub 把网关、认证、判题沙箱拆成四个服务的决策，以及四轮安全与工程化修复。"
   },
+  "polycodehub-sandbox-notes": {
+    "title": "判题沙箱演进：从 136 行黑名单到 ns/cgroup/白名单",
+    "date": "2026-09-26",
+    "tags": [
+      "安全",
+      "Linux",
+      "seccomp",
+      "cgroup",
+      "沙箱"
+    ],
+    "type": "project",
+    "summary": "黑名单在结构上就是错的：内核新增 syscall 时缺省放行。记录判题沙箱三层演进——seccomp 白名单、cgroup v2、ns+jail，以及 CI 抓出的 12 个真 bug。"
+  },
   "probability-notes": {
     "title": "概率论与数理统计速记",
     "date": "2025-06",
