@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "postbuild": "node scripts/prerender-pages.mjs",
+    "postbuild": "node scripts/prerender-pages.mjs && node scripts/gen-feed.mjs",
     "sync:github": "node scripts/sync-github.mjs",
     "validate": "node scripts/validate-content.mjs",
     "check:perf-budget": "node scripts/check-perf-budget.mjs",
