@@ -161,5 +161,6 @@ execve("/usr/bin/python3", ...)       = 0        ← 命中
 
 三个 PR 走下来，我对"安全边界"的理解变了：它不是一个开关，而是**一叠可以被测试证明的承诺**。每一层缓解措施旁边都躺着一行"已证明"或"未证明"，而那行字的诚实程度，就是这个项目的工程质量。
 
+> 姊妹篇：[《判题沙箱的 12 个真 bug》](/yuer.dev/notes/sandbox-pitfalls-notes/)——四个最有代表性的坑的深度拆解。
 > 沙箱相关代码：`services/judge-service-python/`（`sandbox_netblock.c` / `sandbox_helper.py` / `app/cgroup.py` / `scripts/gen_whitelist.py`），
 > 安全文档：[THREAT_MODEL.md](https://github.com/anyuer678/polycodehub/blob/main/THREAT_MODEL.md) / [SANDBOX_TESTING.md](https://github.com/anyuer678/polycodehub/blob/main/docs/SANDBOX_TESTING.md)。
