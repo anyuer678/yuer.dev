@@ -1039,6 +1039,18 @@
     ],
     "summary": "软件开发架构平台课程的前后端笔记：REST 六约束、Spring Boot 实现模式、JWT 认证鉴权、ES6 语法、Vue 指令与组件、构建工具与部署，基于老师课件整理。"
   },
+  "sandbox-pitfalls-notes": {
+    "title": "判题沙箱的 12 个真 bug：CI 抓出来的四个经典坑",
+    "date": "2026-09-26",
+    "tags": [
+      "安全",
+      "Linux",
+      "seccomp",
+      "调试"
+    ],
+    "type": "project",
+    "summary": "对抗性 CI 在沙箱演进中实测抓出 12 个真 bug。拆解四个最有代表性的：clone3 无回退、CLONE_NEWPID 不重编号调用者、procfs 绑定挂载者的 ns、挂载顺序覆盖工作目录。"
+  },
   "single-cycle-cpu-notes": {
     "title": "单周期 ARM 处理器：从指令集到 SystemVerilog",
     "date": "2026-06-08",
