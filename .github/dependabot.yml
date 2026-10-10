@@ -12,11 +12,6 @@ updates:
       # 同理：ESLint 9 为 flat config 大版本，与 .eslintrc.cjs 不兼容
       - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
-      # 框架升级组（#21/#22/#23 实测 peer 互锁，必须一组升 + SPA runtime 回归验证后解除）：
-      # vite 6→8 + @vitejs/plugin-vue 5→6 + vue-router 4→5
-      - dependency-name: "vite"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@vitejs/plugin-vue"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "vue-router"
-        update-types: ["version-update:semver-major"]
+      # 框架升级组（vite 8 + @vitejs/plugin-vue 6 + vue-router 5）已于 2026-10-10
+      # lockstep 升级完成并过生产构建 + 无头 SPA runtime 回归（8 页面 0 错误），
+      # 已到各包 latest 大版本，ignore 解除。
