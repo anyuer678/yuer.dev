@@ -4,14 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      # eslint-plugin-vue v10 移除 legacy .eslintrc 共享配置（plugin:vue/vue3-recommended），
-      # 本站仍用 legacy .eslintrc.cjs + ESLint 8；迁移 flat config 后再解除
-      - dependency-name: "eslint-plugin-vue"
-        update-types: ["version-update:semver-major"]
-      # 同理：ESLint 9 为 flat config 大版本，与 .eslintrc.cjs 不兼容
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
-      # 框架升级组（vite 8 + @vitejs/plugin-vue 6 + vue-router 5）已于 2026-10-10
-      # lockstep 升级完成并过生产构建 + 无头 SPA runtime 回归（8 页面 0 错误），
-      # 已到各包 latest 大版本，ignore 解除。
+    # 2026-10-10 flat config 迁移完成（eslint 10 + eslint-plugin-vue 10，
+    # .eslintrc.cjs → eslint.config.js），eslint/eslint-plugin-vue 大版本 ignore 解除。
+    # 此前两组 major ignore 的背景：框架组（vite8/plugin-vue6/router5）同日 lockstep
+    # 升级完成；lint 组（eslint10/plugin-vue10）flat config 迁移完成。
