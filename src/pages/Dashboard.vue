@@ -2,9 +2,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { githubData } from '@/utils/content.js'
 
-// 仓单（15 仓）：保持 docs/15 §1 记录的既有形态，本次不改动收录范围。
+// 仓单（16 仓）：docs/15 §1 原有 15 仓 + polycodehub（2026-10-10 补录——
+// 全栈 OJ 判题系统已成型并纳入三主线叙事，面板此前建于其前而漏收）。
 const REPO_LIST = [
-  'desktoppet', 'lumen', 'kb-ui', 'codedrill', 'dsh-logtimeline',
+  'desktoppet', 'lumen', 'kb-ui', 'polycodehub', 'codedrill', 'dsh-logtimeline',
   'voiceconsole', 'keyvault', 'picren', 'upgrademate', 'chatez',
   'evocode', 'developer-intelligence', 'stargrave', 'yuer.dev', 'ai-toolbox',
 ]
@@ -174,7 +175,7 @@ function timeAgo(dateStr) {
   <div class="dash">
     <h1 class="dash__title">📊 作品集控制面板</h1>
     <p class="dash__lead">
-      15 个仓库的 CI / Release / 活跃度概览
+      16 个仓库的 CI / Release / 活跃度概览
       <button v-if="!loading" class="dash__btn" @click="refresh">🔄 刷新</button>
       <span v-if="stampLabel" class="dash__stamp">{{ stampLabel }}</span>
     </p>
