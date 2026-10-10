@@ -24,14 +24,14 @@
     "markdown-it": "^15.0.2",
     "three": "^0.186.1",
     "vue": "^3.5.43",
-    "vue-router": "^4.5.0"
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.10",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.32.0",
     "prettier": "^3.9.9",
-    "vite": "^6.4.4"
+    "vite": "^8.3.4"
   },
   "overrides": {
     "js-yaml": "^4.1.1"
