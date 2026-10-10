@@ -37,6 +37,17 @@ const routes = [
     },
   },
   {
+    path: '/map',
+    name: 'map',
+    component: () => import('@/pages/Map.vue'),
+    meta: {
+      nav: true,
+      label: 'Map',
+      title: (s) => `地图 · ${s.name}`,
+      description: (s) => `${s.name} 的作品体系地图`,
+    },
+  },
+  {
     path: '/projects/:slug',
     name: 'project-detail',
     component: () => import('@/pages/ProjectDetail.vue'),
