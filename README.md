@@ -4,7 +4,7 @@
 
 [![Deploy](https://img.shields.io/github/actions/workflow/status/anyuer678/yuer.dev/deploy.yml?branch=main&label=deploy)](https://github.com/anyuer678/yuer.dev/actions)
 [![Vue 3](https://img.shields.io/badge/Vue-3.5+-42b883?logo=vue.js)](https://vuejs.org/)
-[![Vite](https://img.shields.io/badge/Vite-6+-646cff?logo=vite)](https://vite.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8+-646cff?logo=vite)](https://vite.dev/)
 [![License](https://img.shields.io/github/license/anyuer678/yuer.dev)](LICENSE)
 
 ## 简介
@@ -35,8 +35,8 @@ Yuer Studio 是我的个人数字空间 —— 一个集 **项目展示**、**�
 | 层级 | 技术 |
 |------|------|
 | 框架 | Vue 3 + Composition API |
-| 构建 | Vite 6 |
-| 路由 | Vue Router 4 |
+| 构建 | Vite 8 |
+| 路由 | Vue Router 5 |
 | Markdown | markdown-it + highlight.js |
 | 部署 | GitHub Actions → GitHub Pages |
 
