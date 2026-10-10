@@ -19,7 +19,7 @@
     "check": "npm run validate && npm run lint && npm run check:perf-budget && npm run build"
   },
   "dependencies": {
-    "highlight.js": "^11.9.0",
+    "highlight.js": "^11.12.0",
     "kb-ui-vue": "^0.4.2",
     "markdown-it": "^14.3.1",
     "three": "^0.186.1",
