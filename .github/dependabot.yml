@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      # eslint-plugin-vue v10 移除 legacy .eslintrc 共享配置（plugin:vue/vue3-recommended），
+      # 本站仍用 legacy .eslintrc.cjs + ESLint 8；迁移 flat config 后再解除
+      - dependency-name: "eslint-plugin-vue"
+        update-types: ["version-update:semver-major"]
+      # 同理：ESLint 9 为 flat config 大版本，与 .eslintrc.cjs 不兼容
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
