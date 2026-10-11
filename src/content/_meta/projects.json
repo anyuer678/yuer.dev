@@ -67,7 +67,7 @@
     "slug": "chatez",
     "title": "Chatez",
     "subtitle": "个人 AI 工作空间",
-    "status": "archived",
+    "status": "development",
     "tier": "product",
     "featured": false,
     "date": "2026-05",
@@ -132,7 +132,7 @@
     "slug": "codetutor-cn",
     "title": "中文代码教学器",
     "subtitle": "Code Tutor CN",
-    "status": "development",
+    "status": "archived",
     "tier": "product",
     "featured": false,
     "date": "2026-08",
@@ -334,41 +334,6 @@
       }
     ]
   },
-  "jpetstore-ssm-cms": {
-    "slug": "jpetstore-ssm-cms",
-    "title": "JPetStore SSM 重构",
-    "subtitle": "SSM PetStore CMS（团队项目）",
-    "status": "completed",
-    "tier": "lab",
-    "featured": false,
-    "date": "2026-05",
-    "tech": [
-      "Java",
-      "Spring Boot",
-      "MySQL",
-      "MyBatis"
-    ],
-    "tags": [
-      "SSM",
-      "团队项目",
-      "后台管理"
-    ],
-    "summary": "软件开发架构平台课程实验：8 人团队把 JPetStore 重构为 Spring MVC + MyBatis-Plus，并开发三大后台模块；负责用户模块 API 与前端商品模块。",
-    "demo": null,
-    "github": "",
-    "order": 21,
-    "cover": "projects/jpetstore-ssm-cms.svg",
-    "related": [
-      "jpetstore-ssm-notes"
-    ],
-    "journey": [
-      {
-        "date": "2026-05",
-        "title": "完成",
-        "desc": "SSM 重构 + 后台管理系统，8 人团队协作"
-      }
-    ]
-  },
   "kb-ui": {
     "slug": "kb-ui",
     "title": "KB UI",
@@ -478,7 +443,7 @@
     "slug": "logtimeline",
     "title": "日志时间戳模糊查询器",
     "subtitle": "LogTimeline",
-    "status": "development",
+    "status": "archived",
     "tier": "product",
     "featured": false,
     "date": "2026-08",
