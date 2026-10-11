@@ -2,13 +2,13 @@
 slug: chatez
 title: Chatez
 subtitle: 个人 AI 工作空间
-status: archived
+status: development
 tier: product
 featured: false
 date: 2026-05
 tech: [React, TypeScript, Tauri, LLM]
 tags: [AI, Desktop]
-summary: 可配置 Prompt + Skill 的 AI 工作台（v1.14.1）：多角色切换、Skill 技能系统、SSE 流式输出、会话持久化，支持 Web / Windows / Android 三端。
+summary: 可配置 Prompt + Skill 的 AI 工作台（v1.14.2）：多角色切换、Skill 技能系统、SSE 流式输出、会话持久化，支持 Web / Windows / Android 三端。
 demo: https://anyuer678.github.io/chatez/
 github: https://github.com/anyuer678/chatez
 order: 4
