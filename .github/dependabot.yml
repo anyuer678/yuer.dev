@@ -8,3 +8,7 @@ updates:
     # .eslintrc.cjs → eslint.config.js），eslint/eslint-plugin-vue 大版本 ignore 解除。
     # 此前两组 major ignore 的背景：框架组（vite8/plugin-vue6/router5）同日 lockstep
     # 升级完成；lint 组（eslint10/plugin-vue10）flat config 迁移完成。
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
