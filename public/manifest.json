@@ -1,0 +1,22 @@
+{
+  "name": "Yuer Studio — 做软件的 Yuer",
+  "short_name": "Yuer",
+  "start_url": "/yuer.dev/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#FAFAF8",
+  "icons": [
+    {
+      "src": "/yuer.dev/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/yuer.dev/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
