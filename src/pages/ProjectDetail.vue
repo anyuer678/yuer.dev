@@ -17,6 +17,7 @@ const route = useRoute()
 
 const project = ref(getProject(route.params.slug))
 const html = ref('')
+const bodyLoaded = ref(false)
 const relatedNotes = ref([])
 
 const repoStats = computed(() => project.value?.repoStats)
@@ -47,6 +48,7 @@ watchEffect(async (onInvalidate) => {
   })
   project.value = getProject(slug)
   if (!project.value) return // 404 兜底由下方 if 处理
+  bodyLoaded.value = false
   relatedNotes.value = (project.value.related ?? []).map(getNote).filter(Boolean)
 
   setTitle(`${project.value.title} · ${project.value.subtitle || site.name}`)
@@ -56,7 +58,12 @@ watchEffect(async (onInvalidate) => {
   if (loader) {
     html.value = '' // 切换时清空旧正文，避免闪现
     const raw = await loader()
-    if (!cancelled) html.value = renderMarkdown(raw, slug)
+    if (!cancelled) {
+      html.value = renderMarkdown(raw, slug)
+      bodyLoaded.value = true
+    }
+  } else {
+    bodyLoaded.value = true
   }
 })
 </script>
@@ -139,7 +146,8 @@ watchEffect(async (onInvalidate) => {
 
       <ArticleContent :html="html" />
 
-      <section v-if="relatedNotes.length" class="project-detail__related">
+      <!-- 正文懒加载完成前不渲染：否则“相关笔记”先出现在视口，正文到达后被推走（CLS） -->
+      <section v-if="bodyLoaded && relatedNotes.length" class="project-detail__related">
         <h2 class="project-detail__related-title">相关笔记</h2>
         <ul class="project-detail__related-list">
           <li v-for="n in relatedNotes" :key="n.slug">
