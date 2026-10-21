@@ -10,7 +10,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const PUBLIC = join(ROOT, 'public')
 
 /** 阈值单位：KB。fail=硬失败；warn=打印警告不失败
- *  说明：项目封面 fail 放宽到 450KB，覆盖既有 portfolio 截图债务（cet6-vocabulary.png ~408KB），
+ *  说明：线上封面已统一 WebP；原始 PNG 与 2.5D 房间图归档在 assets-src/，不参与部署。
  *  新增资产请压到 warn 线以下。 */
 const BUDGETS = [
   { label: 'glb 模型', test: (rel) => rel.startsWith('models/') && rel.endsWith('.glb'), failKB: 1500, warnKB: 800 },

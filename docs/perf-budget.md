@@ -18,15 +18,17 @@ npm run check:perf-budget
 |------|------|------|
 | `models/**/*.glb` | 800 KB | 1500 KB |
 | `draco/**` | 300 KB | 600 KB |
-| `projects/**` 封面 | 120 KB | 450 KB（覆盖既有截图债务） |
+| `projects/**` 封面 | 120 KB | 450 KB |
 | `images/**` | 400 KB | 700 KB |
 | 任意 public 单文件 | 1200 KB | 2000 KB |
+
+`draco/**` 现在只统计仍部署的 wasm wrapper 与 wasm；asm.js 回退 `draco_decoder.js` 已归档到 `assets-src/draco/`，非 WASM 环境会走 `/room` 的 2D 兜底。
 
 ## 已知债务（不阻断，但应逐步压缩）
 
 - `models/study_room/study_room_web.opt.glb` ≈ 1.2 MB（接近 glb fail 线；Room 页懒加载后对首屏无影响）
-- `images/room/*.webp` 单张约 350–560 KB（房间沉浸页资源）
-- `projects/cet6-vocabulary.png` ≈ 408 KB（WARN；应压到 <120 KB 或转为 webp/svg）
+- 2.5D 房间底图已归档到 `assets-src/room-2d/`，不再部署；`/room` 线上只用 GLB
+- 三张原始 PNG 封面已归档到 `assets-src/projects/`，线上封面为 WebP（三张合计约 83 KB）
 
 ## 懒加载约定
 

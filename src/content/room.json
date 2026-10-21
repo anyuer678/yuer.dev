@@ -1,5 +1,5 @@
 {
-  "_note": "归档契约（2.5D 热区方案）。生产实现以 RoomStage3D + room-books.json + Room.vue catalog 为准；新映射不要写回本文件。见 docs/15 二次拍板与 docs/16 §7。",
+  "_note": "归档契约（2.5D 热区方案）。生产实现以 RoomStage3D + room-books.json + Room.vue catalog 为准；新映射不要写回本文件。见 docs/15 二次拍板与 docs/16 §7。2.5D 原图已归档到 assets-src/room-2d/，不参与部署。",
   "scenes": [
     {
       "id": "desk",
@@ -7,7 +7,7 @@
       "subtitle": "主工作台",
       "blurb": "点一点桌上的东西。",
       "mode": "flat",
-      "image": "images/room/desk.webp",
+      "image": "assets-src/room-2d/desk.webp",
       "hotspots": [
         {
           "id": "notebook",
@@ -153,7 +153,7 @@
       "subtitle": "项目分层",
       "blurb": "从上到下：旗舰 → 产品 → 实验。",
       "mode": "flat",
-      "image": "images/room/shelf.webp",
+      "image": "assets-src/room-2d/shelf.webp",
       "hotspots": [
         {
           "id": "top-shelf",
@@ -237,7 +237,7 @@
       "subtitle": "停一下",
       "blurb": "看一眼外面，顺便看看最近。",
       "mode": "flat",
-      "image": "images/room/window.webp",
+      "image": "assets-src/room-2d/window.webp",
       "hotspots": [
         {
           "id": "sky",
