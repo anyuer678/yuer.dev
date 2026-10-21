@@ -30,6 +30,12 @@ npm run check:perf-budget
 - 2.5D 房间底图已归档到 `assets-src/room-2d/`，不再部署；`/room` 线上只用 GLB
 - 三张原始 PNG 封面已归档到 `assets-src/projects/`，线上封面为 WebP（三张合计约 83 KB）
 
+### 书房 GLB 的 800 KB 警戒线取舍（2026-10-22 实测）
+
+- 构成：纹理 248.7 KB（13 张，材质全部引用）+ Draco 几何 766.8 KB（230 个 bufferView，无重复）+ JSON 191.1 KB
+- 即使删掉全部纹理，仍有约 958 KB > 800 KB；要达标必须减面/激进量化几何或裁 JSON
+- 结论：保留当前模型，接受 1 条 WARN；硬上限 1500 KB 未超。要压到 800 KB 以下应单独立项并做视觉对比，不要在资产清理里顺手降质
+
 ## 懒加载约定
 
 - 路由级代码分割：除 Home 外全部 `() => import('@/pages/....vue')`
