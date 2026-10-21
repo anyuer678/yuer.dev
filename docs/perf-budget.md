@@ -26,16 +26,17 @@ npm run check:perf-budget
 
 ## 已知债务（不阻断，但应逐步压缩）
 
-- `models/study_room/study_room_web.opt.glb` ≈ 1.2 MB（接近 glb fail 线；Room 页懒加载后对首屏无影响）
+- `models/study_room/study_room_web.opt.glb` ≈ 798.8 KiB（2026-10-22 按网格筛选减面后；perf budget 0 warning）
 - 2.5D 房间底图已归档到 `assets-src/room-2d/`，不再部署；`/room` 线上只用 GLB
 - 三张原始 PNG 封面已归档到 `assets-src/projects/`，线上封面为 WebP（三张合计约 83 KB）
 
-### 书房 GLB 的 800 KB 警戒线取舍（2026-10-22 实测）
+### 书房 GLB 体积决策（2026-10-22）
 
-- 构成：纹理 248.7 KB（13 张，材质全部引用）+ Draco 几何 766.8 KB（230 个 bufferView，无重复）+ JSON 191.1 KB
-- 即使删掉全部纹理，仍有约 958 KB > 800 KB；要达标必须减面/激进量化几何或裁 JSON
-- 2026-10-22 沙箱实验：dedup/prune + 256px 纹理 + 25% 顶点 + Draco 可到 797.8 KiB（<800），节点/网格/材质名 100% 保留；但近景花盆底部出现可见变形，故未采纳，原模型保留
-- 结论：保留当前模型，接受 1 条 WARN；硬上限 1500 KB 未超。要压到 800 KB 以下应单独立项并做视觉对比，不要在资产清理里顺手降质
+- 原模型 1206.7 KiB：纹理 248.7 + Draco 766.8 + JSON 191.1；纹理全部被材质引用、几何 bufferView 无重复，删光纹理仍有约 958 KiB > 800
+- 全量减面候选 797.8 KiB 达线，但近景花盆底部被减面拉平，否决
+- 最终采用按网格筛选：保护植物/花盆/杯子/地球仪/钟/灯等 11 个圆物件，仅简化墙/地/书架/书本/桌面等大面；256px WebP + Draco 10/8/8/8
+- 结果 798.8 KiB（纹理 49 + 几何 558.7 + JSON 191.1），171 nodes / 167 meshes / 58 materials 名称全保留，validate 通过
+- 视觉 A/B：默认机位静态区域平均差 2.57/255；花盆、椅子、桌面、书架近景无明显差异
 
 ## 懒加载约定
 
