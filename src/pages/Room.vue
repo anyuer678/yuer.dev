@@ -176,6 +176,7 @@ const catalog = computed(() => {
       blurb: `此刻 ${clockLabel.value || '—'} · 最近仓库动态。`,
     },
     { id: 'mug', label: '茶杯', kind: 'easter', blurb: '「软件不是一次完成的作品…」' },
+    { id: 'cat', label: '猫', kind: 'easter', blurb: '「持续迭代。」——猫在监督进度。' },
     {
       id: 'chair',
       label: '椅子',
@@ -483,12 +484,14 @@ setDescription('走进 3D 书房：拖动视角，点选屋里的物件与书本
 
 <template>
   <div class="room" :class="{ 'room--in': stageReady }">
+    <h1 class="sr-only">工作室 · {{ site.name }}</h1>
+
     <!-- 加载幕 -->
     <div v-if="!stageReady && !stageFailed" class="boot" aria-live="polite">
       <div class="boot__inner">
         <span class="boot__mark" aria-hidden="true" />
         <p class="boot__kicker">Yuer Studio</p>
-        <h1 class="boot__title">正在推开书房的门</h1>
+        <h2 class="boot__title">正在推开书房的门</h2>
         <div class="boot__bar" aria-hidden="true"><span /></div>
       </div>
     </div>

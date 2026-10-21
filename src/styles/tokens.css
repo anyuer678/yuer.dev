@@ -68,7 +68,9 @@
   --border-default: 1px solid var(--color-border);
 
   /* 布局 */
+  --header-height: 56px;
   --container: 960px;
+  --container-wide: 1200px;
   --container-narrow: 720px;
   --bp-sm: 640px;
   --bp-md: 1024px;

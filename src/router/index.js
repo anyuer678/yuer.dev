@@ -44,7 +44,7 @@ const routes = [
       nav: true,
       label: 'Map',
       title: (s) => `地图 · ${s.name}`,
-      description: (s) => `${s.name} 的作品体系地图`,
+      description: (s) => `${s.name} 的作品生态关系图：三主线、独立作品与可验证关系`,
     },
   },
   {
@@ -182,7 +182,12 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL), // base 来自 vite.config.js
   routes,
-  scrollBehavior: () => ({ top: 0 }), // 决策 D2：不保存列表滚动位置
+  // 只换 query 的导航（筛选/分页/地图聚焦）保留当前位置；换页回到顶部
+  scrollBehavior: (to, from, savedPosition) => {
+    if (savedPosition) return savedPosition
+    if (to.path === from.path) return false
+    return { top: 0 }
+  },
 })
 
 router.afterEach((to) => applyMeta(to))

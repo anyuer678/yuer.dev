@@ -42,6 +42,26 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* 仅供读屏：视觉隐藏但保留在可访问树里 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 首屏高度先占住：异步路由 chunk 到达前页脚不提前出现，
+   否则 footer 会先绘制再被内容推走（实测桌面 CLS 0.126） */
+#main {
+  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100svh - var(--header-height));
+}
+
 /* 选中色 */
 ::selection {
   background: var(--color-accent-soft);
@@ -52,6 +72,9 @@ a:hover {
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: clamp(16px, 4vw, 32px);
+}
+.container--wide {
+  max-width: var(--container-wide);
 }
 .container--narrow {
   max-width: var(--container-narrow);

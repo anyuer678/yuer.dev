@@ -2,6 +2,7 @@
 // SectionTitle —— 区块标题（05 §2）：序号 + 标题 + 可选"查看全部"链接
 defineProps({
   title: { type: String, required: true },
+  description: { type: String, default: '' },
   index: { type: String, default: '' },
   to: { type: String, default: '' },
 })
@@ -9,18 +10,28 @@ defineProps({
 
 <template>
   <header class="section-title">
-    <span v-if="index" class="section-title__index">{{ index }}</span>
-    <h2 class="section-title__text">{{ title }}</h2>
-    <RouterLink v-if="to" :to="to" class="section-title__more">查看全部 <span class="section-title__more-arrow" aria-hidden="true">→</span></RouterLink>
+    <div class="section-title__row">
+      <span v-if="index" class="section-title__index">{{ index }}</span>
+      <h2 class="section-title__text">{{ title }}</h2>
+      <RouterLink v-if="to" :to="to" class="section-title__more">查看全部 <span class="section-title__more-arrow" aria-hidden="true">→</span></RouterLink>
+    </div>
+    <p v-if="description" class="section-title__desc">{{ description }}</p>
   </header>
 </template>
 
 <style scoped>
 .section-title {
+  margin-bottom: var(--space-6);
+}
+.section-title__row {
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
-  margin-bottom: var(--space-6);
+}
+.section-title__desc {
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
 }
 .section-title__index {
   font-family: var(--font-mono);

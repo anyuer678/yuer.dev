@@ -1,14 +1,16 @@
 <script setup>
 // HomePulse —— 构建期 GitHub 活动条（15 Wave 2.1）；零运行时 fetch
 import { computed } from 'vue'
-import { githubData } from '@/utils/content.js'
+import { getProject, githubData } from '@/utils/content.js'
 import deskMap from '@/content/desk.json'
 
 const USER = computed(() => githubData.user || 'anyuer678')
 
+// 只给真实存在的站内页发内链；repo 有 slug 但没写档案时退回 GitHub
 function repoTo(r) {
   if (!r?.slug) return null
-  return deskMap[r.slug] ? `/desk/${r.slug}` : `/projects/${r.slug}`
+  if (deskMap[r.slug]) return `/desk/${r.slug}`
+  return getProject(r.slug) ? `/projects/${r.slug}` : null
 }
 
 const items = computed(() => {
@@ -20,13 +22,12 @@ const items = computed(() => {
     .filter((r) => r.release)
     .sort((a, b) => new Date(b.pushed_at || 0) - new Date(a.pushed_at || 0))[0]
   if (withRelease) {
+    const to = repoTo(withRelease)
     out.push({
       kind: 'release',
       label: `${withRelease.name} ${withRelease.release}`,
-      to: repoTo(withRelease),
-      href: withRelease.slug
-        ? null
-        : `https://github.com/${USER.value}/${withRelease.name}/releases`,
+      to,
+      href: to ? null : `https://github.com/${USER.value}/${withRelease.name}/releases`,
       detail: '发布',
     })
   }
@@ -36,11 +37,12 @@ const items = computed(() => {
     .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
     .slice(0, 3)
   for (const r of recent) {
+    const to = repoTo(r)
     out.push({
       kind: 'push',
       label: r.name,
-      to: repoTo(r),
-      href: r.slug ? null : `https://github.com/${USER.value}/${r.name}`,
+      to,
+      href: to ? null : `https://github.com/${USER.value}/${r.name}`,
       detail: timeAgo(r.pushed_at),
     })
   }
@@ -123,7 +125,8 @@ const kindLabel = { release: 'Release', push: '推送', new: '新仓' }
 }
 .pulse__link {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
+  min-height: 24px;
   gap: var(--space-2);
   color: inherit;
   text-decoration: none;

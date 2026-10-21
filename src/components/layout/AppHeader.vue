@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
-  height: 56px;
+  height: var(--header-height);
 }
 .app-header__brand {
   font-family: var(--font-display);
@@ -135,9 +135,11 @@ onBeforeUnmount(() => {
   gap: var(--space-6);
 }
 .app-header__link {
+  display: inline-block;
   font-size: var(--text-small);
   color: var(--color-text-secondary);
-  padding: var(--space-2) 0;
+  /* 2px 横向内边距：短标签（Lab）也达到 24px 最小点击宽度 */
+  padding: var(--space-2) 2px;
 }
 .app-header__link:hover {
   color: var(--color-text);

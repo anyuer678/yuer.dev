@@ -12,7 +12,7 @@ summary: 离线编程训练系统：代码临摹、代码填空、错误修复�
 demo: https://anyuer678.github.io/codedrill/
 github: https://github.com/anyuer678/codedrill
 order: 3
-cover: projects/codedrill.png
+cover: projects/codedrill.webp
 journey: [{"date": "2026-07", "title": "开始开发", "desc": "离线编程训练系统：代码临摹、填空、改错，Web / Windows / Android 三端"}]
 ---
 

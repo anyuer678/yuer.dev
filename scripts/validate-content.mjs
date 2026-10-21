@@ -303,6 +303,53 @@ function checkSpecialMaps() {
 }
 checkSpecialMaps()
 
+// --- 规则 20：作品地图（语义模型 + 版式 + 站内出口） ---
+function checkWorkMap() {
+  const file = join(ROOT, 'work-map.json')
+  if (!existsSync(file)) return
+  const map = JSON.parse(readFileSync(file, 'utf8'))
+  const clusterIds = new Set()
+  for (const c of map.clusters || []) {
+    if (!c.id || !c.title || !c.index) report(20, file, `分组 ${c.id || '?'} 缺 id/title/index`)
+    if (clusterIds.has(c.id)) report(20, file, `分组 id "${c.id}" 重复`)
+    clusterIds.add(c.id)
+    for (const mode of ['wide', 'compact']) {
+      if (!Array.isArray(c.island?.[mode]) || c.island[mode].length !== 4)
+        report(20, file, `分组 ${c.id} 缺 island.${mode} 四元组`)
+      if (!Array.isArray(c.titleAt?.[mode]) || !Array.isArray(c.descAt?.[mode]))
+        report(20, file, `分组 ${c.id} 缺 ${mode} 标题/说明坐标`)
+    }
+  }
+  const ids = new Set()
+  const used = new Map()
+  for (const n of map.nodes || []) {
+    if (!n.id || !n.repo) report(20, file, `节点 ${n.id || '?'} 缺 id/repo`)
+    if (ids.has(n.id)) report(20, file, `节点 id "${n.id}" 重复`)
+    ids.add(n.id)
+    if (!clusterIds.has(n.cluster)) report(20, file, `节点 ${n.id} 的 cluster "${n.cluster}" 不存在`)
+    used.set(n.cluster, (used.get(n.cluster) || 0) + 1)
+    for (const mode of ['wide', 'compact']) {
+      if (!Array.isArray(n.at?.[mode]) || n.at[mode].length !== 2 || n.at[mode].some((v) => typeof v !== 'number'))
+        report(20, file, `节点 ${n.id} 缺 ${mode} 坐标 [x,y]`)
+    }
+    if (n.link) {
+      const m = /^\/projects\/([a-z0-9-]+)$/.exec(n.link)
+      if (!m) report(20, file, `节点 ${n.id} 的 link "${n.link}" 应为 /projects/<slug>`)
+      else if (!existsSync(join(ROOT, 'projects', `${m[1]}.md`)))
+        report(20, file, `节点 ${n.id} 的 link "${n.link}" 无对应项目 markdown`)
+    }
+  }
+  for (const c of map.clusters || []) {
+    if (!used.get(c.id)) report(20, file, `分组 ${c.id} 没有任何节点`)
+  }
+  for (const e of map.edges || []) {
+    if (!ids.has(e.from) || !ids.has(e.to)) report(20, file, `关系 ${e.from} → ${e.to} 指向不存在的节点`)
+    if (e.from === e.to) report(20, file, `关系 ${e.from} → ${e.to} 不能自连`)
+    if (!e.label) report(20, file, `关系 ${e.from} → ${e.to} 缺 label`)
+  }
+}
+checkWorkMap()
+
 // 收尾：全部检查完一次性打印（不 fail-fast），末尾汇总
 if (errors.length) {
   console.error(errors.join('\n'))

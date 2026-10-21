@@ -12,7 +12,7 @@ summary: 原生实现的开箱即用待办应用：今日视图 + 收件箱 + �
 demo: https://anyuer678.github.io/todo-list/
 github: https://github.com/anyuer678/todo-list
 order: 7
-cover: projects/todo-list.png
+cover: projects/todo-list.webp
 journey: [{"date": "2026-07", "title": "开始开发", "desc": "轻量个人待办应用，集待办、番茄钟、统计于一体"}]
 ---
 

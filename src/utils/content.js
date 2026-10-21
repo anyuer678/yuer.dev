@@ -22,7 +22,7 @@ export const site = loadJson('site')
 export const gardenWorlds = loadJson('garden-worlds') ?? []
 export const lab = loadJson('lab') ?? []
 export const timeline = loadJson('timeline') ?? []
-export const repoMap = loadJson('repo-map') ?? {}
+export const workMap = loadJson('work-map') ?? { clusters: [], nodes: [], edges: [] }
 export const room = loadJson('room') ?? { scenes: [] }
 export const githubData = loadJson('github-data') ?? { repos: {} }
 

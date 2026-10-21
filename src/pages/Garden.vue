@@ -37,6 +37,7 @@ onMounted(() => {
 
 <template>
   <div class="garden">
+    <h1 class="sr-only">花庭 · {{ site?.brand || site?.name }}</h1>
     <div class="garden__stage">
       <div class="garden__bg" :style="{ backgroundImage: `url(${bgUrl})` }" aria-hidden="true" />
       <div class="garden__grain" aria-hidden="true" />

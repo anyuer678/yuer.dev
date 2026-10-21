@@ -93,6 +93,9 @@ const focusHref = (() => {
   letter-spacing: 0.08em;
 }
 .wander a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--color-text-secondary);
   text-decoration: none;
 }

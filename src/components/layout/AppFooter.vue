@@ -88,6 +88,9 @@ const year = new Date().getFullYear()
   font-size: var(--text-caption);
 }
 .footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--color-text-secondary);
   text-decoration: none;
   padding: 4px 0;
@@ -104,6 +107,9 @@ const year = new Date().getFullYear()
   gap: 6px;
 }
 .footer__side :deep(.external-link) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   font-size: var(--text-caption);
 }
 .footer__copy {

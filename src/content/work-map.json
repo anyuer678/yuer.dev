@@ -1,0 +1,502 @@
+{
+  "_note": "作品地图的语义模型：节点=作品，边=可在仓库 README/代码中验证的关系。坐标是版式，不是生态事实；改关系请同时核对来源。",
+  "clusters": [
+    {
+      "id": "agent",
+      "index": "01",
+      "title": "AI Agent 生态",
+      "desc": "一个常驻 Runtime 为核，MCP 工具与密钥设施围绕成生态。",
+      "tone": "agent",
+      "island": {
+        "wide": [
+          32,
+          28,
+          500,
+          340
+        ],
+        "compact": [
+          12,
+          12,
+          366,
+          360
+        ]
+      },
+      "titleAt": {
+        "wide": [
+          56,
+          62
+        ],
+        "compact": [
+          34,
+          44
+        ]
+      },
+      "descAt": {
+        "wide": [
+          56,
+          84
+        ],
+        "compact": [
+          34,
+          66
+        ]
+      }
+    },
+    {
+      "id": "infra",
+      "index": "02",
+      "title": "UI / 工程基建",
+      "desc": "自建组件库与设计资产——本站与生态项目是它们的真实消费方。",
+      "tone": "infra",
+      "island": {
+        "wide": [
+          556,
+          28,
+          412,
+          190
+        ],
+        "compact": [
+          12,
+          388,
+          366,
+          160
+        ]
+      },
+      "titleAt": {
+        "wide": [
+          580,
+          62
+        ],
+        "compact": [
+          34,
+          420
+        ]
+      },
+      "descAt": {
+        "wide": [
+          580,
+          84
+        ],
+        "compact": [
+          34,
+          442
+        ]
+      }
+    },
+    {
+      "id": "train",
+      "index": "03",
+      "title": "训练 / 评测平台",
+      "desc": "离线训练与在线判题互为出口：题解变抄写题，训练通向真实评测。",
+      "tone": "train",
+      "island": {
+        "wide": [
+          556,
+          232,
+          412,
+          180
+        ],
+        "compact": [
+          12,
+          564,
+          366,
+          160
+        ]
+      },
+      "titleAt": {
+        "wide": [
+          580,
+          266
+        ],
+        "compact": [
+          34,
+          596
+        ]
+      },
+      "descAt": {
+        "wide": [
+          580,
+          288
+        ],
+        "compact": [
+          34,
+          618
+        ]
+      }
+    },
+    {
+      "id": "free",
+      "index": "04",
+      "title": "独立作品",
+      "desc": "与主线无耦合的项目，诚实单列而不硬凑体系。",
+      "tone": "free",
+      "island": {
+        "wide": [
+          32,
+          420,
+          936,
+          280
+        ],
+        "compact": [
+          12,
+          740,
+          366,
+          310
+        ]
+      },
+      "titleAt": {
+        "wide": [
+          56,
+          454
+        ],
+        "compact": [
+          34,
+          772
+        ]
+      },
+      "descAt": {
+        "wide": [
+          56,
+          476
+        ],
+        "compact": [
+          34,
+          794
+        ]
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "lumen",
+      "repo": "lumen",
+      "cluster": "agent",
+      "link": "/projects/lumen",
+      "role": "Runtime 核心",
+      "tone": "primary",
+      "core": true,
+      "desc": "24/7 常驻个人 Agent Runtime（Go）：内置 MCP 注册（stdio/SSE/HTTP）与 L0~L3 分级权限",
+      "at": {
+        "wide": [
+          290,
+          225
+        ],
+        "compact": [
+          195,
+          205
+        ]
+      }
+    },
+    {
+      "id": "voiceconsole",
+      "repo": "voiceconsole",
+      "cluster": "agent",
+      "link": "/projects/voiceconsole",
+      "role": "MCP 插件 · 语音入口",
+      "tone": "success",
+      "desc": "语音指令控制台 MCP：STT + 意图 + 安全门 + TTS，可注册进 lumen",
+      "at": {
+        "wide": [
+          175,
+          135
+        ],
+        "compact": [
+          150,
+          120
+        ]
+      }
+    },
+    {
+      "id": "dsh-logtimeline",
+      "repo": "dsh-logtimeline",
+      "cluster": "agent",
+      "link": "/projects/dsh-logtimeline",
+      "role": "MCP 插件 · 日志查询",
+      "tone": "success",
+      "desc": "中文自然语言时间表达式查询本地日志，可注册进 lumen",
+      "at": {
+        "wide": [
+          430,
+          145
+        ],
+        "compact": [
+          305,
+          145
+        ]
+      }
+    },
+    {
+      "id": "keyvault",
+      "repo": "keyvault",
+      "cluster": "agent",
+      "link": "/projects/keyvault",
+      "role": "密钥设施",
+      "tone": "warning",
+      "desc": "本地加密钥匙串，专管 LLM Key / GitHub Token，生态各工具的公共前置",
+      "at": {
+        "wide": [
+          110,
+          260
+        ],
+        "compact": [
+          75,
+          240
+        ]
+      }
+    },
+    {
+      "id": "chatez",
+      "repo": "chatez",
+      "cluster": "agent",
+      "link": "/projects/chatez",
+      "role": "平级工作台",
+      "tone": "info",
+      "desc": "可配置 Prompt + Skill 的 AI 工作台（纯 Web）",
+      "at": {
+        "wide": [
+          445,
+          300
+        ],
+        "compact": [
+          310,
+          285
+        ]
+      }
+    },
+    {
+      "id": "kb-ui",
+      "repo": "kb-ui",
+      "cluster": "infra",
+      "link": "/projects/kb-ui",
+      "role": "组件库 · npm 四包",
+      "tone": "primary",
+      "core": true,
+      "desc": "73 组件 · 46 主题 · 脚手架；本页即由 kb-ui-vue 驱动（dogfooding）",
+      "at": {
+        "wide": [
+          660,
+          150
+        ],
+        "compact": [
+          120,
+          490
+        ]
+      }
+    },
+    {
+      "id": "design-assets",
+      "repo": "design-assets",
+      "cluster": "infra",
+      "role": "设计资产",
+      "tone": "default",
+      "desc": "AI 生成设计资产库，24 风格元数据 + 使用策略（CC0）",
+      "at": {
+        "wide": [
+          850,
+          148
+        ],
+        "compact": [
+          270,
+          490
+        ]
+      }
+    },
+    {
+      "id": "codedrill",
+      "repo": "codedrill",
+      "cluster": "train",
+      "link": "/projects/codedrill",
+      "role": "离线训练 · 635 题",
+      "tone": "primary",
+      "core": true,
+      "desc": "题库训练 + SRS 遗忘曲线（Electron / Web / Android）",
+      "at": {
+        "wide": [
+          655,
+          345
+        ],
+        "compact": [
+          105,
+          666
+        ]
+      }
+    },
+    {
+      "id": "polycodehub",
+      "repo": "polycodehub",
+      "cluster": "train",
+      "link": "/projects/polycodehub",
+      "role": "在线判题 · 四层沙箱",
+      "tone": "danger",
+      "core": true,
+      "desc": "全栈 OJ：seccomp 白名单 / cgroup v2 / namespaces / tmpfs jail",
+      "at": {
+        "wide": [
+          845,
+          345
+        ],
+        "compact": [
+          285,
+          666
+        ]
+      }
+    },
+    {
+      "id": "evocode",
+      "repo": "evocode",
+      "cluster": "free",
+      "link": "/projects/evocode",
+      "role": "AI 软件体检",
+      "tone": "default",
+      "desc": "AI 软件体检与演化平台",
+      "at": {
+        "wide": [
+          150,
+          540
+        ],
+        "compact": [
+          95,
+          840
+        ]
+      }
+    },
+    {
+      "id": "desktoppet",
+      "repo": "desktoppet",
+      "cluster": "free",
+      "link": "/projects/desktoppet",
+      "role": "桌面宠物",
+      "tone": "default",
+      "desc": "Electron 桌面宠物",
+      "at": {
+        "wide": [
+          330,
+          540
+        ],
+        "compact": [
+          280,
+          840
+        ]
+      }
+    },
+    {
+      "id": "picren",
+      "repo": "picren",
+      "cluster": "free",
+      "link": "/projects/picren",
+      "role": "图片整理",
+      "tone": "default",
+      "desc": "图片批量 AI 重命名/整理器",
+      "at": {
+        "wide": [
+          510,
+          540
+        ],
+        "compact": [
+          95,
+          895
+        ]
+      }
+    },
+    {
+      "id": "developer-intelligence",
+      "repo": "developer-intelligence",
+      "cluster": "free",
+      "link": "/projects/developer-intelligence",
+      "role": "代码理解",
+      "tone": "default",
+      "desc": "AI 深度理解代码仓库",
+      "at": {
+        "wide": [
+          720,
+          540
+        ],
+        "compact": [
+          280,
+          895
+        ]
+      }
+    },
+    {
+      "id": "eclipse-wasteland",
+      "repo": "eclipse-wasteland",
+      "cluster": "free",
+      "link": "/projects/eclipse-wasteland",
+      "role": "浏览器 FPS",
+      "tone": "default",
+      "desc": "浏览器端 Three.js PVE 射击游戏",
+      "at": {
+        "wide": [
+          240,
+          620
+        ],
+        "compact": [
+          95,
+          950
+        ]
+      }
+    },
+    {
+      "id": "spotlight-wallpaper",
+      "repo": "spotlight-wallpaper",
+      "cluster": "free",
+      "role": "桌面壁纸",
+      "tone": "default",
+      "desc": "Windows 聚光灯动态壁纸",
+      "at": {
+        "wide": [
+          470,
+          620
+        ],
+        "compact": [
+          280,
+          950
+        ]
+      }
+    },
+    {
+      "id": "huayinlaoqiang",
+      "repo": "huayinlaoqiang",
+      "cluster": "free",
+      "role": "非遗展示",
+      "tone": "default",
+      "desc": "华阴老腔 · 非遗展示站",
+      "at": {
+        "wide": [
+          700,
+          620
+        ],
+        "compact": [
+          187,
+          1005
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "keyvault",
+      "to": "lumen",
+      "label": "密钥前置",
+      "curve": 16
+    },
+    {
+      "from": "voiceconsole",
+      "to": "lumen",
+      "label": "MCP 注册",
+      "curve": 10
+    },
+    {
+      "from": "dsh-logtimeline",
+      "to": "lumen",
+      "label": "MCP 注册",
+      "curve": -12
+    },
+    {
+      "from": "codedrill",
+      "to": "polycodehub",
+      "label": "题解回流",
+      "curve": 0
+    }
+  ]
+}

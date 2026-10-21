@@ -6,6 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import roomBooks from '@/content/room-books.json'
 import { githubData, getProject, projects } from '@/utils/content.js'
 
@@ -36,6 +37,17 @@ let windowGlass = null
 let sunLight = null
 let ceilingMesh = null
 let skyMat = null
+// 程序化建模的猫（身体合并为 1 mesh，尾巴独立便于摆动）
+let catRoot = null
+let catVisual = null
+let catTailPivot = null
+let catMaterial = null
+let catShadowTexture = null
+let catShadowMaterial = null
+let catPokeAt = -10
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 const clickables = []
 // 场景时钟。原本用 THREE.Clock，R186 起它已废弃（控制台会打一条 deprecation），
 // 而这里只需要"累加式秒数 + 可暂停"两件事，自己维护反而更直白：
@@ -261,6 +273,13 @@ function bookDataFor(name) {
     }
   }
   return null
+}
+
+const CAT_DATA = {
+  id: 'cat',
+  label: '睡着的猫',
+  kind: 'easter',
+  blurb: '「持续迭代。」——猫在监督进度。',
 }
 
 const INTERACTIVE = [
@@ -573,6 +592,171 @@ function buildSpineLabels(root) {
   return labels
 }
 
+// ── 猫：程序化建模 ────────────────────────────────────────────────────────
+// 不引入第二个 GLB。全部用基础几何拼好后按材质合批：身体 1 个 draw call，
+// 尾巴单独 1 个（要摆），加上一张椭圆接触阴影（不吃实时阴影预算）。
+const CAT_FUR = 0xc98b58
+const CAT_DARK = 0x8f5a36
+const CAT_CREAM = 0xe7cba6
+const CAT_PINK = 0xd98d84
+const CAT_EYE = 0x35261c
+
+function paintGeometry(geo, hex) {
+  const c = new THREE.Color(hex)
+  const count = geo.attributes.position.count
+  const arr = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    arr[i * 3] = c.r
+    arr[i * 3 + 1] = c.g
+    arr[i * 3 + 2] = c.b
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(arr, 3))
+  return geo
+}
+
+function catPart(source, hex, pos, scale, rot = [0, 0, 0]) {
+  const g = source.clone()
+  g.applyMatrix4(
+    new THREE.Matrix4().compose(
+      new THREE.Vector3(pos[0], pos[1], pos[2]),
+      new THREE.Quaternion().setFromEuler(new THREE.Euler(rot[0], rot[1], rot[2])),
+      new THREE.Vector3(scale[0], scale[1], scale[2])
+    )
+  )
+  return paintGeometry(g, hex)
+}
+
+/** 一只蜷在扶手椅前地毯上的姜猫；头朝镜头，闭眼，尾巴可摆 */
+function addCat() {
+  if (catRoot) return
+
+  const unit = new THREE.SphereGeometry(1, 24, 16)
+  const cone = new THREE.ConeGeometry(1, 1, 4)
+  const parts = []
+  const add = (src, hex, pos, scale, rot) => parts.push(catPart(src, hex, pos, scale, rot))
+
+  // 身体 / 后腿 / 头 / 胸
+  add(unit, CAT_FUR, [0, 0.115, 0], [0.19, 0.1, 0.115])
+  add(unit, CAT_FUR, [-0.1, 0.105, 0], [0.12, 0.1, 0.11])
+  add(unit, CAT_FUR, [0.19, 0.1, 0], [0.08, 0.076, 0.08])
+  add(unit, CAT_CREAM, [0.22, 0.06, 0], [0.06, 0.05, 0.06])
+  // 口鼻 / 鼻子 / 前爪
+  add(unit, CAT_CREAM, [0.255, 0.075, 0], [0.045, 0.033, 0.042])
+  add(unit, CAT_PINK, [0.294, 0.085, 0], [0.011, 0.008, 0.011])
+  add(unit, CAT_CREAM, [0.245, 0.035, 0.05], [0.05, 0.026, 0.032])
+  add(unit, CAT_CREAM, [0.245, 0.035, -0.05], [0.05, 0.026, 0.032])
+  // 闭眼（两条细缝）
+  add(unit, CAT_EYE, [0.258, 0.122, 0.037], [0.006, 0.003, 0.012])
+  add(unit, CAT_EYE, [0.258, 0.122, -0.037], [0.006, 0.003, 0.012])
+  // 耳朵：外耳姜色、内耳粉色，略向外倾
+  add(cone, CAT_FUR, [0.18, 0.165, 0.052], [0.038, 0.075, 0.03], [0, 0, 0.2])
+  add(cone, CAT_FUR, [0.18, 0.165, -0.052], [0.038, 0.075, 0.03], [0, 0, -0.2])
+  add(cone, CAT_PINK, [0.19, 0.168, 0.052], [0.021, 0.05, 0.014], [0, 0, 0.2])
+  add(cone, CAT_PINK, [0.19, 0.168, -0.052], [0.021, 0.05, 0.014], [0, 0, -0.2])
+  // 背上两道浅虎斑
+  add(unit, CAT_DARK, [0.02, 0.205, 0], [0.018, 0.011, 0.095])
+  add(unit, CAT_DARK, [-0.07, 0.207, 0], [0.016, 0.01, 0.082])
+
+  const bodyGeo = mergeGeometries(parts, false)
+  parts.forEach((g) => g.dispose())
+  unit.dispose()
+  cone.dispose()
+
+  // 尾巴：绕到身前，根部单独成组，便于左右摆
+  const tailCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(-0.05, -0.02, 0.08),
+    new THREE.Vector3(-0.02, -0.03, 0.17),
+    new THREE.Vector3(0.08, -0.035, 0.21),
+    new THREE.Vector3(0.18, -0.03, 0.17),
+  ])
+  const tailGeo = paintGeometry(new THREE.TubeGeometry(tailCurve, 28, 0.019, 6, false), CAT_FUR)
+  const tipGeo = new THREE.SphereGeometry(0.028, 12, 8)
+  tipGeo.translate(0.18, -0.03, 0.17)
+  paintGeometry(tipGeo, CAT_DARK)
+  const tailMerged = mergeGeometries([tailGeo, tipGeo], false)
+  tailGeo.dispose()
+  tipGeo.dispose()
+
+  catMaterial = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.9,
+    metalness: 0,
+    emissive: 0x000000,
+  })
+  catMaterial.envMapIntensity = 0.45
+
+  const bodyMesh = new THREE.Mesh(bodyGeo, catMaterial)
+  bodyMesh.name = 'Cat_Body'
+  bodyMesh.castShadow = true
+  bodyMesh.receiveShadow = true
+  const tailMesh = new THREE.Mesh(tailMerged, catMaterial)
+  tailMesh.name = 'Cat_Tail'
+  tailMesh.castShadow = true
+
+  catTailPivot = new THREE.Group()
+  catTailPivot.name = 'Cat_TailPivot'
+  catTailPivot.position.set(-0.17, 0.08, 0.02)
+  catTailPivot.add(tailMesh)
+
+  catVisual = new THREE.Group()
+  catVisual.name = 'Cat_Visual'
+  catVisual.add(bodyMesh, catTailPivot)
+
+  // 椭圆接触阴影：猫在呼吸/摆尾时不必重算实时阴影贴图
+  const shadowCanvas = document.createElement('canvas')
+  shadowCanvas.width = shadowCanvas.height = 128
+  const g = shadowCanvas.getContext('2d')
+  const grad = g.createRadialGradient(64, 64, 8, 64, 64, 62)
+  grad.addColorStop(0, 'rgba(0,0,0,0.38)')
+  grad.addColorStop(0.55, 'rgba(0,0,0,0.16)')
+  grad.addColorStop(1, 'rgba(0,0,0,0)')
+  g.fillStyle = grad
+  g.fillRect(0, 0, 128, 128)
+  catShadowTexture = new THREE.CanvasTexture(shadowCanvas)
+  catShadowTexture.colorSpace = THREE.SRGBColorSpace
+  catShadowMaterial = new THREE.MeshBasicMaterial({
+    map: catShadowTexture,
+    transparent: true,
+    depthWrite: false,
+    toneMapped: false,
+  })
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(0.78, 0.62), catShadowMaterial)
+  shadow.name = 'Cat_ContactShadow'
+  shadow.rotation.x = -Math.PI / 2
+  shadow.position.y = 0.006
+  shadow.renderOrder = 1
+
+  catRoot = new THREE.Group()
+  catRoot.name = 'Cat_Sleeping'
+  catRoot.position.set(0.32, 0.015, -0.55)
+  catRoot.scale.setScalar(1.1)
+  catRoot.rotation.y = -1.1
+  catRoot.add(catVisual, shadow)
+  scene.add(catRoot)
+
+  for (const mesh of [bodyMesh, tailMesh]) {
+    mesh.userData = { ...mesh.userData, ...CAT_DATA, interactive: true, meshName: mesh.name }
+    clickables.push(mesh)
+  }
+  markShadowDirty()
+}
+
+function tickCat(t) {
+  if (!catVisual || prefersReducedMotion) return
+  const poke = Math.max(0, 1 - (t - catPokeAt) / 1.1)
+  catVisual.scale.y = 1 + Math.sin(t * 1.35) * 0.012 - poke * 0.02
+  catVisual.position.y = Math.max(0, Math.sin((1 - poke) * Math.PI)) * 0.004
+  if (catTailPivot) {
+    catTailPivot.rotation.y = Math.sin(t * 0.8) * 0.06 + Math.sin(t * 9) * 0.35 * poke
+    catTailPivot.rotation.x = Math.sin(t * 0.55) * 0.03
+  }
+}
+
+function pokeCat() {
+  catPokeAt = elapsed
+}
+
 /** 世界坐标 → 视口像素。UI 侧靠它把纸签钉在物件旁边 */
 function projectToScreen(p) {
   const el = host.value
@@ -660,7 +844,10 @@ function onClick(e) {
   raycaster.setFromCamera(pointer, camera)
   const hits = raycaster.intersectObjects(clickables, false)
   const hit = hits[0]?.object
-  if (hit?.userData?.interactive) emit('select', { ...hit.userData })
+  if (hit?.userData?.interactive) {
+    if (hit.userData.id === 'cat') pokeCat()
+    emit('select', { ...hit.userData })
+  }
 }
 
 function applyLamp(on) {
@@ -821,6 +1008,7 @@ function animate() {
   tickCamera()
   if (!camTween) controls?.update()   // 缓动期间不让限位把相机拽回去
   tickDust(t)
+  tickCat(t)
   tickClock()
   tickWindowLight()
   if (pendingMove) {
@@ -1285,6 +1473,7 @@ onMounted(async () => {
     scene.add(modelRoot)
     tagClickable(modelRoot)
     applyShadows(modelRoot)
+    addCat()
     await decorateArt(modelRoot, base)
     // 书脊刻名：18 本锚点书各贴一枚书名签（一张图集 + 合并四边形，只加 1 个 draw call）
     if (shelfOrder.length >= 20) {
@@ -1318,6 +1507,7 @@ onMounted(async () => {
       window.__room3d = {
         THREE, scene, camera, controls, modelRoot, bbox: bb, renderer, sunLight,
         shelfAnchors: shelfAnchorList,   // 排架锚点，供探针脚本核对
+        cat: catRoot,                    // 程序化建模的猫（探针核对结构/位置）
       }
       // 自增计数：多实例会带来双份 WebGL 上下文，探针脚本靠它一眼看出
       window.__r3dInstances = (window.__r3dInstances || 0) + 1
@@ -1402,6 +1592,21 @@ onBeforeUnmount(() => {
     renderer.domElement.parentNode.removeChild(renderer.domElement)
   }
   clickables.length = 0
+  if (catRoot) {
+    catRoot.traverse((o) => {
+      if (o.isMesh) o.geometry?.dispose()
+    })
+    scene.remove(catRoot)
+    catRoot = null
+    catVisual = null
+    catTailPivot = null
+  }
+  catMaterial?.dispose()
+  catShadowMaterial?.dispose()
+  catShadowTexture?.dispose()
+  catMaterial = null
+  catShadowMaterial = null
+  catShadowTexture = null
   if (spineLabels) {
     scene.remove(spineLabels)
     spineLabels.geometry.dispose()
