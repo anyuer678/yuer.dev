@@ -46,10 +46,10 @@ Yuer Studio 是我的个人数字空间 —— 一个集 **项目展示**、**�
 7 层分层模型，依赖只能自上而下：
 
 ```
-P0 展示层    pages/（10 个路由页面）
+P0 展示层    pages/（18 个路由页面）
 P1 业务组件  components/features/
 P2 基础组件  components/ui/ + components/layout/
-P3 服务层    composables/ + router/
+P3 服务层    router/（路由 / SEO 副作用）
 P4 数据层    utils/content.js（静态导出）
 P5 内容资产  src/content/*.md / *.json
 P6 工程层    scripts/ + CI/CD
@@ -82,13 +82,13 @@ npm run check
 
 ```
 src/
-├── pages/            # 10 个路由页面
+├── pages/            # 18 个路由页面
 ├── components/
 │   ├── features/     # 业务组件（HeroSection、ProjectCard 等）
 │   ├── layout/       # 布局组件（Header、Footer、PageTransition）
 │   └── ui/           # 基础组件（Tag、StatusBadge、Icon）
 ├── content/
-│   ├── projects/     # 项目 Markdown（23 个项目）
+│   ├── projects/     # 项目 Markdown（22 个项目）
 │   ├── notes/        # 笔记 Markdown（114 篇）
 │   ├── lab.json      # 实验室数据
 │   ├── timeline.json # 时间线数据
@@ -101,7 +101,7 @@ src/
 
 ## 文档
 
-本项目包含 14 份规范文档（`docs/`），记录了从需求到发布的完整设计过程：
+本项目包含 19 份文档（`docs/`）：17 份编号规范 + 资产性能预算 + 开发规范与思路，记录了从需求到发布的完整设计过程：
 
 | # | 文档 | 说明 |
 |---|------|------|
@@ -122,6 +122,8 @@ src/
 | 15 | 演进路线 | Wave 1–3 与特别篇拍板 |
 | 16 | 花笺特别篇设计 | 视觉与信息架构 |
 | 17 | 花笺 Phase 1 规格 | 花庭实现权威 |
+| 18 | 资产性能预算 | public/ 重资产阈值与已知债务 |
+| 19 | 开发规范与思路 | 开发约定与实现思路 |
 
 ## License
 
