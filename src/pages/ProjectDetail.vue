@@ -226,6 +226,10 @@ watchEffect(async (onInvalidate) => {
   display: block;
   width: 100%;
   height: auto;
+  /* 预留 16:9：封面懒加载完成前也不让 repo/正文整体下移（CLS） */
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
   border: var(--border-default);
   border-radius: var(--radius-lg);
   margin: var(--space-6) 0 0;
