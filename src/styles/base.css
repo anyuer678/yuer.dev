@@ -120,19 +120,19 @@ a:hover {
   transform: translateY(1px);
 }
 
-/* 页面过渡（PageTransition 配套） */
-.page-enter-active,
-.page-leave-active {
-  transition:
-    opacity var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard);
+/* 页面过渡（PageTransition 配套）：挂载动画，无 enter/leave 状态机 */
+.page-view {
+  animation: page-in var(--dur-fast) var(--ease-standard) both;
 }
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
-.page-leave-to {
-  opacity: 0;
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* 减动效 */
