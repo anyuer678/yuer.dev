@@ -109,11 +109,30 @@ function injectJsonLd(html, data) {
   return html.replace('</head>', `<script type="application/ld+json">${json}</script>\n</head>`)
 }
 
+// 仅使用已有、16:9 的栅格封面做逐页 OG；SVG 和非 16:9 封面继续用品牌默认图
+const OG_COVER_SLUGS = new Set([
+  'cet6-vocabulary',
+  'chatez',
+  'codedrill',
+  'polycodehub',
+  'todo-list',
+])
+const ogImageFor = (p) =>
+  p?.cover && /\.(png|jpe?g|webp)$/i.test(p.cover) && OG_COVER_SLUGS.has(p.slug)
+    ? new URL(p.cover, SITE_URL).toString()
+    : null
+
 function injectMeta(html, meta, routePath) {
   const title = truncate(meta.title, 60)
   const desc = truncate(meta.description || site.bio, 120)
   const url = pageUrl(routePath)
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeAttr(title)}</title>`)
+  if (meta.image) {
+    html = replaceMeta(html, 'property', 'og:image', meta.image)
+    html = replaceMeta(html, 'name', 'twitter:image', meta.image)
+    html = replaceMeta(html, 'property', 'og:image:width', '1440')
+    html = replaceMeta(html, 'property', 'og:image:height', '900')
+  }
   html = replaceMeta(html, 'name', 'description', desc)
   html = replaceMeta(html, 'property', 'og:title', title)
   html = replaceMeta(html, 'property', 'og:description', desc)
@@ -189,8 +208,17 @@ for (const w of worlds) {
 for (const slug of ['lumen', 'polycodehub', 'evocode']) {
   const p = projectsMeta[slug]
   if (!p) continue
-  staticMeta[`desk/${slug}`] = { title: `案头 · ${p.title} · ${NAME}`, description: p.summary }
-  staticMeta[`stories/${slug}`] = { title: `开卷 · ${p.title} · ${NAME}`, description: p.summary }
+  const image = ogImageFor({ ...p, slug })
+  staticMeta[`desk/${slug}`] = {
+    title: `案头 · ${p.title} · ${NAME}`,
+    description: p.summary,
+    ...(image ? { image } : {}),
+  }
+  staticMeta[`stories/${slug}`] = {
+    title: `开卷 · ${p.title} · ${NAME}`,
+    description: p.summary,
+    ...(image ? { image } : {}),
+  }
 }
 
 const fallbackMeta = { title: BRAND, description: site.bio || site.positioning }
@@ -200,7 +228,14 @@ function metaForDynamic(routePath) {
   const [prefix, slug] = routePath.split('/')
   if (prefix === 'projects') {
     const p = projectsMeta[slug]
-    if (p) return { title: `${p.title} · ${p.subtitle || NAME}`, description: p.summary }
+    if (p) {
+      const image = ogImageFor({ ...p, slug })
+      return {
+        title: `${p.title} · ${p.subtitle || NAME}`,
+        description: p.summary,
+        ...(image ? { image } : {}),
+      }
+    }
   }
   if (prefix === 'notes') {
     const n = notesMeta[slug]

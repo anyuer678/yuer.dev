@@ -22,7 +22,7 @@ Yuer Studio 是我的个人数字空间 —— 一个集 **项目展示**、**�
 - **Notes** — 技术笔记，从 AI 设计到数据库原理，114 篇 Markdown
 - **Timeline** — 开发时间线，按月记录每个项目的诞生
 - **Lab** — 实验性内容与探索
-- **SEO** — 每个页面独立 meta、OG/Twitter 标签与 JSON-LD（构建期注入：Person / SoftwareSourceCode / BlogPosting）
+- **SEO** — 每个页面独立 meta、OG/Twitter 标签与 JSON-LD（构建期注入：Person / SoftwareSourceCode / BlogPosting；有 16:9 封面的项目 OG 用封面）
 - **花笺特别篇** — 漫游第二入口（列表仍是主路径）：
   - `/garden` 花庭：落花遇见世界
   - `/w/:world` 世界门槛：作品/诗境/学习/实验/关于（构建期策展）
