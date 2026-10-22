@@ -44,12 +44,75 @@ function replaceMeta(html, attr, key, value) {
   return re.test(html) ? html.replace(re, tag) : html.replace('</head>', `${tag}\n</head>`)
 }
 
+function pageUrl(routePath) {
+  // 目录路由带尾斜杠，和 sitemap/feed 与 GitHub Pages 的 301 目标一致
+  const cleanPath = routePath ? `${routePath.replace(/^\/+|\/+$/g, '')}/` : ''
+  return cleanPath ? new URL(cleanPath, SITE_URL).toString() : SITE_URL
+}
+
+function jsonLdFor(routePath, meta) {
+  const root = { '@context': 'https://schema.org', inLanguage: 'zh-CN' }
+  const author = { '@type': 'Person', name: NAME, url: SITE_URL }
+  const siteRef = { '@type': 'WebSite', name: BRAND, url: SITE_URL }
+  const url = pageUrl(routePath)
+  if (!routePath) {
+    return { ...root, '@type': 'WebSite', name: BRAND, url, description: site.bio || site.positioning }
+  }
+  const [prefix, slug] = routePath.split('/')
+  if (prefix === 'projects' && projectsMeta[slug]) {
+    const p = projectsMeta[slug]
+    const data = {
+      ...root,
+      '@type': 'SoftwareSourceCode',
+      name: p.title,
+      description: p.summary,
+      url,
+      datePublished: p.date,
+      author,
+      keywords: (p.tech || []).join(', '),
+      isPartOf: siteRef,
+    }
+    if (p.github) data.codeRepository = p.github
+    if (p.cover && /\.(png|jpe?g|webp)$/i.test(p.cover)) {
+      data.image = new URL(p.cover, SITE_URL).toString()
+    }
+    return data
+  }
+  if (prefix === 'notes' && notesMeta[slug]) {
+    const n = notesMeta[slug]
+    return {
+      ...root,
+      '@type': 'BlogPosting',
+      headline: n.title,
+      description: n.summary,
+      url,
+      datePublished: n.date,
+      author,
+      keywords: (n.tags || []).join(', '),
+      isPartOf: siteRef,
+    }
+  }
+  return {
+    ...root,
+    '@type': 'WebPage',
+    name: meta.title,
+    description: meta.description,
+    url,
+    author,
+    isPartOf: siteRef,
+  }
+}
+
+function injectJsonLd(html, data) {
+  if (!data) return html
+  const json = JSON.stringify(data).replace(/</g, '\\u003c')
+  return html.replace('</head>', `<script type="application/ld+json">${json}</script>\n</head>`)
+}
+
 function injectMeta(html, meta, routePath) {
   const title = truncate(meta.title, 60)
   const desc = truncate(meta.description || site.bio, 120)
-  // 目录路由带尾斜杠，和 sitemap/feed 与 GitHub Pages 的 301 目标一致
-  const cleanPath = routePath ? `${routePath.replace(/^\/+|\/+$/g, '')}/` : ''
-  const url = cleanPath ? new URL(cleanPath, SITE_URL).toString() : SITE_URL
+  const url = pageUrl(routePath)
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeAttr(title)}</title>`)
   html = replaceMeta(html, 'name', 'description', desc)
   html = replaceMeta(html, 'property', 'og:title', title)
@@ -150,12 +213,12 @@ const written = []
 const emit = (routePath, meta) => {
   const dest = join(dist, routePath, 'index.html')
   mkdirSync(join(dist, routePath), { recursive: true })
-  writeFileSync(dest, injectMeta(shell, meta, routePath))
+  writeFileSync(dest, injectJsonLd(injectMeta(shell, meta, routePath), jsonLdFor(routePath, meta)))
   written.push(`/${routePath}/`)
 }
 
 // 首页壳也要正确：静态 HTML 先给首页文案，SPA 接管后保持一致
-writeFileSync(shellPath, injectMeta(shell, homeMeta, ''))
+writeFileSync(shellPath, injectJsonLd(injectMeta(shell, homeMeta, ''), jsonLdFor('', homeMeta)))
 for (const route of staticRoutes) emit(route, staticMeta[route] || fallbackMeta)
 for (const [dir, prefix] of dynamicRoutes) {
   const full = join(ROOT, dir)
