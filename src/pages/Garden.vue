@@ -54,6 +54,18 @@ onMounted(() => {
         <span>书房</span>
       </button>
 
+      <!-- Canvas 花瓣是鼠标/触摸入口；键盘与读屏需要一条等价的 DOM 世界入口 -->
+      <nav class="garden__worlds" aria-label="花庭世界入口">
+        <a
+          v-for="world in worlds.filter((w) => w.to !== '/room')"
+          :key="world.id"
+          :href="world.to"
+          @click.prevent="leave(world.to)"
+        >
+          {{ world.label }}
+        </a>
+      </nav>
+
       <p class="hint">风里偶尔有一朵不一样的花 · 靠近停一停</p>
 
       <PaperTransition ref="fx" @done="onFxDone" />
@@ -123,6 +135,34 @@ onMounted(() => {
   opacity: 0.75;
   margin-top: 8px;
 }
+.garden__worlds {
+  position: absolute;
+  left: 24px;
+  bottom: 56px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: min(70vw, 480px);
+}
+.garden__worlds a {
+  padding: 5px 10px;
+  border: 1px solid rgba(74, 60, 48, 0.22);
+  border-radius: 999px;
+  background: rgba(247, 241, 230, 0.78);
+  color: #4a3c30;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-decoration: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+.garden__worlds a:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-hover);
+  text-decoration: none;
+}
 .hint {
   position: absolute;
   left: 50%;
@@ -170,6 +210,12 @@ onMounted(() => {
   color: var(--color-accent);
 }
 @media (max-width: 639px) {
+  .garden__worlds {
+    left: 16px;
+    right: 16px;
+    bottom: 78px;
+    max-width: none;
+  }
   .hint {
     font-size: 11px;
   }
