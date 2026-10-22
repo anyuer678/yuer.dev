@@ -116,7 +116,7 @@ const kindLabel = { release: 'Release', push: '推送', new: '新仓' }
   color: var(--color-text-secondary);
 }
 .pulse__mark {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
   letter-spacing: 0.04em;
   flex-shrink: 0;
 }
@@ -134,10 +134,10 @@ const kindLabel = { release: 'Release', push: '推送', new: '新仓' }
   min-width: 0;
 }
 .pulse__link:hover .pulse__label {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
 }
 .pulse__kind {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-size: 11px;
   flex-shrink: 0;
 }
@@ -149,7 +149,7 @@ const kindLabel = { release: 'Release', push: '推送', new: '新仓' }
   white-space: nowrap;
 }
 .pulse__detail {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   flex-shrink: 0;
 }
 </style>

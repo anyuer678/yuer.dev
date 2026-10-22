@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   text-decoration: none;
   padding: 4px 8px;
   border-radius: 999px;
@@ -304,7 +304,7 @@ onBeforeUnmount(() => {
   display: block;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .act__t-desc {
   display: block;
@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
   font-size: var(--text-small);
 }
 .act__pulse dt {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .act__pulse dd {
   margin: 0;

@@ -203,7 +203,7 @@ focus    ·  {{ spread.subtitle }}</code></pre>
   margin-top: var(--space-2);
   font-family: var(--font-mono);
   font-size: var(--text-caption);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .desk__terminal {
   margin-top: var(--space-6);
@@ -297,7 +297,7 @@ focus    ·  {{ spread.subtitle }}</code></pre>
   font-size: var(--text-small);
 }
 .pulse__row dt {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .pulse__row dd {
   margin: 0;

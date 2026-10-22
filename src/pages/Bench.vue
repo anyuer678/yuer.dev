@@ -336,7 +336,7 @@ onMounted(() => {
   border-bottom: var(--border-default);
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .term__bar span {
   width: 8px;
@@ -357,7 +357,7 @@ onMounted(() => {
 .term__cap {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-2);
 }
 .term__row {
@@ -402,7 +402,7 @@ onMounted(() => {
 .term__note {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 @media (max-width: 799px) {
   .bench__layout {

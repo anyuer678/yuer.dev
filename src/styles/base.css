@@ -112,6 +112,7 @@ a:hover {
   border-color: var(--color-accent);
 }
 .btn--ghost:hover {
+  color: var(--color-accent-hover);
   background: var(--color-accent-soft);
   text-decoration: none;
 }

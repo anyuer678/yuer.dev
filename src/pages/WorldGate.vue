@@ -185,7 +185,7 @@ function cnNum(i) {
   display: block;
   font-family: var(--font-display);
   font-size: 14px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   letter-spacing: 0.25em;
   margin-bottom: var(--space-4);
 }
@@ -206,7 +206,7 @@ function cnNum(i) {
   margin-top: var(--space-3);
   font-family: var(--font-display);
   font-style: italic;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-size: var(--text-small);
 }
 .e-sum {

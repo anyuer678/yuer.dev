@@ -17,12 +17,14 @@ export function setTitle(t) {
   if (!t) return
   document.title = String(t).slice(0, 60) // 02 §8：title ≤ 60 字符
   upsertMeta('property', 'og:title', document.title) // 社交卡片随路由同步
+  upsertMeta('name', 'twitter:title', document.title)
 }
 
 export function setDescription(d) {
   const text = String(d || site.bio).slice(0, 120) // 02 §8：description ≤ 120 字符
   upsertMeta('name', 'description', text)
   upsertMeta('property', 'og:description', text)
+  upsertMeta('name', 'twitter:description', text)
 }
 
 export function setCanonical(path = '') {

@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 .drawer__link.is-active {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
   font-weight: 600;
   background: var(--color-accent-soft);
 }

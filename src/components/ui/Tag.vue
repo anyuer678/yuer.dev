@@ -41,17 +41,13 @@ const emit = defineEmits(['click'])
   border-radius: 999px;
 }
 .tag.is-active {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
   background: var(--color-accent-soft);
   border-color: var(--color-accent);
 }
 .tag__count {
   margin-left: 6px;
   font-size: 0.82em;
-  opacity: 0.65;
-}
-.tag.is-active .tag__count {
-  opacity: 0.85;
 }
 button.tag {
   cursor: pointer;

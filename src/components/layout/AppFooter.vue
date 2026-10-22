@@ -98,7 +98,7 @@ const year = new Date().getFullYear()
 }
 .footer__nav a:hover,
 .footer__nav a.router-link-active {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
 }
 .footer__side {
   display: flex;
@@ -115,7 +115,7 @@ const year = new Date().getFullYear()
 .footer__copy {
   margin: 0;
   font-size: 12px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-family: var(--font-mono);
 }
 

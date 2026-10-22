@@ -362,7 +362,7 @@ watch(selectedId, async (id) => {
   color: var(--color-text-secondary);
 }
 .panel__sep {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .dot {
   width: 8px;
@@ -422,7 +422,7 @@ watch(selectedId, async (id) => {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font: inherit;
   font-size: var(--text-caption);
   cursor: pointer;
@@ -452,7 +452,7 @@ watch(selectedId, async (id) => {
 }
 .rel-list__dir {
   font-family: var(--font-mono);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .rel-list__node {
   padding: 0;
@@ -490,7 +490,7 @@ watch(selectedId, async (id) => {
 }
 .chip:hover {
   border-color: var(--color-border-strong);
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
 }
 .legend {
   list-style: none;
@@ -511,7 +511,7 @@ watch(selectedId, async (id) => {
   font-family: var(--font-mono);
   font-style: normal;
   font-size: 11px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 
 /* 列表 */
@@ -560,7 +560,7 @@ watch(selectedId, async (id) => {
 .map-item__ext {
   margin-left: 2px;
   font-size: 0.75em;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .map-item__desc {
   margin-top: 0.2rem;
@@ -581,7 +581,7 @@ watch(selectedId, async (id) => {
   padding: 1px 6px;
   border-radius: 999px;
   background: var(--color-surface-muted);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-size: 10px;
   letter-spacing: 0.04em;
 }
