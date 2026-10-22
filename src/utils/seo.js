@@ -35,8 +35,11 @@ export function setCanonical(path = '') {
     document.head.appendChild(el)
   }
   // route.path 以 / 开头，直接 new URL(path, base) 会替换整个路径丢掉 /yuer.dev/ 目录
-  // （review 复核阻断项）→ 去前导 / 后按相对路径解析，保留 base 目录
-  el.href = new URL(path.replace(/^\//, ''), SITE_URL).toString()
+  // （review 复核阻断项）→ 去前导 / 后按相对路径解析，保留 base 目录。
+  // 目录路由统一带尾斜杠：与 sitemap/feed 及 GitHub Pages 的 301 目标一致，
+  // 避免 canonical 指向一个还会二次跳转的地址。
+  const cleanPath = path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`
+  el.href = new URL(cleanPath.replace(/^\//, ''), SITE_URL).toString()
   upsertMeta('property', 'og:url', el.href)
 }
 
