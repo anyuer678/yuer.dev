@@ -19,9 +19,9 @@ onMounted(() => mq?.addEventListener?.('change', onMq))
 onBeforeUnmount(() => mq?.removeEventListener?.('change', onMq))
 
 const mode = computed(() => (compact.value ? 'compact' : 'wide'))
-const viewBox = computed(() => (compact.value ? '0 0 390 1066' : '0 0 1000 720'))
+const viewBox = computed(() => (compact.value ? '0 0 390 1340' : '0 0 1000 940'))
 const width = computed(() => (compact.value ? 390 : 1000))
-const height = computed(() => (compact.value ? 1066 : 720))
+const height = computed(() => (compact.value ? 1340 : 940))
 
 const clusters = computed(() => props.model.clusters)
 const nodes = computed(() => props.model.nodes)

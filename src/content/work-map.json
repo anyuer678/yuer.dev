@@ -46,20 +46,20 @@
       "id": "infra",
       "index": "02",
       "title": "UI / 工程基建",
-      "desc": "自建组件库与设计资产——本站与生态项目是它们的真实消费方。",
+      "desc": "组件库、设计资产与本地工具链——本站与生态项目是它们的真实消费方。",
       "tone": "infra",
       "island": {
         "wide": [
           556,
           28,
           412,
-          190
+          300
         ],
         "compact": [
           12,
           388,
           366,
-          160
+          330
         ]
       },
       "titleAt": {
@@ -87,40 +87,40 @@
       "id": "train",
       "index": "03",
       "title": "训练 / 评测平台",
-      "desc": "离线训练与在线判题互为出口：题解变抄写题，训练通向真实评测。",
+      "desc": "离线训练与在线判题互为出口；课程作品与模拟实验也在这里跑出结果。",
       "tone": "train",
       "island": {
         "wide": [
           556,
-          232,
+          340,
           412,
-          180
+          310
         ],
         "compact": [
           12,
-          564,
+          734,
           366,
-          160
+          270
         ]
       },
       "titleAt": {
         "wide": [
           580,
-          266
+          374
         ],
         "compact": [
           34,
-          596
+          766
         ]
       },
       "descAt": {
         "wide": [
           580,
-          288
+          396
         ],
         "compact": [
           34,
-          618
+          788
         ]
       }
     },
@@ -133,35 +133,35 @@
       "island": {
         "wide": [
           32,
-          420,
+          660,
           936,
           280
         ],
         "compact": [
           12,
-          740,
+          1020,
           366,
-          310
+          340
         ]
       },
       "titleAt": {
         "wide": [
           56,
-          454
+          692
         ],
         "compact": [
           34,
-          772
+          1052
         ]
       },
       "descAt": {
         "wide": [
           56,
-          476
+          714
         ],
         "compact": [
           34,
-          794
+          1074
         ]
       }
     }
@@ -274,12 +274,12 @@
       "desc": "73 组件 · 46 主题 · 脚手架；本页即由 kb-ui-vue 驱动（dogfooding）",
       "at": {
         "wide": [
-          660,
+          615,
           150
         ],
         "compact": [
-          120,
-          490
+          110,
+          500
         ]
       }
     },
@@ -289,15 +289,76 @@
       "cluster": "infra",
       "role": "设计资产",
       "tone": "default",
+      "core": false,
       "desc": "AI 生成设计资产库，24 风格元数据 + 使用策略（CC0）",
       "at": {
         "wide": [
-          850,
-          148
+          748,
+          150
         ],
         "compact": [
-          270,
-          490
+          250,
+          495
+        ]
+      }
+    },
+    {
+      "id": "envforge",
+      "repo": "envforge",
+      "cluster": "infra",
+      "link": "/projects/envforge",
+      "role": "环境配置",
+      "tone": "default",
+      "core": false,
+      "desc": "Windows 环境工坊：运行时版本、项目档案与系统变量，写入前快照、写后回读校验",
+      "at": {
+        "wide": [
+          878,
+          150
+        ],
+        "compact": [
+          85,
+          585
+        ]
+      }
+    },
+    {
+      "id": "local-tools-suite",
+      "repo": "local-tools-suite",
+      "cluster": "infra",
+      "link": "/projects/local-tools-suite",
+      "role": "本地工具集",
+      "tone": "default",
+      "core": false,
+      "desc": "RunTrace / SpacePilot / QuickDeck / RecallFS：运行复现、磁盘治理、快捷台、文件检索",
+      "at": {
+        "wide": [
+          665,
+          255
+        ],
+        "compact": [
+          250,
+          580
+        ]
+      }
+    },
+    {
+      "id": "time-archaeologist",
+      "repo": "time-archaeologist",
+      "cluster": "infra",
+      "link": "/projects/time-archaeologist",
+      "role": "项目取证",
+      "tone": "default",
+      "core": false,
+      "desc": "只读扫描项目痕迹，重建活动时间线与成果证据链",
+      "at": {
+        "wide": [
+          848,
+          255
+        ],
+        "compact": [
+          170,
+          660
         ]
       }
     },
@@ -312,12 +373,12 @@
       "desc": "题库训练 + SRS 遗忘曲线（Electron / Web / Android）",
       "at": {
         "wide": [
-          655,
-          345
+          650,
+          450
         ],
         "compact": [
-          105,
-          666
+          100,
+          850
         ]
       }
     },
@@ -332,12 +393,52 @@
       "desc": "全栈 OJ：seccomp 白名单 / cgroup v2 / namespaces / tmpfs jail",
       "at": {
         "wide": [
-          845,
-          345
+          830,
+          450
         ],
         "compact": [
-          285,
-          666
+          280,
+          850
+        ]
+      }
+    },
+    {
+      "id": "course-design-2026",
+      "repo": "course-design-2026",
+      "cluster": "train",
+      "link": "/projects/course-design-2026",
+      "role": "课程作品集",
+      "tone": "info",
+      "core": false,
+      "desc": "38 项课程任务收敛成九个零依赖产品，共用 webframe 与自写事件循环",
+      "at": {
+        "wide": [
+          650,
+          560
+        ],
+        "compact": [
+          110,
+          940
+        ]
+      }
+    },
+    {
+      "id": "world",
+      "repo": "world",
+      "cluster": "train",
+      "link": "/projects/world",
+      "role": "模拟实验平台",
+      "tone": "info",
+      "core": false,
+      "desc": "九模型统一引擎：时间步进 + 离散事件，批量实验带置信区间与报告导出",
+      "at": {
+        "wide": [
+          830,
+          560
+        ],
+        "compact": [
+          275,
+          940
         ]
       }
     },
@@ -348,15 +449,16 @@
       "link": "/projects/evocode",
       "role": "AI 软件体检",
       "tone": "default",
+      "core": false,
       "desc": "AI 软件体检与演化平台",
       "at": {
         "wide": [
           150,
-          540
+          750
         ],
         "compact": [
           95,
-          840
+          1105
         ]
       }
     },
@@ -367,15 +469,16 @@
       "link": "/projects/desktoppet",
       "role": "桌面宠物",
       "tone": "default",
+      "core": false,
       "desc": "Electron 桌面宠物",
       "at": {
         "wide": [
-          330,
-          540
+          350,
+          750
         ],
         "compact": [
           280,
-          840
+          1105
         ]
       }
     },
@@ -386,15 +489,16 @@
       "link": "/projects/picren",
       "role": "图片整理",
       "tone": "default",
+      "core": false,
       "desc": "图片批量 AI 重命名/整理器",
       "at": {
         "wide": [
-          510,
-          540
+          550,
+          750
         ],
         "compact": [
           95,
-          895
+          1171
         ]
       }
     },
@@ -405,15 +509,16 @@
       "link": "/projects/developer-intelligence",
       "role": "代码理解",
       "tone": "default",
+      "core": false,
       "desc": "AI 深度理解代码仓库",
       "at": {
         "wide": [
-          720,
-          540
+          750,
+          750
         ],
         "compact": [
           280,
-          895
+          1171
         ]
       }
     },
@@ -424,15 +529,16 @@
       "link": "/projects/eclipse-wasteland",
       "role": "浏览器 FPS",
       "tone": "default",
+      "core": false,
       "desc": "浏览器端 Three.js PVE 射击游戏",
       "at": {
         "wide": [
-          240,
-          620
+          250,
+          840
         ],
         "compact": [
           95,
-          950
+          1237
         ]
       }
     },
@@ -442,15 +548,16 @@
       "cluster": "free",
       "role": "桌面壁纸",
       "tone": "default",
+      "core": false,
       "desc": "Windows 聚光灯动态壁纸",
       "at": {
         "wide": [
-          470,
-          620
+          450,
+          840
         ],
         "compact": [
           280,
-          950
+          1237
         ]
       }
     },
@@ -460,15 +567,36 @@
       "cluster": "free",
       "role": "非遗展示",
       "tone": "default",
+      "core": false,
       "desc": "华阴老腔 · 非遗展示站",
       "at": {
         "wide": [
-          700,
-          620
+          650,
+          840
         ],
         "compact": [
-          187,
-          1005
+          95,
+          1303
+        ]
+      }
+    },
+    {
+      "id": "lasttap",
+      "repo": "LastTap",
+      "cluster": "free",
+      "link": "/projects/lasttap",
+      "role": "桌面小组件",
+      "tone": "default",
+      "core": false,
+      "desc": "Android 桌面点一下记一次「上次执行时间」，零常驻、零联网",
+      "at": {
+        "wide": [
+          850,
+          840
+        ],
+        "compact": [
+          280,
+          1303
         ]
       }
     }
