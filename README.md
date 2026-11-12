@@ -18,7 +18,7 @@ Yuer Studio 是我的个人数字空间 —— 一个集 **项目展示**、**�
 ## 功能
 
 - **Projects** — 展示所有项目的简介、技术栈、状态
-- **Map** — 作品生态关系图：三主线 + 独立作品，16 个节点、4 条可验证关系；图谱/列表同源（`src/content/work-map.json`）
+- **Map** — 作品生态关系图：三主线 + 独立作品，22 个节点、4 条可验证关系；图谱/列表同源（`src/content/work-map.json`）
 - **Notes** — 技术笔记，从 AI 设计到数据库原理，114 篇 Markdown
 - **Timeline** — 开发时间线，按月记录每个项目的诞生
 - **Lab** — 实验性内容与探索
@@ -88,7 +88,7 @@ src/
 │   ├── layout/       # 布局组件（Header、Footer、PageTransition）
 │   └── ui/           # 基础组件（Tag、StatusBadge、Icon）
 ├── content/
-│   ├── projects/     # 项目 Markdown（22 个项目）
+│   ├── projects/     # 项目 Markdown（28 个项目）
 │   ├── notes/        # 笔记 Markdown（114 篇）
 │   ├── lab.json      # 实验室数据
 │   ├── timeline.json # 时间线数据

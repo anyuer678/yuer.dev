@@ -87,6 +87,28 @@
       "example": "docker compose up -d",
       "to": "/notes/n100-server",
       "repo": null
+    },
+    {
+      "id": "envforge",
+      "name": "EnvForge 环境工坊",
+      "group": "本地",
+      "oneLiner": "Windows 环境配置与版本管理：运行时多版本、项目档案、系统变量，写入带回滚。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/envforge && cd envforge",
+      "example": "python -m envforge",
+      "to": "/projects/envforge",
+      "repo": "https://github.com/anyuer678/envforge"
+    },
+    {
+      "id": "time-archaeologist",
+      "name": "时光考古机",
+      "group": "本地",
+      "oneLiner": "只读扫描项目痕迹，重建活动时间线与成果证据链，不联网。",
+      "lang": "Python",
+      "install": "git clone https://github.com/anyuer678/time-archaeologist && cd time-archaeologist",
+      "example": "python -m time_arch overview",
+      "to": "/projects/time-archaeologist",
+      "repo": "https://github.com/anyuer678/time-archaeologist"
     }
   ]
 }

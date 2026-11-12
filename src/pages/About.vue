@@ -28,17 +28,30 @@ const BUILD_AREAS = [
   {
     name: 'AI 应用',
     desc: '探索大语言模型在实际场景中的应用。构建 AI 助手、自动化工作流以及智能工具，让 AI 成为软件系统的一部分。',
-    items: projects.filter((p) => ['chatez', 'evocode'].includes(p.slug)),
+    items: projects.filter((p) =>
+      ['chatez', 'evocode', 'voiceconsole', 'developer-intelligence'].includes(p.slug)
+    ),
   },
   {
     name: '开发工具',
-    desc: '创造提升开发效率的软件工具。关注代码学习、软件分析以及开发流程优化。',
-    items: projects.filter((p) => ['codedrill', 'polycodehub'].includes(p.slug)),
+    desc: '把反复消耗时间的本地琐事做成工具：环境配置、运行复现、磁盘治理、文件检索与项目取证。',
+    items: projects.filter((p) =>
+      ['envforge', 'local-tools-suite', 'time-archaeologist', 'codedrill'].includes(p.slug)
+    ),
+  },
+  {
+    name: '平台与系统',
+    desc: '自建系统而不是拼装：判题平台、模拟实验平台与课程作品集，从引擎到部署整条链路自己写。',
+    items: projects.filter((p) =>
+      ['polycodehub', 'world', 'course-design-2026', 'kb-ui'].includes(p.slug)
+    ),
   },
   {
     name: '个人软件',
     desc: '从日常需求出发，制作真正会被自己使用的软件。通过不断迭代，让小工具逐渐成长为完整产品。',
-    items: projects.filter((p) => ['desktoppet', 'todo-list', 'cet6-vocabulary'].includes(p.slug)),
+    items: projects.filter((p) =>
+      ['desktoppet', 'picren', 'lasttap', 'cet6-vocabulary'].includes(p.slug)
+    ),
   },
 ].filter((area) => area.items.length)
 
@@ -55,10 +68,11 @@ const journey = Object.entries(
 
 // 技术方向分组（Current Stack）：静态类别映射，按实际 techList 归类
 const STACK_GROUPS = [
-  { name: '前端', keys: ['Vue 3', 'Vite', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Electron'] },
-  { name: '后端', keys: ['Spring Boot', 'Java', 'Python', 'FastAPI', 'Flask', 'Node.js', 'MySQL', 'Redis'] },
+  { name: '前端', keys: ['Vue 3', 'Vite', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'React'] },
+  { name: '后端', keys: ['Spring Boot', 'Java', 'Python', 'FastAPI', 'Flask', 'Node.js', 'MySQL', 'Redis', 'PostgreSQL', 'MyBatis'] },
+  { name: '桌面 / 移动', keys: ['Electron', 'Tauri', 'Kotlin', 'Capacitor'] },
   { name: '基础设施', keys: ['Linux', 'Docker', 'Git', 'GitHub Actions', 'Nginx'] },
-  { name: 'AI', keys: ['LLM', 'AI', 'OpenAI API', 'MCP', 'FastAPI'] },
+  { name: 'AI', keys: ['LLM', 'AI', 'OpenAI API', 'MCP'] },
 ]
 const stackGroups = STACK_GROUPS.map((g) => ({
   name: g.name,

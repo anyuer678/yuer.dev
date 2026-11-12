@@ -56,7 +56,7 @@ function jsonLdFor(routePath, meta) {
   const siteRef = { '@type': 'WebSite', name: BRAND, url: SITE_URL }
   const url = pageUrl(routePath)
   if (!routePath) {
-    return { ...root, '@type': 'WebSite', name: BRAND, url, description: site.bio || site.positioning }
+    return { ...root, '@type': 'WebSite', name: BRAND, url, description: site.positioning || site.bio }
   }
   const [prefix, slug] = routePath.split('/')
   if (prefix === 'projects' && projectsMeta[slug]) {
@@ -124,7 +124,7 @@ const ogImageFor = (p) =>
 
 function injectMeta(html, meta, routePath) {
   const title = truncate(meta.title, 60)
-  const desc = truncate(meta.description || site.bio, 120)
+  const desc = truncate(meta.description || site.positioning || site.bio, 120)
   const url = pageUrl(routePath)
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeAttr(title)}</title>`)
   if (meta.image) {
@@ -221,8 +221,8 @@ for (const slug of ['lumen', 'polycodehub', 'evocode']) {
   }
 }
 
-const fallbackMeta = { title: BRAND, description: site.bio || site.positioning }
-const homeMeta = { title: `${BRAND} · ${site.tagline?.[0] || ''}`, description: site.bio || site.positioning }
+const fallbackMeta = { title: BRAND, description: site.positioning || site.bio }
+const homeMeta = { title: `${BRAND} · ${site.tagline?.[0] || ''}`, description: site.positioning || site.bio }
 
 function metaForDynamic(routePath) {
   const [prefix, slug] = routePath.split('/')

@@ -11,7 +11,7 @@ const routes = [
     meta: {
       nav: false,
       title: (s) => `${s.brand} · ${s.tagline[0]}`,
-      description: (s) => s.bio,
+      description: (s) => s.positioning || s.bio,
     },
   },
   {
