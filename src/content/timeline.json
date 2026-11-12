@@ -1,5 +1,53 @@
 [
   {
+    "date": "2026-11",
+    "title": "WorldLab：九个模型的模拟平台跑通 CI 门禁",
+    "type": "project",
+    "link": "/projects/world"
+  },
+  {
+    "date": "2026-11",
+    "title": "时光考古机 v2.1：十页签工作台",
+    "type": "project",
+    "link": "/projects/time-archaeologist"
+  },
+  {
+    "date": "2026-11",
+    "title": "Lumen 迭代：MCP 注册与 L0~L3 分级权限",
+    "type": "project",
+    "link": "/projects/lumen"
+  },
+  {
+    "date": "2026-11",
+    "title": "ECLIPSE 荒原防线部署上线",
+    "type": "project",
+    "link": "/projects/eclipse-wasteland"
+  },
+  {
+    "date": "2026-10",
+    "title": "本地工具四件套完成：RunTrace / SpacePilot / QuickDeck / RecallFS",
+    "type": "project",
+    "link": "/projects/local-tools-suite"
+  },
+  {
+    "date": "2026-10",
+    "title": "EnvForge 环境工坊：写入前快照、写后回读校验",
+    "type": "project",
+    "link": "/projects/envforge"
+  },
+  {
+    "date": "2026-10",
+    "title": "课设作品集：九个零依赖产品成型",
+    "type": "project",
+    "link": "/projects/course-design-2026"
+  },
+  {
+    "date": "2026-10",
+    "title": "点时 LastTap：桌面小组件记时工具完成",
+    "type": "project",
+    "link": "/projects/lasttap"
+  },
+  {
     "date": "2026-08",
     "title": "PolyCodeHub 迁移上线",
     "type": "project",
