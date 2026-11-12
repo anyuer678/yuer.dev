@@ -109,5 +109,45 @@
   },
   "design-assets": {
     "slug": "design-assets"
+  },
+  "world": {
+    "slug": "world",
+    "showcase": true
+  },
+  "time-archaeologist": {
+    "slug": "time-archaeologist",
+    "showcase": true
+  },
+  "envforge": {
+    "slug": "envforge",
+    "showcase": true
+  },
+  "local-tools-suite": {
+    "slug": "local-tools-suite",
+    "showcase": true
+  },
+  "runtrace": {
+    "slug": null,
+    "showcase": false
+  },
+  "recallfs": {
+    "slug": null,
+    "showcase": false
+  },
+  "quickdeck": {
+    "slug": null,
+    "showcase": false
+  },
+  "spacepilot": {
+    "slug": null,
+    "showcase": false
+  },
+  "LastTap": {
+    "slug": "lasttap",
+    "showcase": true
+  },
+  "course-design-2026": {
+    "slug": "course-design-2026",
+    "showcase": true
   }
 }

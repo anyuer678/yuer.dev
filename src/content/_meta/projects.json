@@ -161,6 +161,50 @@
       }
     ]
   },
+  "course-design-2026": {
+    "slug": "course-design-2026",
+    "title": "课设作品集",
+    "subtitle": "38 项课程任务的学习地图与九个零依赖产品",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-10",
+    "tech": [
+      "Python",
+      "JavaScript",
+      "SQLite",
+      "Docker",
+      "HTML",
+      "CSS"
+    ],
+    "tags": [
+      "课程项目",
+      "零依赖",
+      "作品集",
+      "全栈"
+    ],
+    "summary": "把 38 项课程任务做成可运行的作品集：九个零第三方依赖的 Web/桌面产品，共用自研 webframe 与事件循环，Docker 一键起八个服务。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/course-design-2026",
+    "order": 24,
+    "journey": [
+      {
+        "date": "2026-09",
+        "title": "地基与首批产品",
+        "desc": "webframe 微框架 + netlab 事件循环落地，短链与文本暂存先跑通"
+      },
+      {
+        "date": "2026-10",
+        "title": "九产品矩阵",
+        "desc": "Studio/CourseLab/LinkBox/DataScope/SimLab/CacheKV/SensorHub/BoardWeb + Swing 画板全部可运行，pytest 291+ 与自检 154 双入口全绿"
+      },
+      {
+        "date": "2026-10",
+        "title": "Docker 全家桶",
+        "desc": "八个 Web 产品一镜像多入口，构建期零 pip install，端口与产品矩阵 1:1"
+      }
+    ]
+  },
   "desktoppet": {
     "slug": "desktoppet",
     "title": "Desktoppet",
@@ -289,6 +333,46 @@
         "date": "2026-08",
         "title": "开发中",
         "desc": "副本/爬塔 + 局内成长 + 深度养成系统，AI 协同开发"
+      }
+    ]
+  },
+  "envforge": {
+    "slug": "envforge",
+    "title": "EnvForge 环境工坊",
+    "subtitle": "Windows 本地环境配置与版本管理",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-10",
+    "tech": [
+      "Python",
+      "SQLite"
+    ],
+    "tags": [
+      "Windows",
+      "环境管理",
+      "桌面工具",
+      "安全写入"
+    ],
+    "summary": "把运行时多版本、项目环境档案、系统环境变量与健康体检收进一个桌面界面和 CLI，敏感值走 DPAPI 加密、写入带回滚。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/envforge",
+    "order": 25,
+    "journey": [
+      {
+        "date": "2026-10",
+        "title": "核心与 GUI",
+        "desc": "运行时探测、项目档案、系统变量三种作用域落地，PySide6 界面与 CLI 共用一套核心"
+      },
+      {
+        "date": "2026-10",
+        "title": "可验证写入",
+        "desc": "写入在跨进程文件锁内执行并回读逐键比对，失败自动用前置快照回滚"
+      },
+      {
+        "date": "2026-10",
+        "title": "环境标准 Spec v1",
+        "desc": "TOML 声明一台合格开发机应有的版本、变量、目录、命令与端口，支持采集/核对/比较/生成计划"
       }
     ]
   },
@@ -436,6 +520,70 @@
         "date": "2026-08",
         "title": "雏形",
         "desc": "AES-256-GCM 加密钥匙串 + audit 审计 + shell 注入"
+      }
+    ]
+  },
+  "lasttap": {
+    "slug": "lasttap",
+    "title": "点时 LastTap",
+    "subtitle": "Android 桌面小组件记时工具",
+    "status": "archived",
+    "tier": "lab",
+    "featured": false,
+    "date": "2026-10",
+    "tech": [
+      "Kotlin",
+      "SQLite"
+    ],
+    "tags": [
+      "Android",
+      "小组件",
+      "记时",
+      "已完成"
+    ],
+    "summary": "在桌面点一下就把某件事的「最近一次执行时间」更新为现在：不打开应用、不联网、无常驻服务，连击自动合并。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/LastTap",
+    "order": 28,
+    "journey": [
+      {
+        "date": "2026-10",
+        "title": "小组件与分析",
+        "desc": "两种小组件形态 + Room 存储 + 连击合并窗口，功能完成，不再继续开发"
+      }
+    ]
+  },
+  "local-tools-suite": {
+    "slug": "local-tools-suite",
+    "title": "本地工具四件套",
+    "subtitle": "RunTrace · SpacePilot · QuickDeck · RecallFS",
+    "status": "completed",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-10",
+    "tech": [
+      "Python"
+    ],
+    "tags": [
+      "Windows",
+      "本地工具",
+      "桌面",
+      "生产力"
+    ],
+    "summary": "四个独立 Windows 工具：运行历史与复现、磁盘空间治理、全局快捷工具台、本地文件检索——都按\"只读优先、操作可回滚\"做。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/local-tools-suite",
+    "order": 26,
+    "journey": [
+      {
+        "date": "2026-10",
+        "title": "四个工具并行落地",
+        "desc": "RunTrace / SpacePilot / QuickDeck / RecallFS 各自独立仓库，再合并为聚合仓库统一交付"
+      },
+      {
+        "date": "2026-10",
+        "title": "安全边界收紧",
+        "desc": "磁盘治理改为只读扫描 + 隔离区 + 回滚，默认不删任何用户文件"
       }
     ]
   },
@@ -656,6 +804,41 @@
       }
     ]
   },
+  "time-archaeologist": {
+    "slug": "time-archaeologist",
+    "title": "时光考古机",
+    "subtitle": "本地优先的数字资产考古工具",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-11",
+    "tech": [
+      "Python",
+      "SQLite"
+    ],
+    "tags": [
+      "Windows",
+      "本地优先",
+      "证据链",
+      "只读扫描"
+    ],
+    "summary": "只读扫描项目目录的元数据与内容签名，构建活动时间线与成果证据链，找出真实成果、未完成任务和缺失的证据。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/time-archaeologist",
+    "order": 27,
+    "journey": [
+      {
+        "date": "2026-10",
+        "title": "扫描与时间线",
+        "desc": "文件元数据、目录结构与内容签名三路扫描，SQLite（WAL）落库"
+      },
+      {
+        "date": "2026-11",
+        "title": "十页签工作台",
+        "desc": "v2.1 界面成型：线索、任务、档案、搜索、快照、Git 元数据同屏，附无头 CLI"
+      }
+    ]
+  },
   "todo-list": {
     "slug": "todo-list",
     "title": "Todo List",
@@ -747,6 +930,51 @@
         "date": "2026-08",
         "title": "雏形",
         "desc": "五层链路打通：STT → 意图解析 → MCP 工具 → 安全校验 → TTS 播报"
+      }
+    ]
+  },
+  "world": {
+    "slug": "world",
+    "title": "WorldLab",
+    "subtitle": "通用复杂系统模拟与实验平台",
+    "status": "development",
+    "tier": "product",
+    "featured": false,
+    "date": "2026-11",
+    "tech": [
+      "Python",
+      "FastAPI",
+      "TypeScript",
+      "Vite",
+      "SQLite",
+      "Docker",
+      "GitHub Actions"
+    ],
+    "tags": [
+      "模拟",
+      "实验平台",
+      "可视化",
+      "离散事件"
+    ],
+    "summary": "定义模型、跑真实模拟、比较实验结果的通用平台：统一引擎 + 九个内置模型 + 批量统计与报告导出，前后端分离、Docker 一键起。",
+    "demo": null,
+    "github": "https://github.com/anyuer678/world",
+    "order": 21,
+    "journey": [
+      {
+        "date": "2026-10",
+        "title": "引擎与首批模型",
+        "desc": "统一时间步进 + 离散事件引擎落地，排队/CPU 调度/缓存等模型接入"
+      },
+      {
+        "date": "2026-11",
+        "title": "实验与批量统计",
+        "desc": "批量实验、95% 置信区间与自动发现、插件式模型库、报告导出与 Docker 部署验证"
+      },
+      {
+        "date": "2026-11",
+        "title": "CI 门禁",
+        "desc": "推送即跑后端 pytest 270 项 + 前端 60 项与构建，双 job 全绿"
       }
     ]
   }
